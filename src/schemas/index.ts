@@ -5,5 +5,7 @@ export * from "./void-payment.ts";
 export * from "./send-notification.ts";
 export * from "./create-reserver.ts";
 export * from "./confirm-reserver.ts";
+export * from "./create-table-payment-intent.ts";
+export * from "./cancel-payment-intent.ts";
 export * from "./get/index.ts";
 
