@@ -1,3 +1,4 @@
+Connecting to db 5432
 export type Json =
   | string
   | number
@@ -1550,7 +1551,6 @@ export type Database = {
           dpi: number
           font: number
           id: number
-          is_default_invoice: boolean
           order_print_model_id: number
           paper_width: number
           physical_printer_ip: string | null
@@ -1571,7 +1571,6 @@ export type Database = {
           dpi?: number
           font?: number
           id?: number
-          is_default_invoice?: boolean
           order_print_model_id?: number
           paper_width?: number
           physical_printer_ip?: string | null
@@ -1592,7 +1591,6 @@ export type Database = {
           dpi?: number
           font?: number
           id?: number
-          is_default_invoice?: boolean
           order_print_model_id?: number
           paper_width?: number
           physical_printer_ip?: string | null
@@ -2800,14 +2798,11 @@ export type Database = {
       service_order_control: {
         Row: {
           ai_recommended: boolean
-          auto_print_invoice: boolean
           auto_print_order: boolean
           business_hour_information_card: boolean
           check_ip: boolean
-          checkout_printer_id: number | null
           client_cooling_time: number
           enable: boolean
-          invoice_api_enabled: boolean
           price_information_card: boolean
           restaurant_id: number
           table_cooling_time: number
@@ -2817,14 +2812,11 @@ export type Database = {
         }
         Insert: {
           ai_recommended?: boolean
-          auto_print_invoice?: boolean
           auto_print_order?: boolean
           business_hour_information_card?: boolean
           check_ip?: boolean
-          checkout_printer_id?: number | null
           client_cooling_time?: number
           enable?: boolean
-          invoice_api_enabled?: boolean
           price_information_card?: boolean
           restaurant_id: number
           table_cooling_time?: number
@@ -2834,14 +2826,11 @@ export type Database = {
         }
         Update: {
           ai_recommended?: boolean
-          auto_print_invoice?: boolean
           auto_print_order?: boolean
           business_hour_information_card?: boolean
           check_ip?: boolean
-          checkout_printer_id?: number | null
           client_cooling_time?: number
           enable?: boolean
-          invoice_api_enabled?: boolean
           price_information_card?: boolean
           restaurant_id?: number
           table_cooling_time?: number
@@ -2850,13 +2839,6 @@ export type Database = {
           view_model_id?: number
         }
         Relationships: [
-          {
-            foreignKeyName: "fk_service_order_control_checkout_printer"
-            columns: ["checkout_printer_id"]
-            isOneToOne: false
-            referencedRelation: "printer"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "service_order_control_restaurant_id_fkey"
             columns: ["restaurant_id"]
@@ -3099,6 +3081,42 @@ export type Database = {
             foreignKeyName: "service_order_payment_type_control_restaurant_id_fkey"
             columns: ["restaurant_id"]
             isOneToOne: false
+            referencedRelation: "service_order"
+            referencedColumns: ["restaurant_id"]
+          },
+        ]
+      }
+      service_order_pos_control: {
+        Row: {
+          auto_print_invoice: boolean
+          checkout_printer_id: number | null
+          invoice_api_enabled: boolean
+          restaurant_id: number
+        }
+        Insert: {
+          auto_print_invoice?: boolean
+          checkout_printer_id?: number | null
+          invoice_api_enabled?: boolean
+          restaurant_id: number
+        }
+        Update: {
+          auto_print_invoice?: boolean
+          checkout_printer_id?: number | null
+          invoice_api_enabled?: boolean
+          restaurant_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_service_order_pos_control_checkout_printer"
+            columns: ["checkout_printer_id"]
+            isOneToOne: false
+            referencedRelation: "printer"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "service_order_pos_control_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: true
             referencedRelation: "service_order"
             referencedColumns: ["restaurant_id"]
           },
@@ -5247,3 +5265,5 @@ export const Constants = {
   },
 } as const
 
+A new version of Supabase CLI is available: v2.109.0 (currently installed v2.84.2)
+We recommend updating regularly for new features and bug fixes: https://supabase.com/docs/guides/cli/getting-started#updating-the-supabase-cli
