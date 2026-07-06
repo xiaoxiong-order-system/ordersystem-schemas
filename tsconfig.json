@@ -9,7 +9,11 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    // 源码里相对 import 直接写 .ts 后缀（Deno 按字面路径解析，不依赖它把
+    // .js 回退成 .ts，Supabase Edge Runtime 不支持这个回退）；tsc 编译时
+    // 自动把这些 .ts 后缀重写成 .js，供 Node/npm 消费方按 NodeNext 规则解析
+    "rewriteRelativeImportExtensions": true
   },
   "include": ["src"]
 }

@@ -1,2 +1,2 @@
-export * from "./schemas/index.js";
-export * from "./database.types.js";
+export * from "./schemas/index.ts";
+export * from "./database.types.ts";

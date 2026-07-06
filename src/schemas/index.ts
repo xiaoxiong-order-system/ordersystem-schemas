@@ -1,5 +1,6 @@
-export * from "./create-order.js";
-export * from "./create-takeaway.js";
-export * from "./table-checkout.js";
-export * from "./void-payment.js";
+export * from "./create-order.ts";
+export * from "./create-takeaway.ts";
+export * from "./table-checkout.ts";
+export * from "./void-payment.ts";
+export * from "./get/index.ts";
 
