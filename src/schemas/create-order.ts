@@ -1,9 +1,11 @@
 import { z } from "zod";
+import { CustomDishDetailInputSchema } from "./custom-dish.ts";
 
 export const DishInputSchema = z.object({
   dish_id: z.number().int().positive(),
   quantity: z.number().int().min(1),
   note: z.string().nullable().optional(),
+  detail: CustomDishDetailInputSchema.optional(), // 自定义菜（custom_dish）选项，按分组嵌套，普通菜不传
 });
 
 export const CreateOrderInputSchema = z.object({

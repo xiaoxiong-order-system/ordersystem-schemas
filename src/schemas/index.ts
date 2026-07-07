@@ -1,3 +1,4 @@
+export * from "./custom-dish.ts";
 export * from "./create-order.ts";
 export * from "./create-takeaway.ts";
 export * from "./table-checkout.ts";
