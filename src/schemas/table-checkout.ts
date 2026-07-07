@@ -2,7 +2,9 @@ import { z } from "zod";
 
 export const PaymentItemInputSchema = z.object({
   payment_type_code: z.string().min(1),
-  amount: z.number().nonnegative(), // 不含小费
+  // 不含小费；仅 payment_type_code="cash" 的条目允许省略（且最多一条），
+  // 省略时后端按剩余应付余额自动补齐差额（见 table-checkout 业务逻辑）
+  amount: z.number().nonnegative().optional(),
   tip_amount: z.number().nonnegative().optional(),
 });
 
