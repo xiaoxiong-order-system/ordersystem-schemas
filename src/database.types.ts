@@ -535,6 +535,7 @@ export type Database = {
       delivery_order_item: {
         Row: {
           delivery_order_id: number
+          detail: Json | null
           discount: number | null
           dish_id: number
           dish_sku: string
@@ -548,6 +549,7 @@ export type Database = {
         }
         Insert: {
           delivery_order_id: number
+          detail?: Json | null
           discount?: number | null
           dish_id: number
           dish_sku: string
@@ -561,6 +563,7 @@ export type Database = {
         }
         Update: {
           delivery_order_id?: number
+          detail?: Json | null
           discount?: number | null
           dish_id?: number
           dish_sku?: string
@@ -4528,6 +4531,7 @@ export type Database = {
       }
       takeaway_order_item: {
         Row: {
+          detail: Json | null
           discount: number | null
           dish_id: number
           dish_sku: string
@@ -4541,6 +4545,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          detail?: Json | null
           discount?: number | null
           dish_id: number
           dish_sku: string
@@ -4554,6 +4559,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          detail?: Json | null
           discount?: number | null
           dish_id?: number
           dish_sku?: string
