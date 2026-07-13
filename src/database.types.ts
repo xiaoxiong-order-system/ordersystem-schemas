@@ -2949,8 +2949,8 @@ export type Database = {
             foreignKeyName: "service_order_information_card_restaurant_id_fkey"
             columns: ["restaurant_id"]
             isOneToOne: false
-            referencedRelation: "service_order"
-            referencedColumns: ["restaurant_id"]
+            referencedRelation: "restaurant"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -3644,8 +3644,8 @@ export type Database = {
             foreignKeyName: "service_takeaway_information_card_restaurant_id_fkey"
             columns: ["restaurant_id"]
             isOneToOne: false
-            referencedRelation: "service_takeaway"
-            referencedColumns: ["restaurant_id"]
+            referencedRelation: "restaurant"
+            referencedColumns: ["id"]
           },
         ]
       }
