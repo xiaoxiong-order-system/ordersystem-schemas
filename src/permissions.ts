@@ -24,6 +24,7 @@ export const PERMISSION_CATALOG = [
   { module: "菜品", code: "dish.create", description: "创建菜品", boss: true, manager: true, staff: false, tables: "同上（INSERT）" },
   { module: "菜品", code: "dish.update", description: "编辑菜品", boss: true, manager: true, staff: false, tables: "同上（UPDATE）" },
   { module: "菜品", code: "dish.delete", description: "删除菜品", boss: true, manager: true, staff: false, tables: "同上（DELETE）" },
+  { module: "菜品", code: "dish.cross_restaurant", description: "跨餐厅菜品操作（关联字段覆盖 / 复制到关联餐厅）", boss: true, manager: true, staff: true, tables: "无直接表，仅作为绕开 current_restaurant 限制的开关；配合 dish.update/dish.create 使用，限父子/同父兄弟餐厅之间" },
   { module: "分类", code: "category.read", description: "查看分类", boss: true, manager: true, staff: true, tables: "category / category_multilingua" },
   { module: "分类", code: "category.create", description: "创建分类", boss: true, manager: true, staff: false, tables: "category / category_multilingua" },
   { module: "分类", code: "category.update", description: "编辑分类", boss: true, manager: true, staff: false, tables: "category / category_multilingua" },

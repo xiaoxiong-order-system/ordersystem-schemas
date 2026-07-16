@@ -5224,6 +5224,14 @@ export type Database = {
         }
         Returns: boolean
       }
+      has_restaurant_role_permission_cross: {
+        Args: {
+          p_permission_code: string
+          p_restaurant_id: number
+          p_user_id: string
+        }
+        Returns: boolean
+      }
       has_role: { Args: { p_role_name: string }; Returns: boolean }
       increment_dish_rate: {
         Args: { p_dish_id: number; p_like: boolean; p_restaurant_id: number }
@@ -5290,6 +5298,7 @@ export type Database = {
         }
         Returns: undefined
       }
+      restaurant_root_id: { Args: { p_restaurant_id: number }; Returns: number }
       set_view_sort_weight: {
         Args: {
           p_dish_group_id?: number
