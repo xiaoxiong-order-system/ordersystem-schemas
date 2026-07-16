@@ -21,11 +21,18 @@ export const AllRestaurantsServiceInfoSchema = z.object({
   payment_online: z.boolean(),
 });
 
+// POS 无线上支付概念，不含 payment_online
+export const AllRestaurantsPosServiceInfoSchema = z.object({
+  has: z.boolean(), // 是否已开通（有 service.pos.basic 权限）
+  enabled: z.boolean(), // service_pos_control.enable
+});
+
 export const AllRestaurantsServiceFlagsSchema = z.object({
   order: AllRestaurantsServiceInfoSchema,
   takeaway: AllRestaurantsServiceInfoSchema,
   delivery: AllRestaurantsServiceInfoSchema,
   reserver: AllRestaurantsServiceInfoSchema,
+  pos: AllRestaurantsPosServiceInfoSchema,
 });
 
 // 子节点没有 sub_restaurants 字段；顶层节点必有（可能是空数组）
