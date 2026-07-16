@@ -701,7 +701,7 @@ export type Database = {
           image: string | null
           likes: number
           linked_dish: number | null
-          order_limit: number
+          order_limit: number | null
           price: number
           print_text: string | null
           rates: number
@@ -709,7 +709,7 @@ export type Database = {
           sdr_id: number | null
           sku: string
           status: string
-          table_limit: number
+          table_limit: number | null
           tax_rate: string
           updated_at: string
         }
@@ -724,7 +724,7 @@ export type Database = {
           image?: string | null
           likes?: number
           linked_dish?: number | null
-          order_limit?: number
+          order_limit?: number | null
           price?: number
           print_text?: string | null
           rates?: number
@@ -732,7 +732,7 @@ export type Database = {
           sdr_id?: number | null
           sku: string
           status?: string
-          table_limit?: number
+          table_limit?: number | null
           tax_rate?: string
           updated_at?: string
         }
@@ -747,7 +747,7 @@ export type Database = {
           image?: string | null
           likes?: number
           linked_dish?: number | null
-          order_limit?: number
+          order_limit?: number | null
           price?: number
           print_text?: string | null
           rates?: number
@@ -755,7 +755,7 @@ export type Database = {
           sdr_id?: number | null
           sku?: string
           status?: string
-          table_limit?: number
+          table_limit?: number | null
           tax_rate?: string
           updated_at?: string
         }
@@ -997,13 +997,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "dish_relation_dish_id_fkey1"
-            columns: ["dish_id"]
-            isOneToOne: false
-            referencedRelation: "dish"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "dish_relation_other_dish_id_fkey"
             columns: ["other_dish_id"]
             isOneToOne: false
@@ -1011,21 +1004,7 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "dish_relation_other_dish_id_fkey1"
-            columns: ["other_dish_id"]
-            isOneToOne: false
-            referencedRelation: "dish"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "dish_relation_restaurant_id_fkey"
-            columns: ["restaurant_id"]
-            isOneToOne: false
-            referencedRelation: "restaurant"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "dish_relation_restaurant_id_fkey1"
             columns: ["restaurant_id"]
             isOneToOne: false
             referencedRelation: "restaurant"
@@ -1905,7 +1884,6 @@ export type Database = {
           parent_id: number | null
           restaurant_id: number
           updated_at: string
-          weight: number
           weight_dinein: number
           weight_takeaway: number
         }
@@ -1916,7 +1894,6 @@ export type Database = {
           parent_id?: number | null
           restaurant_id: number
           updated_at?: string
-          weight?: number
           weight_dinein?: number
           weight_takeaway?: number
         }
@@ -1927,7 +1904,6 @@ export type Database = {
           parent_id?: number | null
           restaurant_id?: number
           updated_at?: string
-          weight?: number
           weight_dinein?: number
           weight_takeaway?: number
         }
@@ -2624,25 +2600,16 @@ export type Database = {
       }
       service_delivery_control: {
         Row: {
-          business_hour_information_card: boolean
           enable: boolean
-          price_information_card: boolean
           restaurant_id: number
-          view_model_id: number
         }
         Insert: {
-          business_hour_information_card?: boolean
           enable?: boolean
-          price_information_card?: boolean
           restaurant_id: number
-          view_model_id?: number
         }
         Update: {
-          business_hour_information_card?: boolean
           enable?: boolean
-          price_information_card?: boolean
           restaurant_id?: number
-          view_model_id?: number
         }
         Relationships: [
           {
@@ -2651,58 +2618,6 @@ export type Database = {
             isOneToOne: true
             referencedRelation: "service_delivery"
             referencedColumns: ["restaurant_id"]
-          },
-        ]
-      }
-      service_delivery_information: {
-        Row: {
-          restaurant_id: number
-        }
-        Insert: {
-          restaurant_id: number
-        }
-        Update: {
-          restaurant_id?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_service_delivery_information_restaurant"
-            columns: ["restaurant_id"]
-            isOneToOne: true
-            referencedRelation: "restaurant"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      service_delivery_information_background: {
-        Row: {
-          id: number
-          image_path: string
-          restaurant_id: number
-          screen_type: Database["public"]["Enums"]["screen_type"]
-          weight: number
-        }
-        Insert: {
-          id?: number
-          image_path: string
-          restaurant_id: number
-          screen_type: Database["public"]["Enums"]["screen_type"]
-          weight?: number
-        }
-        Update: {
-          id?: number
-          image_path?: string
-          restaurant_id?: number
-          screen_type?: Database["public"]["Enums"]["screen_type"]
-          weight?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_service_delivery_information_bg_restaurant"
-            columns: ["restaurant_id"]
-            isOneToOne: false
-            referencedRelation: "restaurant"
-            referencedColumns: ["id"]
           },
         ]
       }
@@ -2944,15 +2859,15 @@ export type Database = {
       }
       service_order_information: {
         Row: {
-          acknowledgement: Json | null
+          acknowledgement: string | null
           restaurant_id: number
         }
         Insert: {
-          acknowledgement?: Json | null
+          acknowledgement?: string | null
           restaurant_id: number
         }
         Update: {
-          acknowledgement?: Json | null
+          acknowledgement?: string | null
           restaurant_id?: number
         }
         Relationships: [
@@ -3404,25 +3319,16 @@ export type Database = {
       }
       service_reserver_control: {
         Row: {
-          business_hour_information_card: boolean
           enable: boolean
-          price_information_card: boolean
           restaurant_id: number
-          view_model_id: number
         }
         Insert: {
-          business_hour_information_card?: boolean
           enable?: boolean
-          price_information_card?: boolean
           restaurant_id: number
-          view_model_id?: number
         }
         Update: {
-          business_hour_information_card?: boolean
           enable?: boolean
-          price_information_card?: boolean
           restaurant_id?: number
-          view_model_id?: number
         }
         Relationships: [
           {
@@ -3431,58 +3337,6 @@ export type Database = {
             isOneToOne: true
             referencedRelation: "service_reserver"
             referencedColumns: ["restaurant_id"]
-          },
-        ]
-      }
-      service_reserver_information: {
-        Row: {
-          restaurant_id: number
-        }
-        Insert: {
-          restaurant_id: number
-        }
-        Update: {
-          restaurant_id?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_service_reserver_information_restaurant"
-            columns: ["restaurant_id"]
-            isOneToOne: true
-            referencedRelation: "restaurant"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      service_reserver_information_background: {
-        Row: {
-          id: number
-          image_path: string
-          restaurant_id: number
-          screen_type: Database["public"]["Enums"]["screen_type"]
-          weight: number
-        }
-        Insert: {
-          id?: number
-          image_path: string
-          restaurant_id: number
-          screen_type: Database["public"]["Enums"]["screen_type"]
-          weight?: number
-        }
-        Update: {
-          id?: number
-          image_path?: string
-          restaurant_id?: number
-          screen_type?: Database["public"]["Enums"]["screen_type"]
-          weight?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_service_reserver_information_bg_restaurant"
-            columns: ["restaurant_id"]
-            isOneToOne: false
-            referencedRelation: "restaurant"
-            referencedColumns: ["id"]
           },
         ]
       }
@@ -5127,7 +4981,6 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      _canteen_slugify: { Args: { p_text: string }; Returns: string }
       accept_invitation: { Args: { p_invitation_id: string }; Returns: string }
       can_manage_restaurant_role: {
         Args: { p_restaurant_id: number; p_target_role_id: number }
@@ -5207,6 +5060,7 @@ export type Database = {
         Args: { p_date?: string; p_restaurant_id: number }
         Returns: Json
       }
+      fn_run_daily_archive_cron: { Args: never; Returns: undefined }
       get_people_price: {
         Args: {
           p_date: string
@@ -5246,30 +5100,6 @@ export type Database = {
       }
       is_admin: { Args: never; Returns: boolean }
       is_merchant: { Args: never; Returns: boolean }
-      migrate_dictionary: {
-        Args: { p_data: Json; p_restaurant_id: number }
-        Returns: Json
-      }
-      migrate_menu_ordering: {
-        Args: { p_data: Json; p_restaurant_id: number }
-        Returns: Json
-      }
-      migrate_restaurant_info: {
-        Args: { p_restaurant_id: number; p_shop_info: Json }
-        Returns: Json
-      }
-      migrate_service_config: {
-        Args: { p_config: Json; p_restaurant_id: number }
-        Returns: Json
-      }
-      migrate_tables: {
-        Args: { p_restaurant_id: number; p_tables: Json }
-        Returns: Json
-      }
-      migrate_variety_shops: {
-        Args: { p_restaurant_id: number; p_shops: Json }
-        Returns: Json
-      }
       my_restaurant_permission: {
         Args: { p_permission_code: string; p_restaurant_id: number }
         Returns: boolean
