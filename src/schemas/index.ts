@@ -9,5 +9,7 @@ export * from "./create-reserver.ts";
 export * from "./confirm-reserver.ts";
 export * from "./create-table-payment-intent.ts";
 export * from "./cancel-payment-intent.ts";
+export * from "./export-restaurant.ts";
+export * from "./import-restaurant.ts";
 export * from "./get/index.ts";
 
