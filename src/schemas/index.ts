@@ -13,5 +13,6 @@ export * from "./export-restaurant.ts";
 export * from "./import-restaurant.ts";
 export * from "./create-service.ts";
 export * from "./cancel-service.ts";
+export * from "./delete-dish.ts";
 export * from "./get/index.ts";
 
