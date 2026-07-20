@@ -4679,33 +4679,24 @@ export type Database = {
       user: {
         Row: {
           auth_type: string
-          avatar_url: string | null
           created_at: string | null
           current_restaurant: number | null
-          email: string
           id: string
           updated_at: string | null
-          username: string | null
         }
         Insert: {
           auth_type?: string
-          avatar_url?: string | null
           created_at?: string | null
           current_restaurant?: number | null
-          email: string
           id: string
           updated_at?: string | null
-          username?: string | null
         }
         Update: {
           auth_type?: string
-          avatar_url?: string | null
           created_at?: string | null
           current_restaurant?: number | null
-          email?: string
           id?: string
           updated_at?: string | null
-          username?: string | null
         }
         Relationships: []
       }
@@ -4749,6 +4740,35 @@ export type Database = {
             foreignKeyName: "user_dining_record_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_information: {
+        Row: {
+          avatar_url: string | null
+          email: string
+          id: string
+          username: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          email: string
+          id: string
+          username?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          email?: string
+          id?: string
+          username?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_user_information_user"
+            columns: ["id"]
+            isOneToOne: true
             referencedRelation: "user"
             referencedColumns: ["id"]
           },
