@@ -17,7 +17,6 @@ export const DineinControlSchema = z.object({
   client_cooling_time: z.number().int(),
   table_order_use_password: z.boolean(),
   ai_recommended: z.boolean(),
-  variety_shop_mode: z.boolean(),
   view_model_id: z.number().int(),
   enable: z.boolean(),
   business_hour_information_card: z.boolean(),

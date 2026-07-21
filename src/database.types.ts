@@ -1,3 +1,4 @@
+Connecting to db 5432
 export type Json =
   | string
   | number
@@ -2809,7 +2810,6 @@ export type Database = {
           restaurant_id: number
           table_cooling_time: number
           table_order_use_password: boolean
-          variety_shop_mode: boolean
           view_model_id: number
         }
         Insert: {
@@ -2823,7 +2823,6 @@ export type Database = {
           restaurant_id: number
           table_cooling_time?: number
           table_order_use_password?: boolean
-          variety_shop_mode?: boolean
           view_model_id?: number
         }
         Update: {
@@ -2837,7 +2836,6 @@ export type Database = {
           restaurant_id?: number
           table_cooling_time?: number
           table_order_use_password?: boolean
-          variety_shop_mode?: boolean
           view_model_id?: number
         }
         Relationships: [
@@ -5076,6 +5074,10 @@ export type Database = {
         }
         Returns: number
       }
+      delete_dish_tx: {
+        Args: { p_dish_id: number; p_force?: boolean }
+        Returns: Json
+      }
       fn_archive_daily_orders: {
         Args: { p_date?: string; p_restaurant_id: number }
         Returns: Json
@@ -5120,6 +5122,10 @@ export type Database = {
       }
       is_admin: { Args: never; Returns: boolean }
       is_merchant: { Args: never; Returns: boolean }
+      migrate_service_config: {
+        Args: { p_config: Json; p_restaurant_id: number }
+        Returns: Json
+      }
       my_restaurant_permission: {
         Args: { p_permission_code: string; p_restaurant_id: number }
         Returns: boolean
