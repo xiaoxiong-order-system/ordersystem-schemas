@@ -7,7 +7,7 @@ export const CreateReserverInputSchema = z.object({
   email: z.string().email(),
   guest_count: z.number().int().min(1),
   reserved_at: z.string().min(1), // ISO 8601
-  note: z.string().optional(),
+  note: z.string().nullish(),
 });
 
 export type CreateReserverInput = z.infer<typeof CreateReserverInputSchema>;

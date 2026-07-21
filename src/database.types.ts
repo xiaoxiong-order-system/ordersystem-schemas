@@ -1,4 +1,3 @@
-Connecting to db 5432
 export type Json =
   | string
   | number
@@ -1980,6 +1979,7 @@ export type Database = {
           location_street: string | null
           logo: string | null
           name: string | null
+          people_tax_rate: string
           phone: string | null
           restaurant_id: number
           sub_name: string | null
@@ -2000,6 +2000,7 @@ export type Database = {
           location_street?: string | null
           logo?: string | null
           name?: string | null
+          people_tax_rate?: string
           phone?: string | null
           restaurant_id: number
           sub_name?: string | null
@@ -2020,6 +2021,7 @@ export type Database = {
           location_street?: string | null
           logo?: string | null
           name?: string | null
+          people_tax_rate?: string
           phone?: string | null
           restaurant_id?: number
           sub_name?: string | null
@@ -2027,6 +2029,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "restaurant_information_people_tax_rate_fk"
+            columns: ["people_tax_rate"]
+            isOneToOne: false
+            referencedRelation: "pt_tax_rate"
+            referencedColumns: ["code"]
+          },
           {
             foreignKeyName: "restaurant_information_restaurant_id_fkey"
             columns: ["restaurant_id"]
