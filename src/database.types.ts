@@ -3207,6 +3207,7 @@ export type Database = {
         Row: {
           auto_print_invoice: boolean
           checkout_printer_id: number | null
+          default_print_order: boolean
           enable: boolean
           invoice_api_enabled: boolean
           restaurant_id: number
@@ -3215,6 +3216,7 @@ export type Database = {
         Insert: {
           auto_print_invoice?: boolean
           checkout_printer_id?: number | null
+          default_print_order?: boolean
           enable?: boolean
           invoice_api_enabled?: boolean
           restaurant_id: number
@@ -3223,6 +3225,7 @@ export type Database = {
         Update: {
           auto_print_invoice?: boolean
           checkout_printer_id?: number | null
+          default_print_order?: boolean
           enable?: boolean
           invoice_api_enabled?: boolean
           restaurant_id?: number
