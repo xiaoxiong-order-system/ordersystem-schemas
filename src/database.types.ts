@@ -1562,7 +1562,6 @@ export type Database = {
           paper_width: number
           physical_printer_ip: string | null
           physical_printer_name: string | null
-          print_tag: number[]
           print_takeaway: boolean
           printable_width_mm: number | null
           printer_driver_id: number | null
@@ -1582,7 +1581,6 @@ export type Database = {
           paper_width?: number
           physical_printer_ip?: string | null
           physical_printer_name?: string | null
-          print_tag?: number[]
           print_takeaway?: boolean
           printable_width_mm?: number | null
           printer_driver_id?: number | null
@@ -1602,7 +1600,6 @@ export type Database = {
           paper_width?: number
           physical_printer_ip?: string | null
           physical_printer_name?: string | null
-          print_tag?: number[]
           print_takeaway?: boolean
           printable_width_mm?: number | null
           printer_driver_id?: number | null
@@ -1722,6 +1719,49 @@ export type Database = {
           text?: string
         }
         Relationships: []
+      }
+      printer_tag: {
+        Row: {
+          printer_id: number
+          restaurant_id: number
+          tag_id: number
+          tag_type: string
+        }
+        Insert: {
+          printer_id: number
+          restaurant_id: number
+          tag_id: number
+          tag_type?: string
+        }
+        Update: {
+          printer_id?: number
+          restaurant_id?: number
+          tag_id?: number
+          tag_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "printer_tag_printer_id_fkey"
+            columns: ["printer_id"]
+            isOneToOne: false
+            referencedRelation: "printer"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "printer_tag_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "printer_tag_tag_id_tag_type_fkey"
+            columns: ["tag_id", "tag_type"]
+            isOneToOne: false
+            referencedRelation: "tag"
+            referencedColumns: ["id", "type"]
+          },
+        ]
       }
       pt_tax_rate: {
         Row: {
@@ -5364,3 +5404,4 @@ export const Constants = {
     },
   },
 } as const
+
