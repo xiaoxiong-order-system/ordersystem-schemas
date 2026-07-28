@@ -3,6 +3,7 @@ import { z } from "zod";
 export const TableInvoiceVoidInputSchema = z.object({
   payment_id: z.number().int().positive(),
   restaurant_id: z.number().int().positive(),
+  reason: z.string().trim().min(1),
 });
 export type TableInvoiceVoidInput = z.infer<typeof TableInvoiceVoidInputSchema>;
 
