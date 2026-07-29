@@ -7,11 +7,6 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instantiate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
-  __InternalSupabase: {
-    PostgrestVersion: "14.5"
-  }
   graphql_public: {
     Tables: {
       [_ in never]: never
@@ -2860,6 +2855,7 @@ export type Database = {
           check_ip: boolean
           client_cooling_time: number
           enable: boolean
+          pay_at_ordering: boolean
           price_information_card: boolean
           restaurant_id: number
           table_cooling_time: number
@@ -2873,6 +2869,7 @@ export type Database = {
           check_ip?: boolean
           client_cooling_time?: number
           enable?: boolean
+          pay_at_ordering?: boolean
           price_information_card?: boolean
           restaurant_id: number
           table_cooling_time?: number
@@ -2886,6 +2883,7 @@ export type Database = {
           check_ip?: boolean
           client_cooling_time?: number
           enable?: boolean
+          pay_at_ordering?: boolean
           price_information_card?: boolean
           restaurant_id?: number
           table_cooling_time?: number
