@@ -2855,7 +2855,6 @@ export type Database = {
           check_ip: boolean
           client_cooling_time: number
           enable: boolean
-          pay_at_ordering: boolean
           price_information_card: boolean
           restaurant_id: number
           table_cooling_time: number
@@ -2869,7 +2868,6 @@ export type Database = {
           check_ip?: boolean
           client_cooling_time?: number
           enable?: boolean
-          pay_at_ordering?: boolean
           price_information_card?: boolean
           restaurant_id: number
           table_cooling_time?: number
@@ -2883,7 +2881,6 @@ export type Database = {
           check_ip?: boolean
           client_cooling_time?: number
           enable?: boolean
-          pay_at_ordering?: boolean
           price_information_card?: boolean
           restaurant_id?: number
           table_cooling_time?: number
@@ -4547,10 +4544,10 @@ export type Database = {
       takeaway_order: {
         Row: {
           contact_name: string
-          contact_phone: string
+          contact_phone: string | null
           created_at: string
           deleted_at: string | null
-          email: string
+          email: string | null
           id: number
           note: string | null
           payment_status: string
@@ -4563,10 +4560,10 @@ export type Database = {
         }
         Insert: {
           contact_name: string
-          contact_phone: string
+          contact_phone?: string | null
           created_at?: string
           deleted_at?: string | null
-          email: string
+          email?: string | null
           id?: number
           note?: string | null
           payment_status?: string
@@ -4579,10 +4576,10 @@ export type Database = {
         }
         Update: {
           contact_name?: string
-          contact_phone?: string
+          contact_phone?: string | null
           created_at?: string
           deleted_at?: string | null
-          email?: string
+          email?: string | null
           id?: number
           note?: string | null
           payment_status?: string

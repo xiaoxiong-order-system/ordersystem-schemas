@@ -10,21 +10,24 @@ export const TakeawayDishInputSchema = z.object({
 const baseTakeawaySchema = z.object({
   restaurant_id: z.number().int().positive(),
   contact_name: z.string().min(1),
-  contact_phone: z.string().min(1),
-  email: z.string().email(),
   dishes: z.array(TakeawayDishInputSchema).min(1),
   note: z.string().nullable().optional(),
 });
 
-// type=takeaway 不需要地址；type=delivery 必须提供 postal_code + address
+// type=takeaway 不需要地址，contact_phone/email 选填（表已允许 NULL）
+// type=delivery 必须提供 postal_code + address，contact_phone/email 仍必填
 export const CreateTakeawayInputSchema = z.discriminatedUnion("type", [
   baseTakeawaySchema.extend({
     type: z.literal("takeaway"),
+    contact_phone: z.string().min(1).nullable().optional(),
+    email: z.string().email().nullable().optional(),
     postal_code: z.string().optional(),
     address: z.string().optional(),
   }),
   baseTakeawaySchema.extend({
     type: z.literal("delivery"),
+    contact_phone: z.string().min(1),
+    email: z.string().email(),
     postal_code: z.string().min(1),
     address: z.string().min(1),
   }),
