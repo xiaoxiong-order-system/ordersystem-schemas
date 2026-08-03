@@ -38,7 +38,7 @@ export type CreateTakeawayInput = z.infer<typeof CreateTakeawayInputSchema>;
 
 export const CreateTakeawayResponseSchema = z.object({
   order_id: z.number().int(),
-  record_no: z.string(),
+  record_no: z.number().int(),
   type: z.enum(["takeaway", "delivery"]),
   status: z.string(),
   total_price: z.number(),
