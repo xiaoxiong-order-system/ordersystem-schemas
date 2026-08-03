@@ -453,6 +453,7 @@ export type Database = {
           contact_phone: string
           created_at: string
           deleted_at: string | null
+          delivery_time: string | null
           email: string
           id: number
           note: string | null
@@ -471,6 +472,7 @@ export type Database = {
           contact_phone: string
           created_at?: string
           deleted_at?: string | null
+          delivery_time?: string | null
           email: string
           id?: number
           note?: string | null
@@ -489,6 +491,7 @@ export type Database = {
           contact_phone?: string
           created_at?: string
           deleted_at?: string | null
+          delivery_time?: string | null
           email?: string
           id?: number
           note?: string | null
@@ -4551,6 +4554,7 @@ export type Database = {
           id: number
           note: string | null
           payment_status: string
+          pickup_time: string | null
           record_no: number
           restaurant_id: number
           status: string
@@ -4567,6 +4571,7 @@ export type Database = {
           id?: number
           note?: string | null
           payment_status?: string
+          pickup_time?: string | null
           record_no: number
           restaurant_id: number
           status?: string
@@ -4583,6 +4588,7 @@ export type Database = {
           id?: number
           note?: string | null
           payment_status?: string
+          pickup_time?: string | null
           record_no?: number
           restaurant_id?: number
           status?: string

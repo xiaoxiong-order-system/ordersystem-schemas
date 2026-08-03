@@ -16,6 +16,7 @@ const baseTakeawaySchema = z.object({
 
 // type=takeaway 不需要地址，contact_phone/email 选填（表已允许 NULL）
 // type=delivery 必须提供 postal_code + address，contact_phone/email 仍必填
+// pickup_time / delivery_time 均选填，不传视为"尽快取餐/尽快送达"
 export const CreateTakeawayInputSchema = z.discriminatedUnion("type", [
   baseTakeawaySchema.extend({
     type: z.literal("takeaway"),
@@ -23,6 +24,7 @@ export const CreateTakeawayInputSchema = z.discriminatedUnion("type", [
     email: z.string().email().nullable().optional(),
     postal_code: z.string().optional(),
     address: z.string().optional(),
+    pickup_time: z.string().min(1).nullable().optional(), // ISO 8601
   }),
   baseTakeawaySchema.extend({
     type: z.literal("delivery"),
@@ -30,6 +32,7 @@ export const CreateTakeawayInputSchema = z.discriminatedUnion("type", [
     email: z.string().email(),
     postal_code: z.string().min(1),
     address: z.string().min(1),
+    delivery_time: z.string().min(1).nullable().optional(), // ISO 8601
   }),
 ]);
 
