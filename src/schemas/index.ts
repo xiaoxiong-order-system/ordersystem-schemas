@@ -1,4 +1,5 @@
 export * from "./custom-dish.ts";
+export * from "./custom-dish-constraint.ts";
 export * from "./create-order.ts";
 export * from "./merchant-create-order.ts";
 export * from "./create-takeaway.ts";
