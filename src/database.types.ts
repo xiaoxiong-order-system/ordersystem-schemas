@@ -261,6 +261,41 @@ export type Database = {
           },
         ]
       }
+      custom_dish_constraint: {
+        Row: {
+          custom_dish_id: number
+          enable: boolean
+          id: number
+          restaurant_id: number
+          rule: Json
+          weight: number
+        }
+        Insert: {
+          custom_dish_id: number
+          enable?: boolean
+          id?: number
+          restaurant_id: number
+          rule: Json
+          weight?: number
+        }
+        Update: {
+          custom_dish_id?: number
+          enable?: boolean
+          id?: number
+          restaurant_id?: number
+          rule?: Json
+          weight?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "custom_dish_constraint_custom_dish_id_fkey"
+            columns: ["custom_dish_id"]
+            isOneToOne: false
+            referencedRelation: "custom_dish"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       custom_dish_group: {
         Row: {
           dish_id: number
@@ -3220,6 +3255,102 @@ export type Database = {
           },
         ]
       }
+      service_payment_intent: {
+        Row: {
+          amount: number
+          created_at: string
+          created_by: string | null
+          customer_name: string | null
+          entity: string | null
+          expiry_date: string | null
+          id: number
+          invoice_email: string | null
+          invoice_error: string | null
+          invoice_ref: string | null
+          invoice_status: string
+          method: string
+          mobile_number: string | null
+          nif: string | null
+          order_id: number
+          order_type: string
+          paid_at: string | null
+          payment_url: string | null
+          reference: string | null
+          request_id: string | null
+          restaurant_id: number
+          status: string
+          superseded_by: number | null
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          created_by?: string | null
+          customer_name?: string | null
+          entity?: string | null
+          expiry_date?: string | null
+          id?: number
+          invoice_email?: string | null
+          invoice_error?: string | null
+          invoice_ref?: string | null
+          invoice_status?: string
+          method: string
+          mobile_number?: string | null
+          nif?: string | null
+          order_id: number
+          order_type: string
+          paid_at?: string | null
+          payment_url?: string | null
+          reference?: string | null
+          request_id?: string | null
+          restaurant_id: number
+          status?: string
+          superseded_by?: number | null
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          created_by?: string | null
+          customer_name?: string | null
+          entity?: string | null
+          expiry_date?: string | null
+          id?: number
+          invoice_email?: string | null
+          invoice_error?: string | null
+          invoice_ref?: string | null
+          invoice_status?: string
+          method?: string
+          mobile_number?: string | null
+          nif?: string | null
+          order_id?: number
+          order_type?: string
+          paid_at?: string | null
+          payment_url?: string | null
+          reference?: string | null
+          request_id?: string | null
+          restaurant_id?: number
+          status?: string
+          superseded_by?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_payment_intent_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "service_payment_intent_superseded_by_fkey"
+            columns: ["superseded_by"]
+            isOneToOne: false
+            referencedRelation: "service_payment_intent"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       service_pos: {
         Row: {
           created_at: string
@@ -4138,6 +4269,7 @@ export type Database = {
           discount_value: number | null
           final_amount: number
           id: number
+          invoice_email: string | null
           invoice_error: string | null
           invoice_ref: string | null
           invoice_status: string
@@ -4163,6 +4295,7 @@ export type Database = {
           discount_value?: number | null
           final_amount?: number
           id?: number
+          invoice_email?: string | null
           invoice_error?: string | null
           invoice_ref?: string | null
           invoice_status?: string
@@ -4188,6 +4321,7 @@ export type Database = {
           discount_value?: number | null
           final_amount?: number
           id?: number
+          invoice_email?: string | null
           invoice_error?: string | null
           invoice_ref?: string | null
           invoice_status?: string
@@ -4243,6 +4377,7 @@ export type Database = {
           entity: string | null
           expiry_date: string | null
           id: number
+          invoice_email: string | null
           method: string
           mobile_number: string | null
           nif: string | null
@@ -4265,6 +4400,7 @@ export type Database = {
           entity?: string | null
           expiry_date?: string | null
           id?: number
+          invoice_email?: string | null
           method: string
           mobile_number?: string | null
           nif?: string | null
@@ -4287,6 +4423,7 @@ export type Database = {
           entity?: string | null
           expiry_date?: string | null
           id?: number
+          invoice_email?: string | null
           method?: string
           mobile_number?: string | null
           nif?: string | null
@@ -4765,6 +4902,62 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      user_address: {
+        Row: {
+          city: string
+          contact_name: string
+          contact_phone: string
+          country: string
+          created_at: string
+          deleted_at: string | null
+          email: string | null
+          id: string
+          is_default: boolean
+          post_code: string
+          street: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          city: string
+          contact_name: string
+          contact_phone: string
+          country: string
+          created_at?: string
+          deleted_at?: string | null
+          email?: string | null
+          id?: string
+          is_default?: boolean
+          post_code: string
+          street: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          city?: string
+          contact_name?: string
+          contact_phone?: string
+          country?: string
+          created_at?: string
+          deleted_at?: string | null
+          email?: string | null
+          id?: string
+          is_default?: boolean
+          post_code?: string
+          street?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_user_address_user"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_dining_record: {
         Row: {
