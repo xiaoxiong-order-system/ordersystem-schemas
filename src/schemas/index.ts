@@ -18,5 +18,6 @@ export * from "./create-sub-service.ts";
 export * from "./cancel-sub-service.ts";
 export * from "./delete-dish.ts";
 export * from "./table-invoice-void.ts";
+export * from "./issue-takeaway-invoice.ts";
 export * from "./get/index.ts";
 
