@@ -1438,6 +1438,7 @@ export type Database = {
           price: number
           quantity: number
           restaurant_id: number
+          settled_quantity: number
           status: string
           tax_rate: string | null
           updated_at: string
@@ -1455,6 +1456,7 @@ export type Database = {
           price: number
           quantity?: number
           restaurant_id: number
+          settled_quantity?: number
           status?: string
           tax_rate?: string | null
           updated_at?: string
@@ -1472,6 +1474,7 @@ export type Database = {
           price?: number
           quantity?: number
           restaurant_id?: number
+          settled_quantity?: number
           status?: string
           tax_rate?: string | null
           updated_at?: string
@@ -2528,18 +2531,21 @@ export type Database = {
           count: number
           people_type_id: number
           restaurant_id: number
+          settled_count: number
           table_id: number
         }
         Insert: {
           count?: number
           people_type_id: number
           restaurant_id: number
+          settled_count?: number
           table_id: number
         }
         Update: {
           count?: number
           people_type_id?: number
           restaurant_id?: number
+          settled_count?: number
           table_id?: number
         }
         Relationships: [
@@ -4689,6 +4695,8 @@ export type Database = {
           deleted_at: string | null
           email: string | null
           id: number
+          invoice_ref: string | null
+          invoice_status: string
           note: string | null
           payment_status: string
           pickup_time: string | null
@@ -4706,6 +4714,8 @@ export type Database = {
           deleted_at?: string | null
           email?: string | null
           id?: number
+          invoice_ref?: string | null
+          invoice_status?: string
           note?: string | null
           payment_status?: string
           pickup_time?: string | null
@@ -4723,6 +4733,8 @@ export type Database = {
           deleted_at?: string | null
           email?: string | null
           id?: number
+          invoice_ref?: string | null
+          invoice_status?: string
           note?: string | null
           payment_status?: string
           pickup_time?: string | null
@@ -5346,6 +5358,8 @@ export type Database = {
         Args: { p_date?: string; p_restaurant_id: number }
         Returns: Json
       }
+      fn_auto_complete_takeaway_order: { Args: never; Returns: Json }
+      fn_auto_finalize_reserver_order: { Args: never; Returns: Json }
       fn_run_daily_archive_cron: { Args: never; Returns: undefined }
       get_people_price: {
         Args: {
@@ -5430,6 +5444,23 @@ export type Database = {
           p_weight: number
         }
         Returns: number
+      }
+      transfer_order_items_tx: {
+        Args: {
+          p_destination_start_time: number
+          p_destination_table_id: number
+          p_items: Json
+          p_restaurant_id: number
+          p_source_start_time: number
+          p_source_table_id: number
+          p_user_id: string
+        }
+        Returns: {
+          moved_item_id: number
+          moved_quantity: number
+          new_order_id: number
+          new_order_record_no: number
+        }[]
       }
       upsert_service_tx: {
         Args: {
