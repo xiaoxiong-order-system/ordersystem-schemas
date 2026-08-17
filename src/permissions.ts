@@ -45,7 +45,7 @@ export const PERMISSION_CATALOG = [
   { module: "桌台结账", code: "table.payment.update", description: "结账/撤销结账/开票", boss: true, manager: true, staff: false, tables: "table_payment（UPDATE，RLS）/ void-payment / issue-table-invoice 边缘函数" },
   { module: "订单", code: "order.read", description: "查看订单", boss: true, manager: true, staff: true, tables: "order / order_item" },
   { module: "订单", code: "order.create", description: "创建订单", boss: true, manager: true, staff: true, tables: "order / order_item（DEFINER）" },
-  { module: "订单", code: "order.update", description: "编辑订单", boss: true, manager: true, staff: true, tables: "order / order_item（取消/完成订单也走这个权限码）" },
+  { module: "订单", code: "order.update", description: "编辑订单", boss: true, manager: true, staff: false, tables: "order / order_item（取消/完成订单、transfer-order-items 转桌转菜也走这个权限码）" },
   { module: "外卖/配送/预订订单", code: "takeaway.order.read", description: "查看外卖订单", boss: true, manager: true, staff: true, tables: "takeaway_order / takeaway_order_item" },
   { module: "外卖/配送/预订订单", code: "takeaway.order.update", description: "编辑外卖订单", boss: true, manager: true, staff: false, tables: "takeaway_order（UPDATE）" },
   { module: "外卖/配送/预订订单", code: "delivery.order.read", description: "查看配送订单", boss: true, manager: true, staff: true, tables: "delivery_order / delivery_order_item" },
