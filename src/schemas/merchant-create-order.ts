@@ -7,6 +7,10 @@ import { DishInputSchema } from "./create-order.ts";
 export const MerchantDishInputSchema = DishInputSchema.extend({
   price:    z.number().min(0).optional(),         // 不传 = 用 dish.price
   discount: z.number().min(0).max(100).optional(), // 不传 = 用 dish.discount；不支持传 null 清除
+  // 不传 = 该道菜属于订单自身 restaurant_id；传则必须是订单 restaurant_id 的子餐厅
+  // （restaurant_business_information.parent_id = 订单 restaurant_id），且 dish_id 须属于这个子餐厅，
+  // 用于同一堂食订单内混合下单多个子品牌（子餐厅）的菜品
+  restaurant_id: z.number().int().positive().optional(),
 });
 
 export const MerchantCreateOrderInputSchema = z.object({
