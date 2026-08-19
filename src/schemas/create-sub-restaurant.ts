@@ -16,6 +16,9 @@ const LocationSchema = z.object({
 export const CreateSubRestaurantInputSchema = z.object({
   parent_restaurant_id: z.number().int().positive(),
   name:                 z.string().trim().min(1),
+  // 完全独立的 code（不跟父餐厅 code 拼接），跟 code_suffix 二选一，都不传
+  // 则走 code_suffix 的默认拼接规则
+  code:        z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/).optional(),
   // 不传则用 slugify(name)；最终 code = ${父餐厅code}-${code_suffix}，
   // 格式跟 import-restaurant/create-restaurant-from-data 里子餐厅命名规则一致
   code_suffix: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/).optional(),
@@ -24,6 +27,9 @@ export const CreateSubRestaurantInputSchema = z.object({
   email:       z.string().optional(),
   nif:         z.string().optional(),
   location:    LocationSchema.optional(),
+}).refine(data => !(data.code && data.code_suffix), {
+  message: "code and code_suffix are mutually exclusive; pass at most one",
+  path:    ["code_suffix"],
 });
 export type CreateSubRestaurantInput = z.infer<typeof CreateSubRestaurantInputSchema>;
 
