@@ -21,5 +21,6 @@ export * from "./table-invoice-void.ts";
 export * from "./issue-takeaway-invoice.ts";
 export * from "./takeaway-invoice-void.ts";
 export * from "./transfer-order-items.ts";
+export * from "./create-sub-restaurant.ts";
 export * from "./get/index.ts";
 

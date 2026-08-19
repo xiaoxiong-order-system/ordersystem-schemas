@@ -113,6 +113,7 @@ export const PERMISSION_CATALOG = [
   { module: "角色管理", code: "role.delete", description: "删除自定义角色", boss: true, manager: false, staff: false, tables: "restaurant_role" },
   { module: "平台权限", code: "restaurant.permission.read", description: "查看餐厅已开通的平台权限", boss: true, manager: true, staff: true, tables: "restaurant_permission_control" },
   { module: "平台权限", code: "restaurant.permission.update", description: "管理餐厅平台功能开关（扫码点单、外卖等）", boss: true, manager: false, staff: false, tables: "restaurant_permission_control（实际写入受 RLS 限定仅 admin，此权限码目前仅供前端判断是否显示开关入口）" },
+  { module: "子餐厅", code: "sub_restaurant.create", description: "创建子餐厅", boss: true, manager: true, staff: false, tables: "restaurant / restaurant_information / restaurant_business_information" },
   { module: "子餐厅服务", code: "sub_restaurant.service.update", description: "子餐厅服务开关（父餐厅可代管子餐厅）", boss: true, manager: true, staff: true, tables: "sub_restaurant_service_override" },
   { module: "菜单导入", code: "menu.import", description: "批量导入菜单", boss: true, manager: true, staff: false, tables: "import-menu / import-custom-dish 边缘函数（内部权限校验，不落 RLS）" },
   { module: "活动", code: "activity.read", description: "查看活动", boss: true, manager: true, staff: true, tables: "activity" },
