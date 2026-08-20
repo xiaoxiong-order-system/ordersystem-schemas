@@ -1,5 +1,29 @@
 import { z } from "zod";
 
+// get-dish-by-id — 按 restaurant_id + dish_id 获取单道菜的完整信息
+//
+// Method: GET /functions/v1/get-dish-by-id?restaurant_id=1&dish_id=101&language=zh
+// 调用方: 通用（客户端/管理端都用）
+// 认证: 可选。不传 Authorization 视为公开访问；传了且该用户在这家餐厅（或其
+//       父餐厅，子餐厅场景）有 user_restaurant_role 记录、或是平台 admin，
+//       视为特权访问
+//
+// 公开访问 vs 特权访问的区别：
+// - 公开访问只能查 status = published/sold_out 的菜，不存在则 404；返回字段
+//   不含 category_id/print_text/print_tag，dish_tag 会过滤掉 enable=false
+//   的关联和标签本身
+// - 特权访问不受状态过滤（能查 draft/closed 等任意状态），返回上述全部字段，
+//   且 enable=false 的标签关联也会返回（管理端要能看到/恢复已禁用的配置）
+//
+// 分时段生效价（effective_price 等 4 个字段）：按 dish_price 表 + 餐厅所在地
+// 本地时间解析出的"此刻生效"的价格/折扣，命中就覆盖，没命中就分别等于
+// price/discount/delivery_price/delivery_discount；原始 4 个字段永远是
+// dish 表原值，不受影响。前端展示菜品详情价格时应该用 effective_* 系列，
+// 不要直接用 price/delivery_price（那是原价，可能已经不是当前实际售价）
+//
+// 错误码：400（缺少 restaurant_id/dish_id）/ 404（菜品不存在，或公开访问时
+// 状态不符合）/ 500（服务器错误）
+
 export const GetDishByIdQuerySchema = z.object({
   restaurant_id: z.coerce.number().int().positive(),
   dish_id: z.coerce.number().int().positive(),

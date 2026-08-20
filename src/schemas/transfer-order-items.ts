@@ -1,10 +1,16 @@
 import { z } from "zod";
 
-// 转桌/转菜：把选中的 order_item（可以只转其中一部分数量）从源桌台当前批次
-// 转移到目标桌台。完整行为说明见
-// supabase/functions/transfer-order-items/README.md，这里只记前端接入时
-// 容易忽略的几点：
+// transfer-order-items — 把某张桌台当前批次已点的部分菜品（order_item，可
+// 只转移部分数量），转移到同一餐厅另一张桌台
 //
+// Method: POST /functions/v1/transfer-order-items
+// 调用方: 管理端（商家后台）
+// 认证: 需要登录（Bearer token）。双层鉴权：平台身份需为 merchant/admin
+//       （否则 403）；merchant 身份还需对 restaurant_id 有 order.update
+//       权限（系统模板角色里 boss/manager 默认有，staff 默认没有——"转桌"
+//       入口对 staff 账号应默认隐藏/禁用；admin 直通，不受此限制）
+//
+// 非显而易见的行为：
 // 1. 目标桌台永远新建一个 order，即使当前批次已经有订单也不会复用/追加。
 //    这个新建 order 的 status 直接是 completed（不是 new）——转移过来的菜
 //    本来就是已存在的，不是需要走"新订单"待处理流程的新单子，只是账目上
@@ -17,9 +23,19 @@ import { z } from "zod";
 //    整份转移一方时，还存活的另一方会被自动整份一起带走，不需要调用方
 //    自己把父子都列进 items。
 // 4. 只允许同一个 restaurant_id 内部转移，不支持跨餐厅（即使物理桌台共享）。
-// 5. 鉴权双层：平台身份需为 merchant/admin；merchant 还需对 restaurant_id 有
-//    order.update 权限（系统模板角色里 boss/manager 默认有，staff 默认没有——
-//    "转桌"入口对 staff 账号应默认隐藏/禁用）。
+//
+// 成功响应（200）：{ new_order_id, new_order_record_no, moved_items: [{ order_item_id, quantity }] }
+// moved_items 可能比请求的 items 多（自动带上的父子闭包项）
+//
+// 错误码：400（格式不合法）/ 401 / 403 / 404（源/目标桌台不存在）/
+// 409（源/目标桌台不是"用餐中"状态）/ 422（source===destination，或选中项
+// 不合法，见下方 error_code）/ 500
+//
+// 422 时带 error_code + detail，供前端精确区分文案：
+// - ITEM_NOT_FOUND：order_item_id 不属于源桌台当前批次，detail.missing_ids
+// - ITEM_CANCELLED：选中项本身已取消，detail.cancelled_ids
+// - QUANTITY_EXCEEDS_AVAILABLE：quantity 超过该明细当前数量，detail.exceeds_ids
+// - CANNOT_SPLIT_LINKED_ITEM：请求拆分但存在存活父子关联，detail.blocked_ids
 
 const TransferItemEntrySchema = z.object({
   order_item_id: z.number().int().positive(),
