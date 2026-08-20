@@ -1004,6 +1004,67 @@ export type Database = {
           },
         ]
       }
+      dish_price: {
+        Row: {
+          discount: number | null
+          dish_id: number
+          enable: boolean
+          end_time: string
+          id: number
+          price: number | null
+          restaurant_id: number
+          sale_channel: string | null
+          start_time: string
+          weekday: Database["public"]["Enums"]["weekday"]
+        }
+        Insert: {
+          discount?: number | null
+          dish_id: number
+          enable?: boolean
+          end_time: string
+          id?: number
+          price?: number | null
+          restaurant_id: number
+          sale_channel?: string | null
+          start_time: string
+          weekday: Database["public"]["Enums"]["weekday"]
+        }
+        Update: {
+          discount?: number | null
+          dish_id?: number
+          enable?: boolean
+          end_time?: string
+          id?: number
+          price?: number | null
+          restaurant_id?: number
+          sale_channel?: string | null
+          start_time?: string
+          weekday?: Database["public"]["Enums"]["weekday"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dish_price_dish_id_fkey"
+            columns: ["dish_id"]
+            isOneToOne: false
+            referencedRelation: "dish"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dish_price_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dish_price_sale_channel_fkey"
+            columns: ["sale_channel"]
+            isOneToOne: false
+            referencedRelation: "sale_channel"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
       dish_relation: {
         Row: {
           dish_id: number
@@ -5382,6 +5443,23 @@ export type Database = {
           p_region: string
           p_street: string
           p_user_id: string
+        }
+        Returns: number
+      }
+      create_sub_restaurant_tx: {
+        Args: {
+          p_city?: string
+          p_code: string
+          p_country?: string
+          p_email?: string
+          p_name: string
+          p_nif?: string
+          p_parent_id: number
+          p_phone?: string
+          p_post_code?: string
+          p_region?: string
+          p_street?: string
+          p_sub_name?: string
         }
         Returns: number
       }
