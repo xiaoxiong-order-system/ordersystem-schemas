@@ -2012,6 +2012,41 @@ export type Database = {
           },
         ]
       }
+      restaurant_customer: {
+        Row: {
+          created_at: string
+          customer_address: string | null
+          customer_name: string | null
+          nif: string
+          restaurant_id: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          customer_address?: string | null
+          customer_name?: string | null
+          nif: string
+          restaurant_id: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          customer_address?: string | null
+          customer_name?: string | null
+          nif?: string
+          restaurant_id?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_restaurant_customer_restaurant"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       restaurant_description_multilingua: {
         Row: {
           language_code: string

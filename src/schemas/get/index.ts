@@ -12,3 +12,4 @@ export * from "./get-reserver-service.ts";
 export * from "./get-all-restaurants.ts";
 export * from "./get-restaurant.ts";
 export * from "./get-dish-by-id.ts";
+export * from "./get-customer-by-nif.ts";

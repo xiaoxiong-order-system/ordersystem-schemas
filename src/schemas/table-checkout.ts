@@ -28,6 +28,25 @@ export const PrintConfigSchema = z.discriminatedUnion("mode", [
   }),
 ]);
 
+// 部分结账用：只结这些 order_item 的指定数量，不传（undefined）则结清当前批次
+// 剩余全部（向后兼容旧行为）；传空数组 [] 则显式表示"本次不结任何菜品"，跟不传
+// 语义不同，不能用 min(1) 卡掉。quantity 不能超过该行剩余可结数量
+// （quantity - settled_quantity）
+export const OrderItemSelectionSchema = z.object({
+  order_item_id: z.number().int().positive(),
+  quantity: z.number().int().positive(),
+});
+
+// 部分结账用：人头费（couvert）按 people_type 分别指定要结的人数，不传
+// （undefined）则结清当前批次剩余全部人头费类型；传空数组 [] 则显式表示"本次不
+// 收人头费"，跟不传语义不同。count 不能超过该类型剩余可结人数
+// （restaurant_table_people_count.count - settled_count）。与
+// order_item_selections 相互独立，可以只传一个、都传或都不传
+export const PeopleSelectionSchema = z.object({
+  people_type_id: z.number().int().positive(),
+  count: z.number().int().positive(),
+});
+
 export const CheckoutInputSchema = z.object({
   restaurant_id: z.number().int().positive(),
   table_id: z.number().int().positive(),
@@ -42,6 +61,13 @@ export const CheckoutInputSchema = z.object({
   created_by: z.string().uuid().optional(),
   // 提供则在结账后打印 Vendus 发票（ESC/POS 小票）
   print_config: PrintConfigSchema.optional(),
+  // 部分结账：只传部分 order_item，不传（undefined）则结清当前批次剩余全部
+  // 菜品；传 [] 则本次不结任何菜品
+  order_item_selections: z.array(OrderItemSelectionSchema).optional(),
+  // 部分结账：人头费按 people_type 只传部分人数，不传（undefined）则结清当前
+  // 批次剩余全部人头费；传 [] 则本次不收人头费（per_person 模式下生效，
+  // per_item 模式下无意义会被忽略）
+  people_selections: z.array(PeopleSelectionSchema).optional(),
 });
 
 export type PaymentItemInput = z.infer<typeof PaymentItemInputSchema>;
@@ -63,6 +89,10 @@ export const CheckoutResponseSchema = z.object({
   invoice_status: z.string(),
   invoice_ref: z.string().nullable(),
   print_result: PrintResultSchema.nullable(),
+  // 本次结账后，当前批次是否已全部结清（菜品 + 人头费）。true 时桌台已
+  // 被重置为 available；false 表示还有剩余未结，桌台仍是 occupied，
+  // 可以继续下单/继续结账剩余部分
+  table_closed: z.boolean(),
 });
 
 export type CheckoutResponse = z.infer<typeof CheckoutResponseSchema>;
