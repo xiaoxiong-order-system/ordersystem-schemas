@@ -45,6 +45,13 @@ export const GetDishByIdResponseSchema = z.object({
   discount: z.number().nullable(),
   delivery_price: z.number(),
   delivery_discount: z.number().nullable(),
+  // 分时段生效价（dish_price 命中时覆盖，没有匹配行时分别等于 price/discount/
+  // delivery_price/delivery_discount）；上面四个原始字段保留不变，避免破坏
+  // 现有消费方
+  effective_price: z.number().optional(),
+  effective_discount: z.number().nullable().optional(),
+  effective_delivery_price: z.number().optional(),
+  effective_delivery_discount: z.number().nullable().optional(),
   category_id: z.number().int().nullable().optional(),
   rates: z.number().int(),
   likes: z.number().int(),
