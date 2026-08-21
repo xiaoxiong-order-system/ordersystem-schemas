@@ -1009,37 +1009,37 @@ export type Database = {
           discount: number | null
           dish_id: number
           enable: boolean
-          end_time: string
+          end_time: string | null
           id: number
           price: number | null
           restaurant_id: number
           sale_channel: string | null
-          start_time: string
-          weekday: Database["public"]["Enums"]["weekday"]
+          start_time: string | null
+          weekday: Database["public"]["Enums"]["weekday"] | null
         }
         Insert: {
           discount?: number | null
           dish_id: number
           enable?: boolean
-          end_time: string
+          end_time?: string | null
           id?: number
           price?: number | null
           restaurant_id: number
           sale_channel?: string | null
-          start_time: string
-          weekday: Database["public"]["Enums"]["weekday"]
+          start_time?: string | null
+          weekday?: Database["public"]["Enums"]["weekday"] | null
         }
         Update: {
           discount?: number | null
           dish_id?: number
           enable?: boolean
-          end_time?: string
+          end_time?: string | null
           id?: number
           price?: number | null
           restaurant_id?: number
           sale_channel?: string | null
-          start_time?: string
-          weekday?: Database["public"]["Enums"]["weekday"]
+          start_time?: string | null
+          weekday?: Database["public"]["Enums"]["weekday"] | null
         }
         Relationships: [
           {
