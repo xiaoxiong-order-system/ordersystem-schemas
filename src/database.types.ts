@@ -7,6 +7,11 @@ export type Json =
   | Json[]
 
 export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "14.5"
+  }
   graphql_public: {
     Tables: {
       [_ in never]: never
@@ -1009,37 +1014,37 @@ export type Database = {
           discount: number | null
           dish_id: number
           enable: boolean
-          end_time: string | null
+          end_time: string
           id: number
           price: number | null
           restaurant_id: number
           sale_channel: string | null
-          start_time: string | null
-          weekday: Database["public"]["Enums"]["weekday"] | null
+          start_time: string
+          weekday: Database["public"]["Enums"]["weekday"]
         }
         Insert: {
           discount?: number | null
           dish_id: number
           enable?: boolean
-          end_time?: string | null
+          end_time: string
           id?: number
           price?: number | null
           restaurant_id: number
           sale_channel?: string | null
-          start_time?: string | null
-          weekday?: Database["public"]["Enums"]["weekday"] | null
+          start_time: string
+          weekday: Database["public"]["Enums"]["weekday"]
         }
         Update: {
           discount?: number | null
           dish_id?: number
           enable?: boolean
-          end_time?: string | null
+          end_time?: string
           id?: number
           price?: number | null
           restaurant_id?: number
           sale_channel?: string | null
-          start_time?: string | null
-          weekday?: Database["public"]["Enums"]["weekday"] | null
+          start_time?: string
+          weekday?: Database["public"]["Enums"]["weekday"]
         }
         Relationships: [
           {
@@ -2020,6 +2025,9 @@ export type Database = {
       }
       restaurant_attendance_schedule: {
         Row: {
+          enforce_ip: boolean
+          enforce_location: boolean
+          enforce_staff_location: boolean
           late_grace_minutes: number
           location_latitude: number | null
           location_longitude: number | null
@@ -2030,6 +2038,9 @@ export type Database = {
           work_start_time: string
         }
         Insert: {
+          enforce_ip?: boolean
+          enforce_location?: boolean
+          enforce_staff_location?: boolean
           late_grace_minutes?: number
           location_latitude?: number | null
           location_longitude?: number | null
@@ -2040,6 +2051,9 @@ export type Database = {
           work_start_time?: string
         }
         Update: {
+          enforce_ip?: boolean
+          enforce_location?: boolean
+          enforce_staff_location?: boolean
           late_grace_minutes?: number
           location_latitude?: number | null
           location_longitude?: number | null
@@ -4356,6 +4370,7 @@ export type Database = {
       }
       staff_checkin_token: {
         Row: {
+          board_ip: string | null
           created_at: string
           created_by: string
           expires_at: string
@@ -4364,6 +4379,7 @@ export type Database = {
           token: string
         }
         Insert: {
+          board_ip?: string | null
           created_at?: string
           created_by: string
           expires_at: string
@@ -4372,6 +4388,7 @@ export type Database = {
           token?: string
         }
         Update: {
+          board_ip?: string | null
           created_at?: string
           created_by?: string
           expires_at?: string
@@ -5556,11 +5573,12 @@ export type Database = {
       create_custom_dish: {
         Args: {
           p_category_id?: number
+          p_delivery_price?: number
           p_descriptions?: Json
           p_groups?: Json
           p_names?: Json
           p_options?: Json
-          p_price_rows?: Json
+          p_price?: number
           p_print_text?: string
           p_restaurant_id: number
           p_sale_channels?: string[]
@@ -5574,10 +5592,13 @@ export type Database = {
         Args: {
           p_allergens_tags?: Json
           p_category_id?: number
+          p_delivery_discount?: number
+          p_delivery_price?: number
           p_descriptions?: Json
+          p_discount?: number
           p_names?: Json
           p_order_limit?: number
-          p_price_rows?: Json
+          p_price?: number
           p_print_tags?: Json
           p_print_text?: string
           p_property_tags?: Json
@@ -5735,6 +5756,26 @@ export type Database = {
           new_order_id: number
           new_order_record_no: number
         }[]
+      }
+      update_custom_dish: {
+        Args: {
+          p_category_id?: number
+          p_delete_group_ids?: number[]
+          p_delete_item_ids?: number[]
+          p_delivery_price?: number
+          p_descriptions?: Json
+          p_dish_id: number
+          p_groups?: Json
+          p_names?: Json
+          p_options?: Json
+          p_price?: number
+          p_print_text?: string
+          p_sale_channels?: string[]
+          p_sku: string
+          p_status?: string
+          p_tax_rate?: string
+        }
+        Returns: Json
       }
       upsert_service_tx: {
         Args: {
@@ -5906,4 +5947,3 @@ export const Constants = {
     },
   },
 } as const
-
