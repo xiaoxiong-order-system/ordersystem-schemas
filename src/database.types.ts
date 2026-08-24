@@ -1014,37 +1014,37 @@ export type Database = {
           discount: number | null
           dish_id: number
           enable: boolean
-          end_time: string
+          end_time: string | null
           id: number
           price: number | null
           restaurant_id: number
           sale_channel: string | null
-          start_time: string
-          weekday: Database["public"]["Enums"]["weekday"]
+          start_time: string | null
+          weekday: Database["public"]["Enums"]["weekday"] | null
         }
         Insert: {
           discount?: number | null
           dish_id: number
           enable?: boolean
-          end_time: string
+          end_time?: string | null
           id?: number
           price?: number | null
           restaurant_id: number
           sale_channel?: string | null
-          start_time: string
-          weekday: Database["public"]["Enums"]["weekday"]
+          start_time?: string | null
+          weekday?: Database["public"]["Enums"]["weekday"] | null
         }
         Update: {
           discount?: number | null
           dish_id?: number
           enable?: boolean
-          end_time?: string
+          end_time?: string | null
           id?: number
           price?: number | null
           restaurant_id?: number
           sale_channel?: string | null
-          start_time?: string
-          weekday?: Database["public"]["Enums"]["weekday"]
+          start_time?: string | null
+          weekday?: Database["public"]["Enums"]["weekday"] | null
         }
         Relationships: [
           {
@@ -5573,12 +5573,11 @@ export type Database = {
       create_custom_dish: {
         Args: {
           p_category_id?: number
-          p_delivery_price?: number
           p_descriptions?: Json
           p_groups?: Json
           p_names?: Json
           p_options?: Json
-          p_price?: number
+          p_price_rows?: Json
           p_print_text?: string
           p_restaurant_id: number
           p_sale_channels?: string[]
@@ -5592,13 +5591,10 @@ export type Database = {
         Args: {
           p_allergens_tags?: Json
           p_category_id?: number
-          p_delivery_discount?: number
-          p_delivery_price?: number
           p_descriptions?: Json
-          p_discount?: number
           p_names?: Json
           p_order_limit?: number
-          p_price?: number
+          p_price_rows?: Json
           p_print_tags?: Json
           p_print_text?: string
           p_property_tags?: Json
