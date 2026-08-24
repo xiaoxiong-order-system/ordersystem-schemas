@@ -5,8 +5,8 @@ import { DishInputSchema } from "./create-order.ts";
 // 不并入 create-order.ts 的共享 DishInputSchema，避免顾客端下单也能自定义价格。
 // 是否真正采信由函数内部按调用者是否持有 pos.price.override 权限决定，无权限时静默忽略。
 export const MerchantDishInputSchema = DishInputSchema.extend({
-  price:    z.number().min(0).optional(),         // 不传 = 用 dish.price
-  discount: z.number().min(0).max(100).optional(), // 不传 = 用 dish.discount；不支持传 null 清除
+  price:    z.number().min(0).optional(),         // 不传 = 用 dish_price 解析出的当前生效价
+  discount: z.number().min(0).max(100).optional(), // 不传 = 用 dish_price 解析出的当前生效折扣；不支持传 null 清除
   // true = 员工在下单界面手动点了"调整价格"改过这道菜的 price/discount；
   // false/不传 = price/discount 就算有值也只是前端自动带上的当前计算价（不是人工改价）。
   // 仅用于后端审计日志（price_overrides）判断要不要记"改价"，不影响是否采信 price/discount
