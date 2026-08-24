@@ -5758,13 +5758,12 @@ export type Database = {
           p_category_id?: number
           p_delete_group_ids?: number[]
           p_delete_item_ids?: number[]
-          p_delivery_price?: number
           p_descriptions?: Json
           p_dish_id: number
           p_groups?: Json
           p_names?: Json
           p_options?: Json
-          p_price?: number
+          p_price_rows?: Json
           p_print_text?: string
           p_sale_channels?: string[]
           p_sku: string
