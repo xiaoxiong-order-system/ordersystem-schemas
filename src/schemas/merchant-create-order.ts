@@ -7,6 +7,11 @@ import { DishInputSchema } from "./create-order.ts";
 export const MerchantDishInputSchema = DishInputSchema.extend({
   price:    z.number().min(0).optional(),         // 不传 = 用 dish.price
   discount: z.number().min(0).max(100).optional(), // 不传 = 用 dish.discount；不支持传 null 清除
+  // true = 员工在下单界面手动点了"调整价格"改过这道菜的 price/discount；
+  // false/不传 = price/discount 就算有值也只是前端自动带上的当前计算价（不是人工改价）。
+  // 仅用于后端审计日志（price_overrides）判断要不要记"改价"，不影响是否采信 price/discount
+  // 本身——只要有 pos.price.override 权限，price/discount 一律采信，这个标记只管日志语义。
+  price_overridden: z.boolean().optional(),
   // 不传 = 该道菜属于订单自身 restaurant_id；传则必须是订单 restaurant_id 的子餐厅
   // （restaurant_business_information.parent_id = 订单 restaurant_id），且 dish_id 须属于这个子餐厅，
   // 用于同一堂食订单内混合下单多个子品牌（子餐厅）的菜品
