@@ -2018,6 +2018,47 @@ export type Database = {
         }
         Relationships: []
       }
+      restaurant_attendance_schedule: {
+        Row: {
+          late_grace_minutes: number
+          location_latitude: number | null
+          location_longitude: number | null
+          location_radius_meters: number | null
+          restaurant_id: number
+          updated_at: string
+          work_end_time: string
+          work_start_time: string
+        }
+        Insert: {
+          late_grace_minutes?: number
+          location_latitude?: number | null
+          location_longitude?: number | null
+          location_radius_meters?: number | null
+          restaurant_id: number
+          updated_at?: string
+          work_end_time?: string
+          work_start_time?: string
+        }
+        Update: {
+          late_grace_minutes?: number
+          location_latitude?: number | null
+          location_longitude?: number | null
+          location_radius_meters?: number | null
+          restaurant_id?: number
+          updated_at?: string
+          work_end_time?: string
+          work_start_time?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_restaurant_attendance_schedule_restaurant"
+            columns: ["restaurant_id"]
+            isOneToOne: true
+            referencedRelation: "restaurant"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       restaurant_business_information: {
         Row: {
           brand_id: number | null
@@ -2693,6 +2734,29 @@ export type Database = {
             columns: ["table_id"]
             isOneToOne: true
             referencedRelation: "restaurant_table"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      restaurant_workday: {
+        Row: {
+          restaurant_id: number
+          work_date: string
+        }
+        Insert: {
+          restaurant_id: number
+          work_date: string
+        }
+        Update: {
+          restaurant_id?: number
+          work_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_restaurant_workday_restaurant"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant"
             referencedColumns: ["id"]
           },
         ]
@@ -4224,6 +4288,107 @@ export type Database = {
         }
         Relationships: []
       }
+      staff_checkin_record: {
+        Row: {
+          anomaly_reason: string | null
+          created_at: string
+          device_info: Json
+          fingerprint_id: string
+          id: string
+          ip_address: unknown
+          is_anomaly: boolean
+          latitude: number | null
+          longitude: number | null
+          photo_path: string
+          restaurant_id: number
+          staff_name: string
+          token_id: string | null
+          user_id: string
+        }
+        Insert: {
+          anomaly_reason?: string | null
+          created_at?: string
+          device_info?: Json
+          fingerprint_id: string
+          id?: string
+          ip_address?: unknown
+          is_anomaly?: boolean
+          latitude?: number | null
+          longitude?: number | null
+          photo_path: string
+          restaurant_id: number
+          staff_name: string
+          token_id?: string | null
+          user_id: string
+        }
+        Update: {
+          anomaly_reason?: string | null
+          created_at?: string
+          device_info?: Json
+          fingerprint_id?: string
+          id?: string
+          ip_address?: unknown
+          is_anomaly?: boolean
+          latitude?: number | null
+          longitude?: number | null
+          photo_path?: string
+          restaurant_id?: number
+          staff_name?: string
+          token_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_staff_checkin_record_restaurant"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_staff_checkin_record_token"
+            columns: ["token_id"]
+            isOneToOne: false
+            referencedRelation: "staff_checkin_token"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      staff_checkin_token: {
+        Row: {
+          created_at: string
+          created_by: string
+          expires_at: string
+          id: string
+          restaurant_id: number
+          token: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          expires_at: string
+          id?: string
+          restaurant_id: number
+          token?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          expires_at?: string
+          id?: string
+          restaurant_id?: number
+          token?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_staff_checkin_token_restaurant"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       staff_invitation: {
         Row: {
           created_at: string
@@ -5391,12 +5556,11 @@ export type Database = {
       create_custom_dish: {
         Args: {
           p_category_id?: number
-          p_delivery_price?: number
           p_descriptions?: Json
           p_groups?: Json
           p_names?: Json
           p_options?: Json
-          p_price?: number
+          p_price_rows?: Json
           p_print_text?: string
           p_restaurant_id: number
           p_sale_channels?: string[]
@@ -5410,13 +5574,10 @@ export type Database = {
         Args: {
           p_allergens_tags?: Json
           p_category_id?: number
-          p_delivery_discount?: number
-          p_delivery_price?: number
           p_descriptions?: Json
-          p_discount?: number
           p_names?: Json
           p_order_limit?: number
-          p_price?: number
+          p_price_rows?: Json
           p_print_tags?: Json
           p_print_text?: string
           p_property_tags?: Json
