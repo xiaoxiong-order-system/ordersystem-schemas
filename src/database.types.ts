@@ -7,11 +7,6 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instantiate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
-  __InternalSupabase: {
-    PostgrestVersion: "14.5"
-  }
   graphql_public: {
     Tables: {
       [_ in never]: never
@@ -737,15 +732,11 @@ export type Database = {
           category_id: number | null
           created_at: string
           custom_dish_id: number | null
-          delivery_discount: number | null
-          delivery_price: number
-          discount: number | null
           id: number
           image: string | null
           likes: number
           linked_dish: number | null
           order_limit: number | null
-          price: number
           print_text: string | null
           rates: number
           restaurant_id: number
@@ -760,15 +751,11 @@ export type Database = {
           category_id?: number | null
           created_at?: string
           custom_dish_id?: number | null
-          delivery_discount?: number | null
-          delivery_price?: number
-          discount?: number | null
           id?: number
           image?: string | null
           likes?: number
           linked_dish?: number | null
           order_limit?: number | null
-          price?: number
           print_text?: string | null
           rates?: number
           restaurant_id: number
@@ -783,15 +770,11 @@ export type Database = {
           category_id?: number | null
           created_at?: string
           custom_dish_id?: number | null
-          delivery_discount?: number | null
-          delivery_price?: number
-          discount?: number | null
           id?: number
           image?: string | null
           likes?: number
           linked_dish?: number | null
           order_limit?: number | null
-          price?: number
           print_text?: string | null
           rates?: number
           restaurant_id?: number
@@ -5772,6 +5755,27 @@ export type Database = {
         }
         Returns: Json
       }
+      update_dish: {
+        Args: {
+          p_allergens_tags?: Json
+          p_category_id?: number
+          p_descriptions?: Json
+          p_dish_id: number
+          p_names?: Json
+          p_order_limit?: number
+          p_price_rows?: Json
+          p_print_tags?: Json
+          p_print_text?: string
+          p_property_tags?: Json
+          p_sale_channel?: string[]
+          p_sku: string
+          p_status: string
+          p_table_limit?: number
+          p_tax_rate?: string
+          p_yellow_king?: Json
+        }
+        Returns: number
+      }
       upsert_service_tx: {
         Args: {
           p_perm_codes: string[]
@@ -5942,3 +5946,4 @@ export const Constants = {
     },
   },
 } as const
+
