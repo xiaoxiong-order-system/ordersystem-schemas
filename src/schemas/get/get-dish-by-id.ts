@@ -11,15 +11,24 @@ import { z } from "zod";
 // 公开访问 vs 特权访问的区别：
 // - 公开访问只能查 status = published/sold_out 的菜，不存在则 404；返回字段
 //   不含 category_id/print_text/print_tag，dish_tag 会过滤掉 enable=false
-//   的关联和标签本身
+//   的关联和标签本身；dish_price 只包含 enable=true 的行（应用层过滤，
+//   查询走 service role 会绕过 RLS）
 // - 特权访问不受状态过滤（能查 draft/closed 等任意状态），返回上述全部字段，
-//   且 enable=false 的标签关联也会返回（管理端要能看到/恢复已禁用的配置）
+//   且 enable=false 的标签关联/dish_price 行也会返回（管理端要能看到/恢复
+//   已禁用的配置）
 //
-// 分时段生效价（effective_price 等 4 个字段）：按 dish_price 表 + 餐厅所在地
-// 本地时间解析出的"此刻生效"的价格/折扣，命中就覆盖，没命中就分别等于
-// price/discount/delivery_price/delivery_discount；原始 4 个字段永远是
-// dish 表原值，不受影响。前端展示菜品详情价格时应该用 effective_* 系列，
-// 不要直接用 price/delivery_price（那是原价，可能已经不是当前实际售价）
+// 分时段生效价（effective_price 等 4 个字段）：按 dish_price 表（唯一权威价格
+// 来源）+ 餐厅所在地本地时间解析出的"此刻生效"的价格/折扣。dish 表已不存
+// 价格字段，没有"原始 price/delivery_price"可返回，前端展示菜品详情价格
+// 一律用 effective_* 系列
+//
+// dish_price 字段：该菜品完整的价格排期原始数据（基准价行 + 全部分时段覆盖
+// 行，含 start_time/end_time/weekday）。查询用 service role 会绕过 RLS，
+// 是否看得到 enable=false 的行由边缘函数按 isPrivileged 手动过滤（不是靠
+// RLS）：公开访问只返回 enable=true 的行，特权访问能看到全部（含已禁用的）。
+// 给管理端价格编辑面板用；只想知道"现在多少钱"用 effective_* 即可，不需要
+// 自己在这个数组里做多条命中排序（那套逻辑属于 resolveDishPrices，见
+// _shared/dishPrice.ts，本接口已经算好了）
 //
 // 错误码：400（缺少 restaurant_id/dish_id）/ 404（菜品不存在，或公开访问时
 // 状态不符合）/ 500（服务器错误）
@@ -56,6 +65,17 @@ export const ActivityDishEntrySchema = z.object({
   activity: z.object({ id: z.string(), text: z.string(), enable: z.boolean() }).nullable(),
 });
 
+export const DishPriceEntrySchema = z.object({
+  id: z.number().int(),
+  sale_channel: z.enum(["dinein", "delivery"]).nullable(), // NULL = 不限渠道
+  price: z.number().nullable(),                            // 基准价行必填；覆盖行可为空
+  discount: z.number().nullable(),
+  weekday: z.string().nullable(),                           // NULL = 基准价行；否则 'monday'..'sunday'/'holiday'
+  start_time: z.string().nullable(),                        // "HH:MM:SS"；基准价行为 NULL
+  end_time: z.string().nullable(),
+  enable: z.boolean(),
+});
+
 // 特权访问（admin / 该餐厅或父餐厅有 user_restaurant_role）才有的字段：
 // category_id、print_text、print_tag、custom_dish 的完整内容不受状态过滤限制
 export const GetDishByIdResponseSchema = z.object({
@@ -65,17 +85,11 @@ export const GetDishByIdResponseSchema = z.object({
   restaurant_id: z.number().int(),
   image: z.string().nullable(),
   custom_dish_id: z.number().int().nullable(),
-  price: z.number(),
-  discount: z.number().nullable(),
-  delivery_price: z.number(),
-  delivery_discount: z.number().nullable(),
-  // 分时段生效价（dish_price 命中时覆盖，没有匹配行时分别等于 price/discount/
-  // delivery_price/delivery_discount）；上面四个原始字段保留不变，避免破坏
-  // 现有消费方
-  effective_price: z.number().optional(),
-  effective_discount: z.number().nullable().optional(),
-  effective_delivery_price: z.number().optional(),
-  effective_delivery_discount: z.number().nullable().optional(),
+  // 分时段生效价：dish_price 是唯一权威价格来源，dish 表已不存价格字段
+  effective_price: z.number(),
+  effective_discount: z.number().nullable(),
+  effective_delivery_price: z.number(),
+  effective_delivery_discount: z.number().nullable(),
   category_id: z.number().int().nullable().optional(),
   rates: z.number().int(),
   likes: z.number().int(),
@@ -92,6 +106,7 @@ export const GetDishByIdResponseSchema = z.object({
   })),
   pt_tax_rate: z.object({ code: z.string(), rate: z.number(), text: z.string() }).nullable(),
   sale_channel: z.array(z.string()),
+  dish_price: z.array(DishPriceEntrySchema),
 
   dish_name_multilingua: z.array(multilinguaRow),
   dish_description_multilingua: z.array(multilinguaRow),
