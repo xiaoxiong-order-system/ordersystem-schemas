@@ -13,3 +13,7 @@ export * from "./get-all-restaurants.ts";
 export * from "./get-restaurant.ts";
 export * from "./get-dish-by-id.ts";
 export * from "./get-customer-by-nif.ts";
+export * from "./get-delivery-tracking.ts";
+export * from "./get-rider-earnings.ts";
+export * from "./get-rider-restaurants.ts";
+export * from "./get-rider-delivery-pool.ts";

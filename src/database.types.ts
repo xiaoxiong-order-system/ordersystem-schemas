@@ -7,6 +7,12 @@ export type Json =
   | Json[]
 
 export type Database = {
+
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "14.17"
+
   graphql_public: {
     Tables: {
       [_ in never]: never
@@ -484,18 +490,23 @@ export type Database = {
       delivery_order: {
         Row: {
           address: string
+          assigned_at: string | null
           contact_name: string
           contact_phone: string
           created_at: string
           deleted_at: string | null
+          delivered_at: string | null
           delivery_time: string | null
           email: string
           id: number
           note: string | null
           payment_status: string
+          picked_up_at: string | null
           postal_code: string
           record_no: number
           restaurant_id: number
+          rider_fee: number | null
+          rider_id: string | null
           status: string
           total_price: number
           updated_at: string
@@ -503,18 +514,23 @@ export type Database = {
         }
         Insert: {
           address: string
+          assigned_at?: string | null
           contact_name: string
           contact_phone: string
           created_at?: string
           deleted_at?: string | null
+          delivered_at?: string | null
           delivery_time?: string | null
           email: string
           id?: number
           note?: string | null
           payment_status?: string
+          picked_up_at?: string | null
           postal_code: string
           record_no: number
           restaurant_id: number
+          rider_fee?: number | null
+          rider_id?: string | null
           status?: string
           total_price?: number
           updated_at?: string
@@ -522,18 +538,23 @@ export type Database = {
         }
         Update: {
           address?: string
+          assigned_at?: string | null
           contact_name?: string
           contact_phone?: string
           created_at?: string
           deleted_at?: string | null
+          delivered_at?: string | null
           delivery_time?: string | null
           email?: string
           id?: number
           note?: string | null
           payment_status?: string
+          picked_up_at?: string | null
           postal_code?: string
           record_no?: number
           restaurant_id?: number
+          rider_fee?: number | null
+          rider_id?: string | null
           status?: string
           total_price?: number
           updated_at?: string
@@ -552,6 +573,13 @@ export type Database = {
             columns: ["restaurant_id"]
             isOneToOne: false
             referencedRelation: "restaurant"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "delivery_order_rider_id_fkey"
+            columns: ["rider_id"]
+            isOneToOne: false
+            referencedRelation: "user"
             referencedColumns: ["id"]
           },
           {
@@ -2754,6 +2782,136 @@ export type Database = {
             columns: ["restaurant_id"]
             isOneToOne: false
             referencedRelation: "restaurant"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rider_current_location: {
+        Row: {
+          latitude: number
+          longitude: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          latitude: number
+          longitude: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          latitude?: number
+          longitude?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rider_current_location_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rider_information: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          id_number: string | null
+          id_photo_path: string | null
+          license_plate: string | null
+          online_status: string
+          phone: string
+          rating: number | null
+          real_name: string
+          total_orders: number
+          updated_at: string
+          user_id: string
+          vehicle_type: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          id_number?: string | null
+          id_photo_path?: string | null
+          license_plate?: string | null
+          online_status?: string
+          phone: string
+          rating?: number | null
+          real_name: string
+          total_orders?: number
+          updated_at?: string
+          user_id: string
+          vehicle_type: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          id_number?: string | null
+          id_photo_path?: string | null
+          license_plate?: string | null
+          online_status?: string
+          phone?: string
+          rating?: number | null
+          real_name?: string
+          total_orders?: number
+          updated_at?: string
+          user_id?: string
+          vehicle_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rider_information_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rider_restaurant: {
+        Row: {
+          base_fee: number | null
+          id: number
+          joined_at: string
+          left_at: string | null
+          restaurant_id: number
+          rider_id: string
+          status: string
+        }
+        Insert: {
+          base_fee?: number | null
+          id?: number
+          joined_at?: string
+          left_at?: string | null
+          restaurant_id: number
+          rider_id: string
+          status?: string
+        }
+        Update: {
+          base_fee?: number | null
+          id?: number
+          joined_at?: string
+          left_at?: string | null
+          restaurant_id?: number
+          rider_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rider_restaurant_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rider_restaurant_rider_id_fkey"
+            columns: ["rider_id"]
+            isOneToOne: false
+            referencedRelation: "user"
             referencedColumns: ["id"]
           },
         ]
@@ -5668,12 +5826,20 @@ export type Database = {
           rates: number
         }[]
       }
+      increment_rider_total_orders: {
+        Args: { p_rider_id: string }
+        Returns: undefined
+      }
       invite_staff: {
         Args: { p_email: string; p_restaurant_id: number; p_role_id: number }
         Returns: string
       }
       is_admin: { Args: never; Returns: boolean }
       is_merchant: { Args: never; Returns: boolean }
+      is_rider_of: {
+        Args: { p_restaurant_id: number; p_user_id: string }
+        Returns: boolean
+      }
       migrate_service_config: {
         Args: { p_config: Json; p_restaurant_id: number }
         Returns: Json

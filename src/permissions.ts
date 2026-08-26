@@ -50,6 +50,7 @@ export const PERMISSION_CATALOG = [
   { module: "外卖/配送/预订订单", code: "takeaway.order.update", description: "编辑外卖订单", boss: true, manager: true, staff: false, tables: "takeaway_order（UPDATE）" },
   { module: "外卖/配送/预订订单", code: "delivery.order.read", description: "查看配送订单", boss: true, manager: true, staff: true, tables: "delivery_order / delivery_order_item" },
   { module: "外卖/配送/预订订单", code: "delivery.order.update", description: "编辑配送订单", boss: true, manager: true, staff: false, tables: "delivery_order（UPDATE）" },
+  { module: "外卖/配送/预订订单", code: "delivery.rider.manage", description: "审核/管理归属本店的骑手", boss: true, manager: true, staff: false, tables: "rider_information / rider_restaurant" },
   { module: "外卖/配送/预订订单", code: "reserver.order.read", description: "查看预订订单", boss: true, manager: true, staff: true, tables: "reserver_order" },
   { module: "外卖/配送/预订订单", code: "reserver.order.update", description: "编辑预订订单", boss: true, manager: true, staff: false, tables: "reserver_order（UPDATE）" },
   { module: "打印机", code: "printer.driver.read", description: "查看打印机驱动", boss: true, manager: true, staff: false, tables: "printer_driver" },

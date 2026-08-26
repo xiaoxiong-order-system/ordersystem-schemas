@@ -23,5 +23,10 @@ export * from "./takeaway-invoice-void.ts";
 export * from "./transfer-order-items.ts";
 export * from "./create-sub-restaurant.ts";
 export * from "./dish-price.ts";
+export * from "./rider-join-restaurant.ts";
+export * from "./manage-rider-application.ts";
+export * from "./rider-accept-delivery-order.ts";
+export * from "./rider-update-delivery-status.ts";
+export * from "./rider-update-location.ts";
 export * from "./get/index.ts";
 
