@@ -5769,7 +5769,7 @@ export type Database = {
           p_property_tags?: Json
           p_sale_channel?: string[]
           p_sku: string
-          p_status: string
+          p_status?: string
           p_table_limit?: number
           p_tax_rate?: string
           p_yellow_king?: Json
