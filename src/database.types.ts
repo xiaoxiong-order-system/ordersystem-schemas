@@ -7,12 +7,6 @@ export type Json =
   | Json[]
 
 export type Database = {
-
-  // Allows to automatically instantiate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
-  __InternalSupabase: {
-    PostgrestVersion: "14.17"
-
   graphql_public: {
     Tables: {
       [_ in never]: never
@@ -2036,6 +2030,7 @@ export type Database = {
       }
       restaurant_attendance_schedule: {
         Row: {
+          enforce_face_match: boolean
           enforce_ip: boolean
           enforce_location: boolean
           enforce_staff_location: boolean
@@ -2049,6 +2044,7 @@ export type Database = {
           work_start_time: string
         }
         Insert: {
+          enforce_face_match?: boolean
           enforce_ip?: boolean
           enforce_location?: boolean
           enforce_staff_location?: boolean
@@ -2062,6 +2058,7 @@ export type Database = {
           work_start_time?: string
         }
         Update: {
+          enforce_face_match?: boolean
           enforce_ip?: boolean
           enforce_location?: boolean
           enforce_staff_location?: boolean
@@ -2867,6 +2864,64 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: true
             referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rider_invitation: {
+        Row: {
+          base_fee: number
+          created_at: string
+          expires_at: string | null
+          id: string
+          invited_by: string
+          invited_user_id: string
+          restaurant_id: number
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          base_fee: number
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          invited_by: string
+          invited_user_id: string
+          restaurant_id: number
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          base_fee?: number
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          invited_by?: string
+          invited_user_id?: string
+          restaurant_id?: number
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rider_invitation_invited_by_fkey"
+            columns: ["invited_by"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rider_invitation_invited_user_id_fkey"
+            columns: ["invited_user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rider_invitation_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant"
             referencedColumns: ["id"]
           },
         ]
@@ -4547,6 +4602,41 @@ export type Database = {
           },
         ]
       }
+      staff_face_descriptor: {
+        Row: {
+          created_at: string
+          descriptor: number[]
+          id: string
+          restaurant_id: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          descriptor: number[]
+          id?: string
+          restaurant_id: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          descriptor?: number[]
+          id?: string
+          restaurant_id?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_staff_face_descriptor_restaurant"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       staff_invitation: {
         Row: {
           created_at: string
@@ -5802,6 +5892,14 @@ export type Database = {
         }
         Returns: number
       }
+      has_order_family_cross_restaurant_permission: {
+        Args: {
+          p_permission_code: string
+          p_restaurant_id: number
+          p_user_id: string
+        }
+        Returns: boolean
+      }
       has_restaurant_role_permission: {
         Args: {
           p_permission_code: string
@@ -5915,7 +6013,7 @@ export type Database = {
           p_price_rows?: Json
           p_print_text?: string
           p_sale_channels?: string[]
-          p_sku: string
+          p_sku?: string
           p_status?: string
           p_tax_rate?: string
         }
@@ -5934,7 +6032,7 @@ export type Database = {
           p_print_text?: string
           p_property_tags?: Json
           p_sale_channel?: string[]
-          p_sku: string
+          p_sku?: string
           p_status?: string
           p_table_limit?: number
           p_tax_rate?: string
