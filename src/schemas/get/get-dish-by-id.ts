@@ -54,7 +54,7 @@ export const ActivityDishEntrySchema = z.object({
 
 export const DishPriceEntrySchema = z.object({
   id: z.number().int(),
-  sale_channel: z.enum(["dinein", "delivery"]).nullable(), // NULL = 不限渠道
+  sale_channel: z.enum(["dinein", "delivery"]), // 必填，每行只对一个渠道生效
   price: z.number().nullable(),                            // 基准价行必填；覆盖行可为空
   discount: z.number().nullable(),
   weekday: z.string().nullable(),                           // NULL = 基准价行；否则 'monday'..'sunday'/'holiday'

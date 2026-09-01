@@ -16,7 +16,9 @@ import { z } from "zod";
 //   end_time) 生效，price/discount 至少填一个（可以只填 discount，
 //   但见下方"多条命中"里 price 缺失的实际后果）。
 //
-// sale_channel：NULL = 不限渠道（堂食/外卖都适用）；否则是 'dinein'/'delivery'。
+// sale_channel：必填，是 'dinein'/'delivery'——每一行只对一个渠道生效，不
+// 再支持"不限渠道"的通配行（历史上 NULL 表示两个渠道都适用，已废弃并做过
+// 一次性数据迁移拆分成显式渠道行，见 20260901000002）。
 //
 // ── 多条命中时怎么选：唯一权威规则 ──────────────────────────────────
 //
@@ -24,29 +26,25 @@ import { z } from "zod";
 // 某一时刻【所有命中的行（基准价行 + 覆盖行）】放进同一个池子，按下面的
 // 顺序排序，取整体排名第一的那一行，**直接使用这一行自己的 price/discount**
 // ——不会跨行合并字段（比如"这行的 price 配那行的 discount"这种拼接不存在）。
+// 查询本身已经按当前下单渠道过滤（sale_channel = channel），所以池子里
+// 不会出现渠道不匹配的行，不需要再比较渠道精确度。
 //
-//   ① 渠道精确匹配优先于不限渠道
-//      sale_channel 精确等于当前下单渠道的行，优先于 sale_channel IS NULL
-//      的行。——但这条只在两条都是"覆盖行"时才比较；基准价行的
-//      sale_channel 是触发器按渠道拆出来的固定行（每个渠道一条），不是
-//      管理员主动选的"更具体"配置，不参与这项比较。
-//
-//   ② price 有效的行优先于 price 为空或 0 的行
+//   ① price 有效的行优先于 price 为空或 0 的行
 //      "有效"= price 不是 NULL 且不是 0。这条优先级很高，几乎总是排在
 //      时间窗口比较之前——一条只填了 discount、没填 price 的覆盖行，
 //      不管它的时间窗口配得多窄，只要还有别的候选行 price 有效，就赢不了。
 //      只有当它是唯一命中的行时才会被选中兜底，此时最终返回的 price
 //      视为 0（不会向别的行借 price）。
 //
-//   ③ 时间窗口越短优先
+//   ② 时间窗口越短优先
 //      按 (end_time - start_time) 升序排，窗口越短排越前。基准价行没有
 //      时间限制，视为"无限长"，天然排在所有有时间限制的覆盖行之后。
 //      例：同一天配了"全天 9 折"和"12:00-14:00 再加 5 折"，后者窗口更
 //      窄，命中时优先用后者。
 //
-//   ④ 窗口时长也相同时，discount 有填的行优先于没填的
+//   ③ 窗口时长也相同时，discount 有填的行优先于没填的
 //
-//   ⑤ 以上仍然打平（几乎不会发生），取 start_time 最晚的一条
+//   ④ 以上仍然打平（几乎不会发生），取 start_time 最晚的一条
 //
 // 例子（假设都命中同一时刻）：
 //   1. 基准价行：price=10，无时间限制
@@ -59,7 +57,7 @@ export const DishPriceRowSchema = z.object({
   id:            z.number().int(),
   dish_id:       z.number().int(),
   restaurant_id: z.number().int(),
-  sale_channel:  z.enum(["dinein", "delivery"]).nullable(), // NULL = 不限渠道
+  sale_channel:  z.enum(["dinein", "delivery"]), // 必填，每行只对一个渠道生效
   price:         z.number().nullable(),                     // 基准价行必填；覆盖行可为空（会被判定为"无效"，见上方②）
   discount:      z.number().nullable(),                     // 百分比，语义同 dish.discount
   weekday:       z.string().nullable(),                     // NULL = 基准价行；否则 'monday'..'sunday'/'holiday'

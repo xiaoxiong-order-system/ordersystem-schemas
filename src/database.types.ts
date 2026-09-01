@@ -1023,7 +1023,7 @@ export type Database = {
           id: number
           price: number | null
           restaurant_id: number
-          sale_channel: string | null
+          sale_channel: string
           start_time: string | null
           weekday: Database["public"]["Enums"]["weekday"] | null
         }
@@ -1035,7 +1035,7 @@ export type Database = {
           id?: number
           price?: number | null
           restaurant_id: number
-          sale_channel?: string | null
+          sale_channel: string
           start_time?: string | null
           weekday?: Database["public"]["Enums"]["weekday"] | null
         }
@@ -1047,7 +1047,7 @@ export type Database = {
           id?: number
           price?: number | null
           restaurant_id?: number
-          sale_channel?: string | null
+          sale_channel?: string
           start_time?: string | null
           weekday?: Database["public"]["Enums"]["weekday"] | null
         }
