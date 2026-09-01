@@ -110,6 +110,7 @@ export const PERMISSION_CATALOG = [
   { module: "POS 服务", code: "pos.checkout", description: "POS 收银结账", boss: true, manager: true, staff: false, tables: "table_payment" },
   { module: "POS 服务", code: "pos.data.read", description: "查看 POS 经营数据", boss: true, manager: false, staff: false, tables: "service_order_record / delivery_record / service_reserver_record" },
   { module: "POS 服务", code: "pos.price.override", description: "POS 下单上传自定义菜品价格/折扣", boss: true, manager: true, staff: false, tables: "order_item（merchant-create-order 写入时覆盖 dish_price 解析出的生效价/折扣）" },
+  { module: "POS 服务", code: "pos.payment.invoice_void", description: "作废发票（桌台 + 外卖）", boss: true, manager: true, staff: false, tables: "table_payment / takeaway_order（invoice_status 等字段）/ table-invoice-void / takeaway-invoice-void 边缘函数" },
   { module: "报表与记录", code: "record.read", description: "查看营业记录", boss: true, manager: true, staff: false, tables: "service_order_record / delivery_record / service_reserver_record / service_record_counter" },
   { module: "角色管理", code: "role.read", description: "查看角色列表", boss: true, manager: true, staff: false, tables: "restaurant_role / restaurant_role_permission_control" },
   { module: "角色管理", code: "role.create", description: "创建自定义角色", boss: true, manager: false, staff: false, tables: "restaurant_role" },
