@@ -21,6 +21,10 @@ import { z } from "zod";
 // 4. code 默认是 `${父餐厅code}-${code_suffix}`（不传 code_suffix 则用
 //    slugify(name)）；也可以传 code 字段跳过这个拼接，直接给一个完全独立、
 //    不含父餐厅前缀的编号——code 和 code_suffix 二选一，两个都传 400
+// 5. restaurant_open_hour（餐厅通用营业时间）不像 service_* 那样有查询期回退
+//    （client 直接按 restaurant_id 查，查不到就是空，不会自动落回父餐厅），
+//    所以默认也不复制；传 copy_open_hours=true 才会把父餐厅当前的
+//    restaurant_open_hour 原样复制一份给子餐厅
 //
 // 除 parent_restaurant_id/name 外全部选填——restaurant_information/
 // restaurant_business_information 两张表除 restaurant_id 外所有列都可为空。
@@ -51,6 +55,9 @@ export const CreateSubRestaurantInputSchema = z.object({
   email:       z.string().optional(),
   nif:         z.string().optional(),
   location:    LocationSchema.optional(),
+  // true 时把父餐厅当前的 restaurant_open_hour 原样复制一份给子餐厅；
+  // 不传则默认 false，子餐厅不会有任何 restaurant_open_hour 记录
+  copy_open_hours: z.boolean().optional(),
 }).refine(data => !(data.code && data.code_suffix), {
   message: "code and code_suffix are mutually exclusive; pass at most one",
   path:    ["code_suffix"],

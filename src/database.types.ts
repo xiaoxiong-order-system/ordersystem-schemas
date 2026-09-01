@@ -5859,6 +5859,7 @@ export type Database = {
         Args: {
           p_city?: string
           p_code: string
+          p_copy_open_hours?: boolean
           p_country?: string
           p_email?: string
           p_name: string
