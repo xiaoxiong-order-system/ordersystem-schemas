@@ -43,6 +43,8 @@ export const PERMISSION_CATALOG = [
   { module: "桌子状态", code: "table.state.delete", description: "删除桌子状态", boss: true, manager: true, staff: false, tables: "restaurant_table_state" },
   { module: "桌台结账", code: "table.payment.read", description: "查看结账记录", boss: true, manager: true, staff: false, tables: "table_payment / table_payment_item" },
   { module: "桌台结账", code: "table.payment.update", description: "结账/撤销结账/开票", boss: true, manager: true, staff: false, tables: "table_payment（UPDATE，RLS）/ void-payment / issue-table-invoice 边缘函数" },
+  { module: "桌台清台", code: "table.clean.read", description: "查看清台记录", boss: true, manager: false, staff: false, tables: "clean_table_record" },
+  { module: "桌台清台", code: "table.clean.create", description: "执行清台操作", boss: true, manager: true, staff: false, tables: "clean_table_record（INSERT）/ clean_table_and_record RPC" },
   { module: "订单", code: "order.read", description: "查看订单", boss: true, manager: true, staff: true, tables: "order / order_item" },
   { module: "订单", code: "order.create", description: "创建订单", boss: true, manager: true, staff: true, tables: "order / order_item（DEFINER）" },
   { module: "订单", code: "order.update", description: "编辑订单", boss: true, manager: true, staff: false, tables: "order / order_item（取消/完成订单、transfer-order-items 转桌转菜也走这个权限码）" },
