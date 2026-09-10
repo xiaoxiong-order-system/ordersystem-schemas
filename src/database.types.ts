@@ -7,6 +7,11 @@ export type Json =
   | Json[]
 
 export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "14.5"
+  }
   graphql_public: {
     Tables: {
       [_ in never]: never
@@ -170,6 +175,65 @@ export type Database = {
           },
         ]
       }
+      cart_items: {
+        Row: {
+          created_at: string
+          currency: string
+          id: string
+          is_free: boolean
+          meta: Json
+          period: string
+          price_id: string
+          product_id: string
+          product_key: string
+          restaurant_external_id: number | null
+          restaurant_id: number
+          unit_price: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          id?: string
+          is_free?: boolean
+          meta?: Json
+          period: string
+          price_id: string
+          product_id: string
+          product_key: string
+          restaurant_external_id?: number | null
+          restaurant_id: number
+          unit_price?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          id?: string
+          is_free?: boolean
+          meta?: Json
+          period?: string
+          price_id?: string
+          product_id?: string
+          product_key?: string
+          restaurant_external_id?: number | null
+          restaurant_id?: number
+          unit_price?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cart_items_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       category: {
         Row: {
           enable: boolean
@@ -229,6 +293,118 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "language"
             referencedColumns: ["code"]
+          },
+        ]
+      }
+      checkout_sessions: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          customer_country: string | null
+          id: string
+          line_items: Json
+          referral_code: string | null
+          restaurant_id: number
+          status: string
+          stripe_checkout_session_id: string | null
+          stripe_customer_id: string | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          customer_country?: string | null
+          id?: string
+          line_items: Json
+          referral_code?: string | null
+          restaurant_id: number
+          status?: string
+          stripe_checkout_session_id?: string | null
+          stripe_customer_id?: string | null
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          customer_country?: string | null
+          id?: string
+          line_items?: Json
+          referral_code?: string | null
+          restaurant_id?: number
+          status?: string
+          stripe_checkout_session_id?: string | null
+          stripe_customer_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "checkout_sessions_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "checkout_sessions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      clean_table_record: {
+        Row: {
+          clean_at: string
+          id: string
+          orders: Json
+          people_count: Json
+          restaurant_id: number
+          table_id: number
+          table_start_time: number | null
+          user_id: string | null
+        }
+        Insert: {
+          clean_at?: string
+          id?: string
+          orders?: Json
+          people_count?: Json
+          restaurant_id: number
+          table_id: number
+          table_start_time?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          clean_at?: string
+          id?: string
+          orders?: Json
+          people_count?: Json
+          restaurant_id?: number
+          table_id?: number
+          table_start_time?: number | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clean_table_record_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clean_table_record_table_id_fkey"
+            columns: ["table_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant_table"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clean_table_record_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -1158,6 +1334,51 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "sale_channel"
             referencedColumns: ["code"]
+          },
+        ]
+      }
+      dish_sale_time: {
+        Row: {
+          dish_id: number
+          enable: boolean
+          end_time: string
+          id: number
+          restaurant_id: number
+          start_time: string
+          weekday: Database["public"]["Enums"]["weekday"]
+        }
+        Insert: {
+          dish_id: number
+          enable?: boolean
+          end_time: string
+          id?: number
+          restaurant_id: number
+          start_time: string
+          weekday: Database["public"]["Enums"]["weekday"]
+        }
+        Update: {
+          dish_id?: number
+          enable?: boolean
+          end_time?: string
+          id?: number
+          restaurant_id?: number
+          start_time?: string
+          weekday?: Database["public"]["Enums"]["weekday"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dish_sale_time_dish_id_fkey"
+            columns: ["dish_id"]
+            isOneToOne: false
+            referencedRelation: "dish"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dish_sale_time_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -2986,6 +3207,105 @@ export type Database = {
         }
         Relationships: []
       }
+      saas_products: {
+        Row: {
+          color_gradient: string
+          created_at: string
+          description_cn: string
+          description_en: string
+          description_pt: string
+          features_cn: Json
+          features_en: Json
+          features_pt: Json
+          icon: string
+          id: string
+          is_active: boolean
+          is_bundle: boolean
+          key: string
+          monthly_discount_label: string | null
+          monthly_original_price: number | null
+          monthly_price: number
+          monthly_price_id: string
+          name_cn: string
+          name_en: string
+          name_pt: string
+          sort_order: number
+          stripe_monthly_price_id: string | null
+          stripe_yearly_price_id: string | null
+          trial_config: Json
+          trial_days: number
+          updated_at: string
+          yearly_discount_label: string | null
+          yearly_original_price: number | null
+          yearly_price: number
+          yearly_price_id: string
+        }
+        Insert: {
+          color_gradient?: string
+          created_at?: string
+          description_cn?: string
+          description_en?: string
+          description_pt?: string
+          features_cn?: Json
+          features_en?: Json
+          features_pt?: Json
+          icon?: string
+          id?: string
+          is_active?: boolean
+          is_bundle?: boolean
+          key: string
+          monthly_discount_label?: string | null
+          monthly_original_price?: number | null
+          monthly_price?: number
+          monthly_price_id: string
+          name_cn?: string
+          name_en?: string
+          name_pt?: string
+          sort_order?: number
+          stripe_monthly_price_id?: string | null
+          stripe_yearly_price_id?: string | null
+          trial_config?: Json
+          trial_days?: number
+          updated_at?: string
+          yearly_discount_label?: string | null
+          yearly_original_price?: number | null
+          yearly_price?: number
+          yearly_price_id: string
+        }
+        Update: {
+          color_gradient?: string
+          created_at?: string
+          description_cn?: string
+          description_en?: string
+          description_pt?: string
+          features_cn?: Json
+          features_en?: Json
+          features_pt?: Json
+          icon?: string
+          id?: string
+          is_active?: boolean
+          is_bundle?: boolean
+          key?: string
+          monthly_discount_label?: string | null
+          monthly_original_price?: number | null
+          monthly_price?: number
+          monthly_price_id?: string
+          name_cn?: string
+          name_en?: string
+          name_pt?: string
+          sort_order?: number
+          stripe_monthly_price_id?: string | null
+          stripe_yearly_price_id?: string | null
+          trial_config?: Json
+          trial_days?: number
+          updated_at?: string
+          yearly_discount_label?: string | null
+          yearly_original_price?: number | null
+          yearly_price?: number
+          yearly_price_id?: string
+        }
+        Relationships: []
+      }
       sale_channel: {
         Row: {
           code: string
@@ -4712,6 +5032,156 @@ export type Database = {
         }
         Relationships: []
       }
+      subscription_cancellation_requests: {
+        Row: {
+          admin_note: string | null
+          created_at: string
+          currency: string
+          id: string
+          paid_amount: number | null
+          price_id: string
+          product_id: string
+          reason: string | null
+          refund_amount: number | null
+          remaining_days: number | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          stripe_subscription_id: string
+          subscription_id: string
+          suggested_refund: number | null
+          total_days: number | null
+          updated_at: string
+          user_email: string
+          user_id: string
+          user_name: string | null
+        }
+        Insert: {
+          admin_note?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          paid_amount?: number | null
+          price_id: string
+          product_id: string
+          reason?: string | null
+          refund_amount?: number | null
+          remaining_days?: number | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          stripe_subscription_id: string
+          subscription_id: string
+          suggested_refund?: number | null
+          total_days?: number | null
+          updated_at?: string
+          user_email: string
+          user_id: string
+          user_name?: string | null
+        }
+        Update: {
+          admin_note?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          paid_amount?: number | null
+          price_id?: string
+          product_id?: string
+          reason?: string | null
+          refund_amount?: number | null
+          remaining_days?: number | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          stripe_subscription_id?: string
+          subscription_id?: string
+          suggested_refund?: number | null
+          total_days?: number | null
+          updated_at?: string
+          user_email?: string
+          user_id?: string
+          user_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscription_cancellation_requests_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "subscriptions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subscription_cancellation_requests_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      subscriptions: {
+        Row: {
+          cancel_at_period_end: boolean
+          created_at: string
+          current_period_end: string | null
+          current_period_start: string | null
+          id: string
+          price_id: string
+          product_id: string
+          restaurant_id: number
+          status: string
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          cancel_at_period_end?: boolean
+          created_at?: string
+          current_period_end?: string | null
+          current_period_start?: string | null
+          id?: string
+          price_id: string
+          product_id: string
+          restaurant_id: number
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          cancel_at_period_end?: boolean
+          created_at?: string
+          current_period_end?: string | null
+          current_period_start?: string | null
+          id?: string
+          price_id?: string
+          product_id?: string
+          restaurant_id?: number
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subscriptions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       table_notification: {
         Row: {
           created_at: string
@@ -4792,6 +5262,7 @@ export type Database = {
           note: string | null
           paid_at: string | null
           people_amount: number
+          people_breakdown: Json
           restaurant_id: number
           status: string
           table_id: number
@@ -4818,6 +5289,7 @@ export type Database = {
           note?: string | null
           paid_at?: string | null
           people_amount?: number
+          people_breakdown?: Json
           restaurant_id: number
           status: string
           table_id: number
@@ -4844,6 +5316,7 @@ export type Database = {
           note?: string | null
           paid_at?: string | null
           people_amount?: number
+          people_breakdown?: Json
           restaurant_id?: number
           status?: string
           table_id?: number
@@ -5801,6 +6274,10 @@ export type Database = {
         }
         Returns: undefined
       }
+      clean_table_and_record: {
+        Args: { p_restaurant_id: number; p_table_id: number; p_user_id: string }
+        Returns: undefined
+      }
       create_custom_dish: {
         Args: {
           p_category_id?: number
@@ -6079,12 +6556,12 @@ export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -6108,11 +6585,11 @@ export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -6133,11 +6610,11 @@ export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -6158,11 +6635,11 @@ export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
     | { schema: keyof DatabaseWithoutInternals },
-  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+  EnumName extends (DefaultSchemaEnumNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaEnumNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -6175,11 +6652,11 @@ export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof DatabaseWithoutInternals },
-  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+  CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-    : never = never,
+    : never) = never,
 > = PublicCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -6211,4 +6688,3 @@ export const Constants = {
     },
   },
 } as const
-
