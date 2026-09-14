@@ -47,6 +47,17 @@ export const PeopleSelectionSchema = z.object({
   count: z.number().int().positive(),
 });
 
+// 人头费明细快照（table_payment.people_breakdown），供 issue-table-invoice
+// 补开发票时按类型分行使用；与 people_amount（合计）并存
+export const PeopleBreakdownItemSchema = z.object({
+  people_type_id: z.number().int().positive(),
+  type_name: z.string(),
+  unit_price: z.number(),
+  count: z.number().int().nonnegative(),
+  subtotal: z.number(),
+});
+export type PeopleBreakdownItem = z.infer<typeof PeopleBreakdownItemSchema>;
+
 export const CheckoutInputSchema = z.object({
   restaurant_id: z.number().int().positive(),
   table_id: z.number().int().positive(),
