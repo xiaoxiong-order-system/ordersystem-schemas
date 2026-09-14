@@ -5356,6 +5356,35 @@ export type Database = {
           },
         ]
       }
+      table_payment_cleanup_control: {
+        Row: {
+          enable: boolean
+          restaurant_id: number
+          retain_days: number
+          updated_at: string
+        }
+        Insert: {
+          enable?: boolean
+          restaurant_id: number
+          retain_days?: number
+          updated_at?: string
+        }
+        Update: {
+          enable?: boolean
+          restaurant_id?: number
+          retain_days?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "table_payment_cleanup_control_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: true
+            referencedRelation: "restaurant"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       table_payment_intent: {
         Row: {
           amount: number
@@ -6289,6 +6318,7 @@ export type Database = {
           p_print_text?: string
           p_restaurant_id: number
           p_sale_channels?: string[]
+          p_sale_time_rows?: Json
           p_sku: string
           p_status?: string
           p_tax_rate?: string
@@ -6308,6 +6338,7 @@ export type Database = {
           p_property_tags?: Json
           p_restaurant_id: number
           p_sale_channel?: string[]
+          p_sale_time_rows?: Json
           p_sku: string
           p_status: string
           p_table_limit?: number
@@ -6360,7 +6391,15 @@ export type Database = {
       }
       fn_auto_complete_takeaway_order: { Args: never; Returns: Json }
       fn_auto_finalize_reserver_order: { Args: never; Returns: Json }
+      fn_delete_no_invoice_payments: {
+        Args: { p_cutoff: string; p_restaurant_id: number }
+        Returns: number
+      }
       fn_run_daily_archive_cron: { Args: never; Returns: undefined }
+      fn_run_no_invoice_payments_cleanup_cron: {
+        Args: never
+        Returns: undefined
+      }
       get_people_price: {
         Args: {
           p_date: string
@@ -6491,6 +6530,7 @@ export type Database = {
           p_price_rows?: Json
           p_print_text?: string
           p_sale_channels?: string[]
+          p_sale_time_rows?: Json
           p_sku?: string
           p_status?: string
           p_tax_rate?: string
@@ -6510,6 +6550,7 @@ export type Database = {
           p_print_text?: string
           p_property_tags?: Json
           p_sale_channel?: string[]
+          p_sale_time_rows?: Json
           p_sku?: string
           p_status?: string
           p_table_limit?: number
