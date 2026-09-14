@@ -9,13 +9,18 @@ import { z } from "zod";
 //       身份 → 403
 //
 // 不受状态过滤（能查 draft/closed 等任意状态），标签关联（dish_tag/view_tag）
-// 与 dish_price 里 enable=false 的行也原样返回，便于管理端查看/恢复已禁用的配置。
+// 与 dish_price/dish_sale_time 里 enable=false 的行也原样返回，便于管理端
+// 查看/恢复已禁用的配置。
 //
 // dish_price 字段：该菜品完整的价格排期原始数据（基准价行 + 全部分时段覆盖
 // 行，含 start_time/end_time/weekday，含 enable=false 的行），给管理端价格
 // 编辑面板展示/编辑用。不返回"此刻生效价"（resolveDishPrices，见
 // _shared/dishPrice.ts）——那是下单接口的职责，管理端只需要看到完整排期本身，
 // dish 表也已不存任何价格字段
+//
+// dish_sale_time 字段：该菜品完整的售卖时间窗口原始数据（含 enable=false 的
+// 行），给管理端编辑面板展示/编辑用。空数组 = 不受售卖时间限制（全天可售）。
+// 本接口同样不判断"此刻是否在售卖时间内"，那是下单接口的职责
 //
 // 错误码：400（缺少 restaurant_id/dish_id）/ 401（未登录）/ 403（已登录但
 // 无该餐厅权限）/ 404（菜品不存在）/ 500（服务器错误）
@@ -63,6 +68,14 @@ export const DishPriceEntrySchema = z.object({
   enable: z.boolean(),
 });
 
+export const DishSaleTimeEntrySchema = z.object({
+  id: z.number().int(),
+  weekday: z.string(),     // 'monday'..'sunday'/'holiday'
+  start_time: z.string(),  // "HH:MM:SS"
+  end_time: z.string(),
+  enable: z.boolean(),
+});
+
 export const GetDishByIdResponseSchema = z.object({
   id: z.number().int(),
   sku: z.string(),
@@ -87,6 +100,7 @@ export const GetDishByIdResponseSchema = z.object({
   pt_tax_rate: z.object({ code: z.string(), rate: z.number(), text: z.string() }).nullable(),
   sale_channel: z.array(z.string()),
   dish_price: z.array(DishPriceEntrySchema),
+  dish_sale_time: z.array(DishSaleTimeEntrySchema),
 
   dish_name_multilingua: z.array(multilinguaRow),
   dish_description_multilingua: z.array(multilinguaRow),
