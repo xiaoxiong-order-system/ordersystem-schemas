@@ -5611,7 +5611,9 @@ export type Database = {
           id: number
           image: string | null
           is_system: boolean
+          order_limit: number | null
           restaurant_id: number | null
+          table_limit: number | null
           text: string
           type: string
         }
@@ -5620,7 +5622,9 @@ export type Database = {
           id?: number
           image?: string | null
           is_system?: boolean
+          order_limit?: number | null
           restaurant_id?: number | null
+          table_limit?: number | null
           text: string
           type?: string
         }
@@ -5629,7 +5633,9 @@ export type Database = {
           id?: number
           image?: string | null
           is_system?: boolean
+          order_limit?: number | null
           restaurant_id?: number | null
+          table_limit?: number | null
           text?: string
           type?: string
         }
