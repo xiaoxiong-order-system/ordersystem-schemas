@@ -40,4 +40,5 @@ export * from "./saas-customer-portal.ts";
 export * from "./saas-subscription-management.ts";
 export * from "./set-restaurant-platform-config.ts";
 export * from "./shopify-order-webhook.ts";
+export * from "./ai-translate.ts";
 
