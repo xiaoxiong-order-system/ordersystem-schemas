@@ -1573,6 +1573,38 @@ export type Database = {
         }
         Relationships: []
       }
+      makerlab_homepage: {
+        Row: {
+          messages: Json
+          restaurant_id: number
+          sections: Json
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          messages?: Json
+          restaurant_id: number
+          sections?: Json
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          messages?: Json
+          restaurant_id?: number
+          sections?: Json
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "makerlab_homepage_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: true
+            referencedRelation: "restaurant"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       message_code: {
         Row: {
           code: string
@@ -6353,6 +6385,16 @@ export type Database = {
         }
         Returns: number
       }
+      create_dish_group: {
+        Args: {
+          p_descriptions?: Json
+          p_enable?: boolean
+          p_names?: Json
+          p_restaurant_id: number
+          p_sale_channel?: string[]
+        }
+        Returns: number
+      }
       create_restaurant_tx: {
         Args: {
           p_city: string
@@ -6387,6 +6429,7 @@ export type Database = {
         }
         Returns: number
       }
+      delete_dish_group: { Args: { p_dish_group_id: number }; Returns: Json }
       delete_dish_tx: {
         Args: { p_dish_id: number; p_force?: boolean }
         Returns: Json
@@ -6562,6 +6605,16 @@ export type Database = {
           p_table_limit?: number
           p_tax_rate?: string
           p_yellow_king?: Json
+        }
+        Returns: number
+      }
+      update_dish_group: {
+        Args: {
+          p_descriptions?: Json
+          p_dish_group_id: number
+          p_enable?: boolean
+          p_names?: Json
+          p_sale_channel?: string[]
         }
         Returns: number
       }
