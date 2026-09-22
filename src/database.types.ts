@@ -6345,6 +6345,15 @@ export type Database = {
         Args: { p_restaurant_id: number; p_table_id: number; p_user_id: string }
         Returns: undefined
       }
+      create_category: {
+        Args: {
+          p_enable?: boolean
+          p_names?: Json
+          p_restaurant_id: number
+          p_text: string
+        }
+        Returns: number
+      }
       create_custom_dish: {
         Args: {
           p_category_id?: number
@@ -6428,6 +6437,10 @@ export type Database = {
           p_sub_name?: string
         }
         Returns: number
+      }
+      delete_category: {
+        Args: { p_category_id: number; p_force?: boolean }
+        Returns: Json
       }
       delete_dish: {
         Args: { p_dish_id: number; p_force?: boolean }
@@ -6565,6 +6578,15 @@ export type Database = {
           new_order_id: number
           new_order_record_no: number
         }[]
+      }
+      update_category: {
+        Args: {
+          p_category_id: number
+          p_enable?: boolean
+          p_names?: Json
+          p_text?: string
+        }
+        Returns: number
       }
       update_custom_dish: {
         Args: {
