@@ -6429,11 +6429,11 @@ export type Database = {
         }
         Returns: number
       }
-      delete_dish_group: { Args: { p_dish_group_id: number }; Returns: Json }
-      delete_dish_tx: {
+      delete_dish: {
         Args: { p_dish_id: number; p_force?: boolean }
         Returns: Json
       }
+      delete_dish_group: { Args: { p_dish_group_id: number }; Returns: Json }
       fn_archive_daily_orders: {
         Args: { p_date?: string; p_restaurant_id: number }
         Returns: Json
