@@ -7,16 +7,20 @@ import { z } from "zod";
 // 是"数据结构 + 解析规则"本身，不是某个请求/响应的形状。
 //
 // 两种行：
-// - 基准价行（weekday IS NULL）：不限时段，一直生效，price 必填。每个
-//   dish_id + sale_channel 最多一条（唯一索引）。目前由数据库触发器
-//   tr_sync_dish_price_base 根据 dish.price/discount/delivery_price/
-//   delivery_discount 自动同步生成，前端不需要、也不应该手动写这种行——
-//   这是过渡期的兼容层，等前端切到直接维护 dish_price 后会拆掉。
+// - 基准价行（weekday IS NULL）：不限时段，一直生效，price 可为 NULL（= 该渠道
+//   未定价，此时 discount 也必须为 NULL），0 = 明确 0 元。每个
+//   dish_id + sale_channel 最多一条（唯一索引）。由 create_dish /
+//   create_custom_dish / update_custom_dish / update_dish 的 p_price_rows
+//   参数直接写入（PUT 全量替换语义）——过渡期那个从 dish 四个旧价格字段
+//   镜像同步的触发器 tr_sync_dish_price_base 已拆除，dish 的四列也已物理删除。
 // - 覆盖行（weekday 非空）：按 sale_channel + weekday + [start_time,
-//   end_time) 生效，price/discount 至少填一个（可以只填 discount，
-//   但见下方"多条命中"里 price 缺失的实际后果）。
+//   end_time) 生效，price 必填（0 = 该时段 0 元），discount 可选。不支持只填
+//   discount：解析时不跨行合并字段，这种行无法按"沿用基准价、只改折扣"生效。
 //
-// sale_channel：NULL = 不限渠道（堂食/外卖都适用）；否则是 'dinein'/'delivery'。
+// sale_channel：NULL = 不限渠道（各渠道都适用）；否则取 sale_channel 表的
+// code。**这里不写死可选值**——渠道是数据库里的数据、不是代码常量，往
+// sale_channel 表插一行新渠道不应该连带改这份 schema。需要给用户列出可选
+// 渠道时，查 sale_channel 表，不要在前端硬编码。
 //
 // ── 多条命中时怎么选：唯一权威规则 ──────────────────────────────────
 //
@@ -28,15 +32,15 @@ import { z } from "zod";
 //   ① 渠道精确匹配优先于不限渠道
 //      sale_channel 精确等于当前下单渠道的行，优先于 sale_channel IS NULL
 //      的行。——但这条只在两条都是"覆盖行"时才比较；基准价行的
-//      sale_channel 是触发器按渠道拆出来的固定行（每个渠道一条），不是
+//      sale_channel 是按渠道各建一条的基准行（每个渠道一条），不是
 //      管理员主动选的"更具体"配置，不参与这项比较。
 //
-//   ② price 有效的行优先于 price 为空或 0 的行
-//      "有效"= price 不是 NULL 且不是 0。这条优先级很高，几乎总是排在
-//      时间窗口比较之前——一条只填了 discount、没填 price 的覆盖行，
-//      不管它的时间窗口配得多窄，只要还有别的候选行 price 有效，就赢不了。
-//      只有当它是唯一命中的行时才会被选中兜底，此时最终返回的 price
-//      视为 0（不会向别的行借 price）。
+//   ② price 非 NULL 的行优先于 price 为 NULL 的行
+//      price 语义：NULL = 未定价，0 = 明确定价 0 元（如自助餐范围内的菜品），
+//      >0 = 正常价格。0 是有效价格，不降级。只有基准价行允许 price 为 NULL
+//      （覆盖行 price 必填，不支持只填 discount，由 dish_price_check 约束保证）。
+//      最终胜出行 price 仍为 NULL（该渠道未定价且没有命中的覆盖行）时，
+//      resolveDishPrices 不返回这道菜，下单接口按"未定价"报错，绝不当 0 元。
 //
 //   ③ 时间窗口越短优先
 //      按 (end_time - start_time) 升序排，窗口越短排越前。基准价行没有
@@ -59,8 +63,8 @@ export const DishPriceRowSchema = z.object({
   id:            z.number().int(),
   dish_id:       z.number().int(),
   restaurant_id: z.number().int(),
-  sale_channel:  z.enum(["dinein", "delivery"]).nullable(), // NULL = 不限渠道
-  price:         z.number().nullable(),                     // 基准价行必填；覆盖行可为空（会被判定为"无效"，见上方②）
+  sale_channel:  z.string().nullable(),                     // NULL = 不限渠道；否则是 sale_channel.code（不写死枚举，见文件头）
+  price:         z.number().nullable(),                     // NULL = 未定价（仅基准价行允许）；0 = 0 元；覆盖行必填，见上方②
   discount:      z.number().nullable(),                     // 百分比，语义同 dish.discount
   weekday:       z.string().nullable(),                     // NULL = 基准价行；否则 'monday'..'sunday'/'holiday'
   start_time:    z.string().nullable(),                     // "HH:MM:SS"；基准价行为 NULL

@@ -59,8 +59,8 @@ export const ActivityDishEntrySchema = z.object({
 
 export const DishPriceEntrySchema = z.object({
   id: z.number().int(),
-  sale_channel: z.enum(["dinein", "delivery"]).nullable(), // NULL = 不限渠道
-  price: z.number().nullable(),                            // 基准价行必填；覆盖行可为空
+  sale_channel: z.string().nullable(),                     // NULL = 不限渠道；否则是 sale_channel.code（不写死枚举，同 dish-price.ts）
+  price: z.number().nullable(),                            // NULL = 未定价（仅基准价行允许）；0 = 0 元；覆盖行必填，同 dish-price.ts
   discount: z.number().nullable(),
   weekday: z.string().nullable(),                           // NULL = 基准价行；否则 'monday'..'sunday'/'holiday'
   start_time: z.string().nullable(),                        // "HH:MM:SS"；基准价行为 NULL
