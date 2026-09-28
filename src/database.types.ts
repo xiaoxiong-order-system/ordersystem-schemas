@@ -6447,17 +6447,12 @@ export type Database = {
         Returns: Json
       }
       delete_dish_group: { Args: { p_dish_group_id: number }; Returns: Json }
-      fn_archive_daily_orders: {
-        Args: { p_date?: string; p_restaurant_id: number }
-        Returns: Json
-      }
       fn_auto_complete_takeaway_order: { Args: never; Returns: Json }
       fn_auto_finalize_reserver_order: { Args: never; Returns: Json }
       fn_delete_no_invoice_payments: {
         Args: { p_cutoff: string; p_restaurant_id: number }
         Returns: number
       }
-      fn_run_daily_archive_cron: { Args: never; Returns: undefined }
       fn_run_no_invoice_payments_cleanup_cron: {
         Args: never
         Returns: undefined
