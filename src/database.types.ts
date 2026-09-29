@@ -880,51 +880,6 @@ export type Database = {
         }
         Relationships: []
       }
-      delivery_record: {
-        Row: {
-          created_at: string
-          data: Json | null
-          external_id: string | null
-          id: number
-          platform: string
-          record_no: number
-          restaurant_id: number
-        }
-        Insert: {
-          created_at?: string
-          data?: Json | null
-          external_id?: string | null
-          id?: number
-          platform?: string
-          record_no: number
-          restaurant_id: number
-        }
-        Update: {
-          created_at?: string
-          data?: Json | null
-          external_id?: string | null
-          id?: number
-          platform?: string
-          record_no?: number
-          restaurant_id?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "delivery_record_platform_fkey"
-            columns: ["platform"]
-            isOneToOne: false
-            referencedRelation: "delivery_platform"
-            referencedColumns: ["code"]
-          },
-          {
-            foreignKeyName: "delivery_record_restaurant_id_fkey"
-            columns: ["restaurant_id"]
-            isOneToOne: false
-            referencedRelation: "restaurant"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       dish: {
         Row: {
           category_id: number | null
@@ -3901,41 +3856,6 @@ export type Database = {
           },
         ]
       }
-      service_order_record: {
-        Row: {
-          created_at: string
-          data: Json | null
-          date: string
-          id: number
-          record_no: number
-          restaurant_id: number
-        }
-        Insert: {
-          created_at?: string
-          data?: Json | null
-          date?: string
-          id?: number
-          record_no: number
-          restaurant_id: number
-        }
-        Update: {
-          created_at?: string
-          data?: Json | null
-          date?: string
-          id?: number
-          record_no?: number
-          restaurant_id?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "service_order_record_restaurant_id_fkey"
-            columns: ["restaurant_id"]
-            isOneToOne: false
-            referencedRelation: "restaurant"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       service_order_spacial_day: {
         Row: {
           day: number | null
@@ -4320,38 +4240,6 @@ export type Database = {
           },
         ]
       }
-      service_reserver_record: {
-        Row: {
-          created_at: string
-          data: Json | null
-          id: number
-          record_no: number
-          restaurant_id: number
-        }
-        Insert: {
-          created_at?: string
-          data?: Json | null
-          id?: number
-          record_no: number
-          restaurant_id: number
-        }
-        Update: {
-          created_at?: string
-          data?: Json | null
-          id?: number
-          record_no?: number
-          restaurant_id?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "service_reserver_record_restaurant_id_fkey"
-            columns: ["restaurant_id"]
-            isOneToOne: false
-            referencedRelation: "restaurant"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       service_reserver_spacial_day: {
         Row: {
           day: number | null
@@ -4724,38 +4612,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "service_takeaway"
             referencedColumns: ["restaurant_id"]
-          },
-        ]
-      }
-      service_takeaway_record: {
-        Row: {
-          created_at: string
-          data: Json | null
-          id: number
-          record_no: number
-          restaurant_id: number
-        }
-        Insert: {
-          created_at?: string
-          data?: Json | null
-          id?: number
-          record_no: number
-          restaurant_id: number
-        }
-        Update: {
-          created_at?: string
-          data?: Json | null
-          id?: number
-          record_no?: number
-          restaurant_id?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "service_takeaway_record_restaurant_id_fkey"
-            columns: ["restaurant_id"]
-            isOneToOne: false
-            referencedRelation: "restaurant"
-            referencedColumns: ["id"]
           },
         ]
       }
