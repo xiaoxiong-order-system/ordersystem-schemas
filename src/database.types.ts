@@ -5143,6 +5143,7 @@ export type Database = {
           final_amount: number
           id: number
           invoice_email: string | null
+          items_snapshot: Json | null
           invoice_error: string | null
           invoice_ref: string | null
           invoice_status: string
@@ -5170,6 +5171,7 @@ export type Database = {
           final_amount?: number
           id?: number
           invoice_email?: string | null
+          items_snapshot?: Json | null
           invoice_error?: string | null
           invoice_ref?: string | null
           invoice_status?: string
@@ -5197,6 +5199,7 @@ export type Database = {
           final_amount?: number
           id?: number
           invoice_email?: string | null
+          items_snapshot?: Json | null
           invoice_error?: string | null
           invoice_ref?: string | null
           invoice_status?: string
