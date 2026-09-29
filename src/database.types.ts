@@ -1152,7 +1152,7 @@ export type Database = {
           enable: boolean
           end_time: string | null
           id: number
-          price: number | null
+          price: number
           restaurant_id: number
           sale_channel: string | null
           start_time: string | null
@@ -1164,7 +1164,7 @@ export type Database = {
           enable?: boolean
           end_time?: string | null
           id?: number
-          price?: number | null
+          price: number
           restaurant_id: number
           sale_channel?: string | null
           start_time?: string | null
@@ -1176,7 +1176,7 @@ export type Database = {
           enable?: boolean
           end_time?: string | null
           id?: number
-          price?: number | null
+          price?: number
           restaurant_id?: number
           sale_channel?: string | null
           start_time?: string | null
