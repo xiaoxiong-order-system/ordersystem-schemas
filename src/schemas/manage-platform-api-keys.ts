@@ -1,4 +1,4 @@
-// manage-platform-api-keys — 平台管理员管理外部平台及其 API key（平台 / key / 可调用函数 / 可操作餐厅）
+// manage-platform-api-keys — 平台管理员管理外部平台及其 API key（函数目录 / 平台 / key / 可调用函数 / 可操作餐厅）
 //
 // Method: POST /functions/v1/manage-platform-api-keys
 // 调用方: 管理端（商家后台的平台管理员）
@@ -12,14 +12,19 @@
 // 3. `set_key_functions` / `set_key_restaurants` 是整体替换（PUT 语义）：先删掉不在新列表里的，
 //    再补上新增的，中间态只会是新旧列表的交集，不会出现权限超出新旧任一列表的窗口。
 // 4. 已吊销（revoked_at 非空）的 key 不可再修改，返回 409；吊销不可恢复，需要时重新生成。
+// 5. key 只能授权函数目录（platform_api_function）里登记过的函数：`create_key` / `set_key_functions`
+//    里有未登记的函数名返回 400。目录里 enable=false 的函数可以授权，但校验时不生效，重新开放后自动恢复。
+//    目录不删行，停止开放用 `update_function` 把 enable 设为 false。
 //
 // 成功响应（200）：
 // - `list`                → `{ clients: PlatformApiClientWithKeys[] }`
+// - `list_functions`      → `{ functions: PlatformApiFunction[] }`（按 name 升序）
+// - `create_function` / `update_function` → `{ function: PlatformApiFunction }`
 // - `create_client` / `update_client` → `{ client: PlatformApiClient }`
 // - `create_key`          → `{ key: PlatformApiKeySummary, api_key: string }`（明文仅此一次）
 // - `update_key` / `set_key_functions` / `set_key_restaurants` / `revoke_key` → `{ key: PlatformApiKeySummary }`
-// 错误码：400（校验失败 / 餐厅不存在）/ 401（未登录）/ 403（非管理员）/ 404（client / key 不存在）/
-// 409（平台名重复 / key 已吊销）/ 500（数据库错误）
+// 错误码：400（校验失败 / 餐厅不存在 / 函数未登记）/ 401（未登录）/ 403（非管理员）/
+// 404（function / client / key 不存在）/ 409（函数名或平台名重复 / key 已吊销）/ 500（数据库错误）
 
 import { z } from "zod";
 
@@ -28,6 +33,19 @@ const RestaurantScopeSchema = z.enum(["all", "listed"]);
 
 export const ManagePlatformApiKeysInputSchema = z.discriminatedUnion("action", [
   z.object({ action: z.literal("list") }),
+  z.object({ action: z.literal("list_functions") }),
+  z.object({
+    action: z.literal("create_function"),
+    name: FunctionNameSchema,
+    description: z.string().nullable().optional(),
+    enable: z.boolean().optional(),
+  }),
+  z.object({
+    action: z.literal("update_function"),
+    function_id: z.number().int().positive(),
+    description: z.string().nullable().optional(),
+    enable: z.boolean().optional(),
+  }),
   z.object({
     action: z.literal("create_client"),
     name: z.string().trim().min(1),
@@ -74,6 +92,17 @@ export const ManagePlatformApiKeysInputSchema = z.discriminatedUnion("action", [
   }),
 ]);
 export type ManagePlatformApiKeysInput = z.infer<typeof ManagePlatformApiKeysInputSchema>;
+
+export const PlatformApiFunctionSchema = z.object({
+  id: z.number().int(),
+  name: z.string(),
+  description: z.string().nullable(),
+  enable: z.boolean(),
+  created_by: z.string().nullable(),
+  created_at: z.string(),
+  updated_at: z.string(),
+});
+export type PlatformApiFunction = z.infer<typeof PlatformApiFunctionSchema>;
 
 export const PlatformApiClientSchema = z.object({
   id: z.number().int(),

@@ -1905,6 +1905,44 @@ export type Database = {
           },
         ]
       }
+      platform_api_function: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          enable: boolean
+          id: number
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          enable?: boolean
+          id?: number
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          enable?: boolean
+          id?: number
+          name?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_api_function_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       platform_api_key: {
         Row: {
           client_id: number
@@ -1970,18 +2008,25 @@ export type Database = {
       }
       platform_api_key_function: {
         Row: {
-          function_name: string
+          function_id: number
           key_id: number
         }
         Insert: {
-          function_name: string
+          function_id: number
           key_id: number
         }
         Update: {
-          function_name?: string
+          function_id?: number
           key_id?: number
         }
         Relationships: [
+          {
+            foreignKeyName: "platform_api_key_function_function_id_fkey"
+            columns: ["function_id"]
+            isOneToOne: false
+            referencedRelation: "platform_api_function"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "platform_api_key_function_key_id_fkey"
             columns: ["key_id"]
