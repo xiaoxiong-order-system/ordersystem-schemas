@@ -43,4 +43,4 @@ export * from "./set-restaurant-platform-config.ts";
 export * from "./shopify-order-webhook.ts";
 export * from "./ai-translate.ts";
 export * from "./manager-help-chat.ts";
-
+export * from "./manage-platform-api-keys.ts";

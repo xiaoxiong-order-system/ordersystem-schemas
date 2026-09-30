@@ -1867,6 +1867,160 @@ export type Database = {
         }
         Relationships: []
       }
+      platform_api_client: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          enable: boolean
+          id: number
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          enable?: boolean
+          id?: number
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          enable?: boolean
+          id?: number
+          name?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_api_client_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      platform_api_key: {
+        Row: {
+          client_id: number
+          created_at: string
+          created_by: string | null
+          enable: boolean
+          expires_at: string | null
+          id: number
+          key_hash: string
+          key_prefix: string
+          last_used_at: string | null
+          name: string | null
+          restaurant_scope: string
+          revoked_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          client_id: number
+          created_at?: string
+          created_by?: string | null
+          enable?: boolean
+          expires_at?: string | null
+          id?: number
+          key_hash: string
+          key_prefix: string
+          last_used_at?: string | null
+          name?: string | null
+          restaurant_scope?: string
+          revoked_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          client_id?: number
+          created_at?: string
+          created_by?: string | null
+          enable?: boolean
+          expires_at?: string | null
+          id?: number
+          key_hash?: string
+          key_prefix?: string
+          last_used_at?: string | null
+          name?: string | null
+          restaurant_scope?: string
+          revoked_at?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_api_key_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "platform_api_client"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "platform_api_key_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      platform_api_key_function: {
+        Row: {
+          function_name: string
+          key_id: number
+        }
+        Insert: {
+          function_name: string
+          key_id: number
+        }
+        Update: {
+          function_name?: string
+          key_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_api_key_function_key_id_fkey"
+            columns: ["key_id"]
+            isOneToOne: false
+            referencedRelation: "platform_api_key"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      platform_api_key_restaurant: {
+        Row: {
+          key_id: number
+          restaurant_id: number
+        }
+        Insert: {
+          key_id: number
+          restaurant_id: number
+        }
+        Update: {
+          key_id?: number
+          restaurant_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_api_key_restaurant_key_id_fkey"
+            columns: ["key_id"]
+            isOneToOne: false
+            referencedRelation: "platform_api_key"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "platform_api_key_restaurant_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       printer: {
         Row: {
           divide: boolean
@@ -6501,6 +6655,17 @@ export type Database = {
           p_service_type: string
         }
         Returns: undefined
+      }
+      verify_platform_api_key: {
+        Args: { p_function_name: string; p_key_hash: string }
+        Returns: {
+          client_id: number
+          function_allowed: boolean
+          key_id: number
+          key_prefix: string
+          restaurant_ids: number[]
+          restaurant_scope: string
+        }[]
       }
     }
     Enums: {
