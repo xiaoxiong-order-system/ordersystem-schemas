@@ -114,6 +114,215 @@ export type Database = {
           },
         ]
       }
+      api_client: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          enable: boolean
+          id: number
+          name: string
+          platform: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          enable?: boolean
+          id?: number
+          name: string
+          platform?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          enable?: boolean
+          id?: number
+          name?: string
+          platform?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_client_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "api_client_platform_fkey"
+            columns: ["platform"]
+            isOneToOne: false
+            referencedRelation: "external_platform"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
+      api_function: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          enable: boolean
+          id: number
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          enable?: boolean
+          id?: number
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          enable?: boolean
+          id?: number
+          name?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_function_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      api_key: {
+        Row: {
+          client_id: number
+          created_at: string
+          created_by: string | null
+          enable: boolean
+          expires_at: string | null
+          id: number
+          key_hash: string
+          key_prefix: string
+          last_used_at: string | null
+          name: string | null
+          restaurant_scope: string
+          revoked_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          client_id: number
+          created_at?: string
+          created_by?: string | null
+          enable?: boolean
+          expires_at?: string | null
+          id?: number
+          key_hash: string
+          key_prefix: string
+          last_used_at?: string | null
+          name?: string | null
+          restaurant_scope?: string
+          revoked_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          client_id?: number
+          created_at?: string
+          created_by?: string | null
+          enable?: boolean
+          expires_at?: string | null
+          id?: number
+          key_hash?: string
+          key_prefix?: string
+          last_used_at?: string | null
+          name?: string | null
+          restaurant_scope?: string
+          revoked_at?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_key_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "api_client"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "api_key_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      api_key_function: {
+        Row: {
+          function_id: number
+          key_id: number
+        }
+        Insert: {
+          function_id: number
+          key_id: number
+        }
+        Update: {
+          function_id?: number
+          key_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_key_function_function_id_fkey"
+            columns: ["function_id"]
+            isOneToOne: false
+            referencedRelation: "api_function"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "api_key_function_key_id_fkey"
+            columns: ["key_id"]
+            isOneToOne: false
+            referencedRelation: "api_key"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      api_key_restaurant: {
+        Row: {
+          key_id: number
+          restaurant_id: number
+        }
+        Insert: {
+          key_id: number
+          restaurant_id: number
+        }
+        Update: {
+          key_id?: number
+          restaurant_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_key_restaurant_key_id_fkey"
+            columns: ["key_id"]
+            isOneToOne: false
+            referencedRelation: "api_key"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "api_key_restaurant_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       brand: {
         Row: {
           description: string | null
@@ -865,21 +1074,6 @@ export type Database = {
         }
         Relationships: []
       }
-      delivery_platform: {
-        Row: {
-          code: string
-          text: string
-        }
-        Insert: {
-          code: string
-          text: string
-        }
-        Update: {
-          code?: string
-          text?: string
-        }
-        Relationships: []
-      }
       dish: {
         Row: {
           category_id: number | null
@@ -1398,6 +1592,21 @@ export type Database = {
           },
         ]
       }
+      external_platform: {
+        Row: {
+          code: string
+          text: string
+        }
+        Insert: {
+          code: string
+          text: string
+        }
+        Update: {
+          code?: string
+          text?: string
+        }
+        Relationships: []
+      }
       group_description_multilingua: {
         Row: {
           group_id: number
@@ -1527,6 +1736,44 @@ export type Database = {
           text?: string | null
         }
         Relationships: []
+      }
+      makerlab_ai_usage: {
+        Row: {
+          cost_usd: number
+          created_at: string
+          id: number
+          model: string | null
+          restaurant_id: number
+          route: string
+          user_id: string
+        }
+        Insert: {
+          cost_usd?: number
+          created_at?: string
+          id?: never
+          model?: string | null
+          restaurant_id: number
+          route: string
+          user_id: string
+        }
+        Update: {
+          cost_usd?: number
+          created_at?: string
+          id?: never
+          model?: string | null
+          restaurant_id?: number
+          route?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "makerlab_ai_usage_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       makerlab_homepage: {
         Row: {
@@ -1867,207 +2114,9 @@ export type Database = {
         }
         Relationships: []
       }
-      platform_api_client: {
-        Row: {
-          created_at: string
-          created_by: string | null
-          description: string | null
-          enable: boolean
-          id: number
-          name: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          created_by?: string | null
-          description?: string | null
-          enable?: boolean
-          id?: number
-          name: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          created_by?: string | null
-          description?: string | null
-          enable?: boolean
-          id?: number
-          name?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "platform_api_client_created_by_fkey"
-            columns: ["created_by"]
-            isOneToOne: false
-            referencedRelation: "user"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      platform_api_function: {
-        Row: {
-          created_at: string
-          created_by: string | null
-          description: string | null
-          enable: boolean
-          id: number
-          name: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          created_by?: string | null
-          description?: string | null
-          enable?: boolean
-          id?: number
-          name: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          created_by?: string | null
-          description?: string | null
-          enable?: boolean
-          id?: number
-          name?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "platform_api_function_created_by_fkey"
-            columns: ["created_by"]
-            isOneToOne: false
-            referencedRelation: "user"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      platform_api_key: {
-        Row: {
-          client_id: number
-          created_at: string
-          created_by: string | null
-          enable: boolean
-          expires_at: string | null
-          id: number
-          key_hash: string
-          key_prefix: string
-          last_used_at: string | null
-          name: string | null
-          restaurant_scope: string
-          revoked_at: string | null
-          updated_at: string
-        }
-        Insert: {
-          client_id: number
-          created_at?: string
-          created_by?: string | null
-          enable?: boolean
-          expires_at?: string | null
-          id?: number
-          key_hash: string
-          key_prefix: string
-          last_used_at?: string | null
-          name?: string | null
-          restaurant_scope?: string
-          revoked_at?: string | null
-          updated_at?: string
-        }
-        Update: {
-          client_id?: number
-          created_at?: string
-          created_by?: string | null
-          enable?: boolean
-          expires_at?: string | null
-          id?: number
-          key_hash?: string
-          key_prefix?: string
-          last_used_at?: string | null
-          name?: string | null
-          restaurant_scope?: string
-          revoked_at?: string | null
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "platform_api_key_client_id_fkey"
-            columns: ["client_id"]
-            isOneToOne: false
-            referencedRelation: "platform_api_client"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "platform_api_key_created_by_fkey"
-            columns: ["created_by"]
-            isOneToOne: false
-            referencedRelation: "user"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      platform_api_key_function: {
-        Row: {
-          function_id: number
-          key_id: number
-        }
-        Insert: {
-          function_id: number
-          key_id: number
-        }
-        Update: {
-          function_id?: number
-          key_id?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "platform_api_key_function_function_id_fkey"
-            columns: ["function_id"]
-            isOneToOne: false
-            referencedRelation: "platform_api_function"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "platform_api_key_function_key_id_fkey"
-            columns: ["key_id"]
-            isOneToOne: false
-            referencedRelation: "platform_api_key"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      platform_api_key_restaurant: {
-        Row: {
-          key_id: number
-          restaurant_id: number
-        }
-        Insert: {
-          key_id: number
-          restaurant_id: number
-        }
-        Update: {
-          key_id?: number
-          restaurant_id?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "platform_api_key_restaurant_key_id_fkey"
-            columns: ["key_id"]
-            isOneToOne: false
-            referencedRelation: "platform_api_key"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "platform_api_key_restaurant_restaurant_id_fkey"
-            columns: ["restaurant_id"]
-            isOneToOne: false
-            referencedRelation: "restaurant"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       printer: {
         Row: {
+          cut_after_print: boolean
           divide: boolean
           dpi: number
           font: number
@@ -2087,6 +2136,7 @@ export type Database = {
           use_ip: boolean
         }
         Insert: {
+          cut_after_print?: boolean
           divide?: boolean
           dpi?: number
           font?: number
@@ -2106,6 +2156,7 @@ export type Database = {
           use_ip?: boolean
         }
         Update: {
+          cut_after_print?: boolean
           divide?: boolean
           dpi?: number
           font?: number
@@ -2302,7 +2353,7 @@ export type Database = {
           contact_phone: string
           created_at: string
           deleted_at: string | null
-          email: string
+          email: string | null
           email_confirmed_at: string | null
           guest_count: number
           id: number
@@ -2321,7 +2372,7 @@ export type Database = {
           contact_phone: string
           created_at?: string
           deleted_at?: string | null
-          email: string
+          email?: string | null
           email_confirmed_at?: string | null
           guest_count: number
           id?: number
@@ -2340,7 +2391,7 @@ export type Database = {
           contact_phone?: string
           created_at?: string
           deleted_at?: string | null
-          email?: string
+          email?: string | null
           email_confirmed_at?: string | null
           guest_count?: number
           id?: number
@@ -3505,17 +3556,28 @@ export type Database = {
       sale_channel: {
         Row: {
           code: string
+          platform: string | null
           text: string
         }
         Insert: {
           code: string
+          platform?: string | null
           text: string
         }
         Update: {
           code?: string
+          platform?: string | null
           text?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "sale_channel_platform_fkey"
+            columns: ["platform"]
+            isOneToOne: false
+            referencedRelation: "external_platform"
+            referencedColumns: ["code"]
+          },
+        ]
       }
       service_delivery: {
         Row: {
@@ -5279,6 +5341,45 @@ export type Database = {
           },
         ]
       }
+      sushicome_popular_dish_rankings: {
+        Row: {
+          rankings: Json
+          restaurant_id: number
+          updated_at: string
+        }
+        Insert: {
+          rankings?: Json
+          restaurant_id: number
+          updated_at?: string
+        }
+        Update: {
+          rankings?: Json
+          restaurant_id?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      sushicome_public_rate_limits: {
+        Row: {
+          bucket_hash: string
+          request_count: number
+          updated_at: string
+          window_started_at: string
+        }
+        Insert: {
+          bucket_hash: string
+          request_count: number
+          updated_at?: string
+          window_started_at: string
+        }
+        Update: {
+          bucket_hash?: string
+          request_count?: number
+          updated_at?: string
+          window_started_at?: string
+        }
+        Relationships: []
+      }
       table_notification: {
         Row: {
           created_at: string
@@ -5352,10 +5453,10 @@ export type Database = {
           final_amount: number
           id: number
           invoice_email: string | null
-          items_snapshot: Json | null
           invoice_error: string | null
           invoice_ref: string | null
           invoice_status: string
+          items_snapshot: Json | null
           nif: string | null
           note: string | null
           paid_at: string | null
@@ -5380,10 +5481,10 @@ export type Database = {
           final_amount?: number
           id?: number
           invoice_email?: string | null
-          items_snapshot?: Json | null
           invoice_error?: string | null
           invoice_ref?: string | null
           invoice_status?: string
+          items_snapshot?: Json | null
           nif?: string | null
           note?: string | null
           paid_at?: string | null
@@ -5408,10 +5509,10 @@ export type Database = {
           final_amount?: number
           id?: number
           invoice_email?: string | null
-          items_snapshot?: Json | null
           invoice_error?: string | null
           invoice_ref?: string | null
           invoice_status?: string
+          items_snapshot?: Json | null
           nif?: string | null
           note?: string | null
           paid_at?: string | null
@@ -6506,6 +6607,10 @@ export type Database = {
         }
         Returns: number
       }
+      current_restaurant_with_permission: {
+        Args: { p_permission_code: string }
+        Returns: number
+      }
       delete_category: {
         Args: { p_category_id: number; p_force?: boolean }
         Returns: Json
@@ -6625,6 +6730,37 @@ export type Database = {
         }
         Returns: number
       }
+      sushicome_consume_public_rate_limit: {
+        Args: {
+          p_bucket_hash: string
+          p_max_requests: number
+          p_window_seconds: number
+        }
+        Returns: boolean
+      }
+      sushicome_create_reserver: {
+        Args: {
+          p_contact_name: string
+          p_contact_phone: string
+          p_email: string
+          p_guest_count: number
+          p_note?: string
+          p_reserved_at: string
+          p_restaurant_id: number
+        }
+        Returns: {
+          confirmation_token: string
+          id: number
+          record_no: number
+        }[]
+      }
+      sushicome_get_top_selling_dishes: {
+        Args: { p_restaurant_id: number }
+        Returns: {
+          dish_id: number
+          sold_quantity: number
+        }[]
+      }
       transfer_order_items_tx: {
         Args: {
           p_destination_start_time: number
@@ -6711,7 +6847,7 @@ export type Database = {
         }
         Returns: undefined
       }
-      verify_platform_api_key: {
+      verify_api_key: {
         Args: { p_function_name: string; p_key_hash: string }
         Returns: {
           client_id: number

@@ -17,4 +17,3 @@ export * from "./get-delivery-tracking.ts";
 export * from "./get-rider-earnings.ts";
 export * from "./get-rider-restaurants.ts";
 export * from "./get-rider-delivery-pool.ts";
-export * from "./get-restaurant-platform-config.ts";

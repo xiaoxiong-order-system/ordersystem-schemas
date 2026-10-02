@@ -38,15 +38,15 @@ const ShopifyOrderDataSchema = z.object({
   deliveryAddress: z.unknown().nullable().optional(),
 }).passthrough();
 
-export const ShopifyOrderWebhookInputSchema = z.object({
+export const ShopifySushicomeOrderWebhookInputSchema = z.object({
   action: z.enum(["order_create", "order_cancelled", "order_updated", "order_paid"]),
   data: ShopifyOrderDataSchema,
 });
-export type ShopifyOrderWebhookInput = z.infer<typeof ShopifyOrderWebhookInputSchema>;
+export type ShopifySushicomeOrderWebhookInput = z.infer<typeof ShopifySushicomeOrderWebhookInputSchema>;
 
-export const ShopifyOrderWebhookResponseSchema = z.object({
+export const ShopifySushicomeOrderWebhookResponseSchema = z.object({
   ok: z.literal(true),
   order_id: z.number().int(),
   restaurant_id: z.number().int().nullable(),
 });
-export type ShopifyOrderWebhookResponse = z.infer<typeof ShopifyOrderWebhookResponseSchema>;
+export type ShopifySushicomeOrderWebhookResponse = z.infer<typeof ShopifySushicomeOrderWebhookResponseSchema>;
