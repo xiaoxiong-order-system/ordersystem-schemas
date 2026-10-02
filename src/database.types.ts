@@ -3046,6 +3046,7 @@ export type Database = {
           created_at: string
           enable: boolean
           id: number
+          merchant_create_order_sale_channel: string
           restaurant_id: number
           start_time: number | null
           status: string
@@ -3057,6 +3058,7 @@ export type Database = {
           created_at?: string
           enable?: boolean
           id?: number
+          merchant_create_order_sale_channel?: string
           restaurant_id: number
           start_time?: number | null
           status?: string
@@ -3068,6 +3070,7 @@ export type Database = {
           created_at?: string
           enable?: boolean
           id?: number
+          merchant_create_order_sale_channel?: string
           restaurant_id?: number
           start_time?: number | null
           status?: string
@@ -3076,6 +3079,13 @@ export type Database = {
           weight?: number
         }
         Relationships: [
+          {
+            foreignKeyName: "restaurant_table_merchant_create_order_sale_channel_fkey"
+            columns: ["merchant_create_order_sale_channel"]
+            isOneToOne: false
+            referencedRelation: "sale_channel"
+            referencedColumns: ["code"]
+          },
           {
             foreignKeyName: "restaurant_table_restaurant_id_fkey"
             columns: ["restaurant_id"]
