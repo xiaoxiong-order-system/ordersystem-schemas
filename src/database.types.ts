@@ -1822,6 +1822,39 @@ export type Database = {
         }
         Relationships: []
       }
+      message_code_multilingua: {
+        Row: {
+          language_code: string
+          message_code: string
+          text: string
+        }
+        Insert: {
+          language_code: string
+          message_code: string
+          text: string
+        }
+        Update: {
+          language_code?: string
+          message_code?: string
+          text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "message_code_multilingua_language_code_fkey"
+            columns: ["language_code"]
+            isOneToOne: false
+            referencedRelation: "language"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "message_code_multilingua_message_code_fkey"
+            columns: ["message_code"]
+            isOneToOne: false
+            referencedRelation: "message_code"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
       notification_type: {
         Row: {
           code: string
@@ -2779,23 +2812,32 @@ export type Database = {
       restaurant_message: {
         Row: {
           count: number
+          created_at: string
           data: Json | null
+          id: number
           message: string
           message_code: string
+          read_at: string | null
           restaurant_id: number
         }
         Insert: {
           count?: number
+          created_at?: string
           data?: Json | null
+          id?: number
           message: string
           message_code: string
+          read_at?: string | null
           restaurant_id: number
         }
         Update: {
           count?: number
+          created_at?: string
           data?: Json | null
+          id?: number
           message?: string
           message_code?: string
+          read_at?: string | null
           restaurant_id?: number
         }
         Relationships: [
