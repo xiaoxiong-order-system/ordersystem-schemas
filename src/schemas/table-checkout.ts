@@ -13,6 +13,9 @@ const printConfigBase = z.object({
   paperWidth: z.union([z.literal(58), z.literal(80), z.literal(100)]),
   dpi: z.union([z.literal(203), z.literal(300)]),
   printableWidthMm: z.number().optional(),
+  // printer.id：传了则后端按它查 printer 表取 cut_after_print（驱动模式，忽略 cutAfterPrint），
+  // 不传才按 printerId（打印机名）兜底回填
+  printer_id: z.number().int().positive().optional(),
 });
 
 // mode=ip 必须提供 host（port 默认 9100）；mode=driver 必须提供 printerId
@@ -25,6 +28,8 @@ export const PrintConfigSchema = z.discriminatedUnion("mode", [
   printConfigBase.extend({
     mode: z.literal("driver"),
     printerId: z.string().min(1),
+    // 打印后是否发送切纸指令，缺省不发（仅驱动模式）
+    cutAfterPrint: z.boolean().optional(),
   }),
 ]);
 
@@ -90,6 +95,34 @@ export const PeopleBreakdownItemSchema = z.object({
 });
 export type PeopleBreakdownItem = z.infer<typeof PeopleBreakdownItemSchema>;
 
+// AA 每人单独发票的一份：一次结账生成 N 条 table_payment + N 张发票（见 table-checkout README
+// "AA 每人单独发票"）。每份各自的支付方式、小费和开票信息；各份 amount（不含小费）之和 +
+// 各份 tip_amount 之和 必须等于整单应付，各份 payment_items 之和 = 本份 amount + tip_amount
+export const SplitShareSchema = z.object({
+  // 本份应付，不含小费，最多两位小数
+  amount: z.number().nonnegative(),
+  tip_amount: z.number().nonnegative().default(0),
+  // 每份必须显式给出各支付条目的金额（不存在省略现金金额的情况）
+  payment_items: z
+    .array(
+      z.object({
+        payment_type_code: z.string().min(1),
+        amount: z.number().nonnegative(),
+        tip_amount: z.number().nonnegative().optional(),
+      }),
+    )
+    .min(1),
+  nif: z.string().optional(),
+  customer_name: z.string().optional(),
+  address: z.string().optional(),
+  // 电子发票邮箱：空串/纯空格视为没填，填了才校验邮箱格式
+  invoice_email: z.preprocess(
+    (v) => (typeof v === "string" && v.trim() === "" ? undefined : typeof v === "string" ? v.trim() : v),
+    z.string().email().optional(),
+  ),
+});
+export type SplitShare = z.infer<typeof SplitShareSchema>;
+
 export const CheckoutInputSchema = z.object({
   restaurant_id: z.number().int().positive(),
   table_id: z.number().int().positive(),
@@ -118,6 +151,9 @@ export const CheckoutInputSchema = z.object({
   // 单行折扣后的金额；table_payment.discount_amount = 单行折扣合计 + 整单折扣
   line_discounts: z.array(LineDiscountSchema).optional(),
   people_discounts: z.array(PeopleDiscountSchema).optional(),
+  // AA 每人单独发票：提供时忽略顶层 payment_items/nif/customer_name/address（顶层 payment_items
+  // 仍须传，至少一条），不能与 skip_invoice 同时使用；2-20 份
+  split_shares: z.array(SplitShareSchema).min(2).max(20).optional(),
 });
 
 export type PaymentItemInput = z.infer<typeof PaymentItemInputSchema>;
@@ -143,6 +179,18 @@ export const CheckoutResponseSchema = z.object({
   // 被重置为 available；false 表示还有剩余未结，桌台仍是 occupied，
   // 可以继续下单/继续结账剩余部分
   table_closed: z.boolean(),
+  // 仅带 split_shares 时返回：每份的结账记录与发票结果（顶层字段取第一份）
+  payments: z
+    .array(
+      z.object({
+        payment_id: z.number().int(),
+        final_amount: z.number(),
+        invoice_status: z.string(),
+        invoice_ref: z.string().nullable(),
+        print_result: PrintResultSchema.nullable(),
+      }),
+    )
+    .optional(),
 });
 
 export type CheckoutResponse = z.infer<typeof CheckoutResponseSchema>;
