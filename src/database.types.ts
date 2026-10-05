@@ -1687,24 +1687,27 @@ export type Database = {
         Row: {
           city: string | null
           country: string | null
+          day: number
           id: number
-          month_day: string
+          month: number
           name: string
           year: number | null
         }
         Insert: {
           city?: string | null
           country?: string | null
+          day: number
           id?: number
-          month_day: string
+          month: number
           name: string
           year?: number | null
         }
         Update: {
           city?: string | null
           country?: string | null
+          day?: number
           id?: number
-          month_day?: string
+          month?: number
           name?: string
           year?: number | null
         }
