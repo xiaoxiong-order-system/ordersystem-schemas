@@ -2708,11 +2708,11 @@ export type Database = {
           email: string | null
           is_holiday: boolean
           location_city: string | null
-          location_country: string | null
+          location_country: string
           location_latitude: number | null
           location_longitude: number | null
           location_post_code: string | null
-          location_region: string | null
+          location_region: string
           location_street: string | null
           logo: string | null
           name: string | null
@@ -2729,11 +2729,11 @@ export type Database = {
           email?: string | null
           is_holiday?: boolean
           location_city?: string | null
-          location_country?: string | null
+          location_country: string
           location_latitude?: number | null
           location_longitude?: number | null
           location_post_code?: string | null
-          location_region?: string | null
+          location_region: string
           location_street?: string | null
           logo?: string | null
           name?: string | null
@@ -2750,11 +2750,11 @@ export type Database = {
           email?: string | null
           is_holiday?: boolean
           location_city?: string | null
-          location_country?: string | null
+          location_country?: string
           location_latitude?: number | null
           location_longitude?: number | null
           location_post_code?: string | null
-          location_region?: string | null
+          location_region?: string
           location_street?: string | null
           logo?: string | null
           name?: string | null
@@ -6674,10 +6674,13 @@ export type Database = {
         Args: { p_cutoff: string; p_restaurant_id: number }
         Returns: number
       }
+      fn_reset_restaurant_is_holiday_cron: { Args: never; Returns: undefined }
+      fn_restaurant_timezone: { Args: { p_country: string }; Returns: string }
       fn_run_no_invoice_payments_cleanup_cron: {
         Args: never
         Returns: undefined
       }
+      fn_sync_holiday_cron: { Args: never; Returns: undefined }
       get_people_price: {
         Args: {
           p_date: string
