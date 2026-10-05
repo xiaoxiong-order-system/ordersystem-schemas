@@ -1687,23 +1687,26 @@ export type Database = {
         Row: {
           city: string | null
           country: string | null
-          date: string
           id: number
+          month_day: string
           name: string
+          year: number | null
         }
         Insert: {
           city?: string | null
           country?: string | null
-          date: string
           id?: number
+          month_day: string
           name: string
+          year?: number | null
         }
         Update: {
           city?: string | null
           country?: string | null
-          date?: string
           id?: number
+          month_day?: string
           name?: string
+          year?: number | null
         }
         Relationships: []
       }
