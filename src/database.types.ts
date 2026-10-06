@@ -4912,6 +4912,7 @@ export type Database = {
           enable: boolean
           price_information_card: boolean
           restaurant_id: number
+          show_group_dish_image: boolean
           view_model_id: number
         }
         Insert: {
@@ -4919,6 +4920,7 @@ export type Database = {
           enable?: boolean
           price_information_card?: boolean
           restaurant_id: number
+          show_group_dish_image?: boolean
           view_model_id?: number
         }
         Update: {
@@ -4926,6 +4928,7 @@ export type Database = {
           enable?: boolean
           price_information_card?: boolean
           restaurant_id?: number
+          show_group_dish_image?: boolean
           view_model_id?: number
         }
         Relationships: [
