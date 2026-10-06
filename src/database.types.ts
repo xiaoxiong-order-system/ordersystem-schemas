@@ -4133,6 +4133,7 @@ export type Database = {
           enable: boolean
           price_information_card: boolean
           restaurant_id: number
+          show_group_dish_image: boolean
           table_cooling_time: number
           table_order_use_password: boolean
           view_model_id: number
@@ -4146,6 +4147,7 @@ export type Database = {
           enable?: boolean
           price_information_card?: boolean
           restaurant_id: number
+          show_group_dish_image?: boolean
           table_cooling_time?: number
           table_order_use_password?: boolean
           view_model_id?: number
@@ -4159,6 +4161,7 @@ export type Database = {
           enable?: boolean
           price_information_card?: boolean
           restaurant_id?: number
+          show_group_dish_image?: boolean
           table_cooling_time?: number
           table_order_use_password?: boolean
           view_model_id?: number

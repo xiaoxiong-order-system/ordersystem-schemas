@@ -22,6 +22,8 @@ export const DineinControlSchema = z.object({
   business_hour_information_card: z.boolean(),
   price_information_card: z.boolean(),
   check_ip: z.boolean(),
+  // 展示分组内菜品图片：true 时点击分组内菜品行切换显示该菜品的图片
+  show_group_dish_image: z.boolean(),
 });
 
 export const DineinInfoCardSchema = z.object({
