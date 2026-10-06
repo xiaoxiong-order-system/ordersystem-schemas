@@ -2290,6 +2290,66 @@ export type Database = {
         }
         Relationships: []
       }
+      print_failure: {
+        Row: {
+          created_at: string
+          fail_count: number
+          id: number
+          last_error: string | null
+          order_id: number
+          order_item_ids: number[]
+          order_type: string
+          payload: Json
+          printer_id: number | null
+          restaurant_id: number
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          fail_count?: number
+          id?: number
+          last_error?: string | null
+          order_id: number
+          order_item_ids: number[]
+          order_type: string
+          payload: Json
+          printer_id?: number | null
+          restaurant_id: number
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          fail_count?: number
+          id?: number
+          last_error?: string | null
+          order_id?: number
+          order_item_ids?: number[]
+          order_type?: string
+          payload?: Json
+          printer_id?: number | null
+          restaurant_id?: number
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "print_failure_printer_id_fkey"
+            columns: ["printer_id"]
+            isOneToOne: false
+            referencedRelation: "printer"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "print_failure_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       printer: {
         Row: {
           cut_after_print: boolean
