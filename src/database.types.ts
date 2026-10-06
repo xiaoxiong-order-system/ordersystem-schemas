@@ -1607,6 +1607,143 @@ export type Database = {
         }
         Relationships: []
       }
+      external_platform_order: {
+        Row: {
+          action: string
+          address: string | null
+          contact_name: string | null
+          contact_phone: string | null
+          created_at: string
+          currency: string | null
+          delivery_time: string | null
+          email: string | null
+          fulfillment_type: string | null
+          id: number
+          note: string | null
+          payload: Json
+          payment_status: string
+          pickup_date: string | null
+          pickup_time: string | null
+          platform: string
+          platform_location_key: string | null
+          platform_order_id: string
+          platform_order_name: string | null
+          postal_code: string | null
+          raw_status: string | null
+          restaurant_id: number | null
+          status: string
+          total_price: number | null
+          updated_at: string
+        }
+        Insert: {
+          action: string
+          address?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          currency?: string | null
+          delivery_time?: string | null
+          email?: string | null
+          fulfillment_type?: string | null
+          id?: number
+          note?: string | null
+          payload: Json
+          payment_status?: string
+          pickup_date?: string | null
+          pickup_time?: string | null
+          platform: string
+          platform_location_key?: string | null
+          platform_order_id: string
+          platform_order_name?: string | null
+          postal_code?: string | null
+          raw_status?: string | null
+          restaurant_id?: number | null
+          status?: string
+          total_price?: number | null
+          updated_at?: string
+        }
+        Update: {
+          action?: string
+          address?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          currency?: string | null
+          delivery_time?: string | null
+          email?: string | null
+          fulfillment_type?: string | null
+          id?: number
+          note?: string | null
+          payload?: Json
+          payment_status?: string
+          pickup_date?: string | null
+          pickup_time?: string | null
+          platform?: string
+          platform_location_key?: string | null
+          platform_order_id?: string
+          platform_order_name?: string | null
+          postal_code?: string | null
+          raw_status?: string | null
+          restaurant_id?: number | null
+          status?: string
+          total_price?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "external_platform_order_platform_fkey"
+            columns: ["platform"]
+            isOneToOne: false
+            referencedRelation: "external_platform"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "external_platform_order_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      external_platform_order_item: {
+        Row: {
+          external_platform_order_id: number
+          id: number
+          name: string | null
+          price: number
+          properties: Json | null
+          quantity: number
+          sku: string | null
+        }
+        Insert: {
+          external_platform_order_id: number
+          id?: number
+          name?: string | null
+          price?: number
+          properties?: Json | null
+          quantity?: number
+          sku?: string | null
+        }
+        Update: {
+          external_platform_order_id?: number
+          id?: number
+          name?: string | null
+          price?: number
+          properties?: Json | null
+          quantity?: number
+          sku?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "external_platform_order_item_external_platform_order_id_fkey"
+            columns: ["external_platform_order_id"]
+            isOneToOne: false
+            referencedRelation: "external_platform_order"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       group_description_multilingua: {
         Row: {
           group_id: number
@@ -2973,6 +3110,45 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "restaurant_permission"
             referencedColumns: ["code"]
+          },
+        ]
+      }
+      restaurant_platform_config: {
+        Row: {
+          enable: boolean
+          platform: string
+          platform_location_key: string
+          restaurant_id: number
+          updated_at: string
+        }
+        Insert: {
+          enable?: boolean
+          platform: string
+          platform_location_key: string
+          restaurant_id: number
+          updated_at?: string
+        }
+        Update: {
+          enable?: boolean
+          platform?: string
+          platform_location_key?: string
+          restaurant_id?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "restaurant_platform_config_platform_fkey"
+            columns: ["platform"]
+            isOneToOne: false
+            referencedRelation: "external_platform"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "restaurant_platform_config_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -6674,8 +6850,11 @@ export type Database = {
         Args: { p_cutoff: string; p_restaurant_id: number }
         Returns: number
       }
+      fn_invoke_edge_function: {
+        Args: { p_function: string }
+        Returns: undefined
+      }
       fn_reset_restaurant_is_holiday_cron: { Args: never; Returns: undefined }
-      fn_restaurant_timezone: { Args: { p_country: string }; Returns: string }
       fn_run_no_invoice_payments_cleanup_cron: {
         Args: never
         Returns: undefined
