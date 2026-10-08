@@ -13,6 +13,7 @@ export * from "./cancel-payment-intent.ts";
 export * from "./export-restaurant.ts";
 export * from "./import-restaurant.ts";
 export * from "./create-service.ts";
+export * from "./create-sushicome-platform-order.ts";
 export * from "./cancel-service.ts";
 export * from "./create-sub-service.ts";
 export * from "./cancel-sub-service.ts";
