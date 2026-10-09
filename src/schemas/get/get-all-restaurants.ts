@@ -16,9 +16,9 @@ export const RestaurantInformationSchema = z.object({
 });
 
 export const AllRestaurantsServiceInfoSchema = z.object({
-  has: z.boolean(), // 是否已开通（有 basic 或 payment.online 权限）
+  has: z.boolean(), // 是否已开通（有 basic 权限；takeaway 与 delivery 共用 service.delivery.basic）
   enabled: z.boolean(), // service_*_control.enable
-  payment_online: z.boolean(),
+  payment_online: z.boolean(), // 是否支持线上支付（全局开关 service.payment_online.basic，各服务取值相同）
 });
 
 // POS 无线上支付概念，不含 payment_online
