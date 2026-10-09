@@ -6,7 +6,6 @@ export * from "./get-vendus-registers.ts";
 export * from "./get-physical-printers-with-driver.ts";
 export * from "./get-tags.ts";
 export * from "./get-dinein-service.ts";
-export * from "./get-takeaway-service.ts";
 export * from "./get-delivery-service.ts";
 export * from "./get-reserver-service.ts";
 export * from "./get-all-restaurants.ts";

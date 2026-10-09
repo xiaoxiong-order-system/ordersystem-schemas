@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-// 自定义菜（custom_dish）下单选项，按分组嵌套；create-order / create-takeaway 共用
+// 自定义菜（custom_dish）下单选项，按分组嵌套；create-order / create-delivery-order 共用
 export const CustomDishItemSelectionSchema = z.object({
   custom_dish_item_id: z.number().int().positive(),
   quantity: z.number().int().min(1),

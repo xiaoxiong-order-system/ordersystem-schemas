@@ -16,7 +16,7 @@ export const RestaurantInformationSchema = z.object({
 });
 
 export const AllRestaurantsServiceInfoSchema = z.object({
-  has: z.boolean(), // 是否已开通（有 basic 权限；takeaway 与 delivery 共用 service.delivery.basic）
+  has: z.boolean(), // 是否已开通（有该服务的 basic 权限）
   enabled: z.boolean(), // service_*_control.enable
   payment_online: z.boolean(), // 是否支持线上支付（全局开关 service.payment_online.basic，各服务取值相同）
 });
@@ -27,10 +27,16 @@ export const AllRestaurantsPosServiceInfoSchema = z.object({
   enabled: z.boolean(), // service_pos_control.enable
 });
 
+// 外卖配送（2026-10-09 起外卖自取并入 delivery，不再有独立的 takeaway 项）：
+// enabled = 自取或配送任一开启；takeaway_enabled / delivery_enabled 对应 service_delivery_control 的两个开关
+export const AllRestaurantsDeliveryServiceInfoSchema = AllRestaurantsServiceInfoSchema.extend({
+  takeaway_enabled: z.boolean(),
+  delivery_enabled: z.boolean(),
+});
+
 export const AllRestaurantsServiceFlagsSchema = z.object({
   order: AllRestaurantsServiceInfoSchema,
-  takeaway: AllRestaurantsServiceInfoSchema,
-  delivery: AllRestaurantsServiceInfoSchema,
+  delivery: AllRestaurantsDeliveryServiceInfoSchema,
   reserver: AllRestaurantsServiceInfoSchema,
   pos: AllRestaurantsPosServiceInfoSchema,
 });

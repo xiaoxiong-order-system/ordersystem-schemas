@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-export const IssueTakeawayInvoiceInputSchema = z.object({
-  takeaway_order_id: z.number().int().positive(),
+export const IssueDeliveryInvoiceInputSchema = z.object({
+  delivery_order_id: z.number().int().positive(),
   nif:            z.string().trim().min(1).optional(),
   customer_name:  z.string().trim().min(1).optional(),
   // 不做固定枚举——外卖到店支付方式不受限于线上预付的 mbway/card，
@@ -9,10 +9,10 @@ export const IssueTakeawayInvoiceInputSchema = z.object({
   // payment_type_code 保持同样宽松的自由字符串处理
   payment_method: z.string().min(1).optional(),
 });
-export type IssueTakeawayInvoiceInput = z.infer<typeof IssueTakeawayInvoiceInputSchema>;
+export type IssueDeliveryInvoiceInput = z.infer<typeof IssueDeliveryInvoiceInputSchema>;
 
-export const IssueTakeawayInvoiceResponseSchema = z.object({
-  takeaway_order_id: z.number().int(),
+export const IssueDeliveryInvoiceResponseSchema = z.object({
+  delivery_order_id: z.number().int(),
   invoice_status: z.enum(["success", "failed", "none"]),
   invoice_ref:    z.string().nullable(),
   invoice_error:  z.string().nullable(),
@@ -22,4 +22,4 @@ export const IssueTakeawayInvoiceResponseSchema = z.object({
     message: z.string(),
   }).nullable(),
 });
-export type IssueTakeawayInvoiceResponse = z.infer<typeof IssueTakeawayInvoiceResponseSchema>;
+export type IssueDeliveryInvoiceResponse = z.infer<typeof IssueDeliveryInvoiceResponseSchema>;

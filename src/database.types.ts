@@ -7,11 +7,6 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instantiate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
-  __InternalSupabase: {
-    PostgrestVersion: "14.5"
-  }
   graphql_public: {
     Tables: {
       [_ in never]: never
@@ -868,20 +863,24 @@ export type Database = {
       }
       delivery_order: {
         Row: {
-          address: string
+          address: string | null
           assigned_at: string | null
           contact_name: string
-          contact_phone: string
+          contact_phone: string | null
           created_at: string
           deleted_at: string | null
           delivered_at: string | null
           delivery_time: string | null
-          email: string
+          email: string | null
           id: number
+          invoice_ref: string | null
+          invoice_status: string
           note: string | null
+          order_type: string
           payment_status: string
           picked_up_at: string | null
-          postal_code: string
+          pickup_time: string | null
+          postal_code: string | null
           record_no: number
           restaurant_id: number
           rider_fee: number | null
@@ -892,20 +891,24 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
-          address: string
+          address?: string | null
           assigned_at?: string | null
           contact_name: string
-          contact_phone: string
+          contact_phone?: string | null
           created_at?: string
           deleted_at?: string | null
           delivered_at?: string | null
           delivery_time?: string | null
-          email: string
+          email?: string | null
           id?: number
+          invoice_ref?: string | null
+          invoice_status?: string
           note?: string | null
+          order_type: string
           payment_status?: string
           picked_up_at?: string | null
-          postal_code: string
+          pickup_time?: string | null
+          postal_code?: string | null
           record_no: number
           restaurant_id: number
           rider_fee?: number | null
@@ -916,20 +919,24 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
-          address?: string
+          address?: string | null
           assigned_at?: string | null
           contact_name?: string
-          contact_phone?: string
+          contact_phone?: string | null
           created_at?: string
           deleted_at?: string | null
           delivered_at?: string | null
           delivery_time?: string | null
-          email?: string
+          email?: string | null
           id?: number
+          invoice_ref?: string | null
+          invoice_status?: string
           note?: string | null
+          order_type?: string
           payment_status?: string
           picked_up_at?: string | null
-          postal_code?: string
+          pickup_time?: string | null
+          postal_code?: string | null
           record_no?: number
           restaurant_id?: number
           rider_fee?: number | null
@@ -1070,6 +1077,24 @@ export type Database = {
         }
         Update: {
           code?: string
+          text?: string
+        }
+        Relationships: []
+      }
+      delivery_print_model: {
+        Row: {
+          id: number
+          print_model_code: string
+          text: string
+        }
+        Insert: {
+          id?: number
+          print_model_code: string
+          text: string
+        }
+        Update: {
+          id?: number
+          print_model_code?: string
           text?: string
         }
         Relationships: []
@@ -2353,6 +2378,7 @@ export type Database = {
       printer: {
         Row: {
           cut_after_print: boolean
+          delivery_print_model_id: number
           divide: boolean
           dpi: number
           font: number
@@ -2361,18 +2387,18 @@ export type Database = {
           paper_width: number
           physical_printer_ip: string | null
           physical_printer_name: string | null
-          print_takeaway: boolean
+          print_delivery: boolean
           printable_width_mm: number | null
           printer_driver_id: number | null
           restaurant_id: number
           status: string | null
-          takeaway_print_model_id: number
           text: string
           updated_at: string
           use_ip: boolean
         }
         Insert: {
           cut_after_print?: boolean
+          delivery_print_model_id?: number
           divide?: boolean
           dpi?: number
           font?: number
@@ -2381,18 +2407,18 @@ export type Database = {
           paper_width?: number
           physical_printer_ip?: string | null
           physical_printer_name?: string | null
-          print_takeaway?: boolean
+          print_delivery?: boolean
           printable_width_mm?: number | null
           printer_driver_id?: number | null
           restaurant_id: number
           status?: string | null
-          takeaway_print_model_id?: number
           text: string
           updated_at?: string
           use_ip?: boolean
         }
         Update: {
           cut_after_print?: boolean
+          delivery_print_model_id?: number
           divide?: boolean
           dpi?: number
           font?: number
@@ -2401,17 +2427,23 @@ export type Database = {
           paper_width?: number
           physical_printer_ip?: string | null
           physical_printer_name?: string | null
-          print_takeaway?: boolean
+          print_delivery?: boolean
           printable_width_mm?: number | null
           printer_driver_id?: number | null
           restaurant_id?: number
           status?: string | null
-          takeaway_print_model_id?: number
           text?: string
           updated_at?: string
           use_ip?: boolean
         }
         Relationships: [
+          {
+            foreignKeyName: "printer_delivery_print_model_id_fkey"
+            columns: ["delivery_print_model_id"]
+            isOneToOne: false
+            referencedRelation: "delivery_print_model"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "printer_order_print_model_id_fkey"
             columns: ["order_print_model_id"]
@@ -2439,13 +2471,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "printer_status"
             referencedColumns: ["code"]
-          },
-          {
-            foreignKeyName: "printer_takeaway_print_model_id_fkey"
-            columns: ["takeaway_print_model_id"]
-            isOneToOne: false
-            referencedRelation: "takeaway_print_model"
-            referencedColumns: ["id"]
           },
         ]
       }
@@ -2783,8 +2808,8 @@ export type Database = {
           parent_id: number | null
           restaurant_id: number
           updated_at: string
+          weight_delivery: number
           weight_dinein: number
-          weight_takeaway: number
         }
         Insert: {
           brand_id?: number | null
@@ -2793,8 +2818,8 @@ export type Database = {
           parent_id?: number | null
           restaurant_id: number
           updated_at?: string
+          weight_delivery?: number
           weight_dinein?: number
-          weight_takeaway?: number
         }
         Update: {
           brand_id?: number | null
@@ -2803,8 +2828,8 @@ export type Database = {
           parent_id?: number | null
           restaurant_id?: number
           updated_at?: string
+          weight_delivery?: number
           weight_dinein?: number
-          weight_takeaway?: number
         }
         Relationships: [
           {
@@ -3895,6 +3920,7 @@ export type Database = {
           exclude_monthly_day: number[]
           exclude_week_day: number[]
           id: number
+          order_type: string
           restaurant_id: number
           time_interval: number
         }
@@ -3903,6 +3929,7 @@ export type Database = {
           exclude_monthly_day?: number[]
           exclude_week_day?: number[]
           id?: number
+          order_type: string
           restaurant_id: number
           time_interval?: number
         }
@@ -3911,6 +3938,7 @@ export type Database = {
           exclude_monthly_day?: number[]
           exclude_week_day?: number[]
           id?: number
+          order_type?: string
           restaurant_id?: number
           time_interval?: number
         }
@@ -3918,7 +3946,7 @@ export type Database = {
           {
             foreignKeyName: "service_delivery_business_hour_restaurant_id_fkey"
             columns: ["restaurant_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "service_delivery"
             referencedColumns: ["restaurant_id"]
           },
@@ -3926,16 +3954,31 @@ export type Database = {
       }
       service_delivery_control: {
         Row: {
-          enable: boolean
+          business_hour_information_card: boolean
+          delivery_enable: boolean
+          price_information_card: boolean
           restaurant_id: number
+          show_group_dish_image: boolean
+          takeaway_enable: boolean
+          view_model_id: number
         }
         Insert: {
-          enable?: boolean
+          business_hour_information_card?: boolean
+          delivery_enable?: boolean
+          price_information_card?: boolean
           restaurant_id: number
+          show_group_dish_image?: boolean
+          takeaway_enable?: boolean
+          view_model_id?: number
         }
         Update: {
-          enable?: boolean
+          business_hour_information_card?: boolean
+          delivery_enable?: boolean
+          price_information_card?: boolean
           restaurant_id?: number
+          show_group_dish_image?: boolean
+          takeaway_enable?: boolean
+          view_model_id?: number
         }
         Relationships: [
           {
@@ -3945,12 +3988,180 @@ export type Database = {
             referencedRelation: "service_delivery"
             referencedColumns: ["restaurant_id"]
           },
+          {
+            foreignKeyName: "service_delivery_control_view_model_id_fkey"
+            columns: ["view_model_id"]
+            isOneToOne: false
+            referencedRelation: "view_model"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      service_delivery_information: {
+        Row: {
+          restaurant_id: number
+        }
+        Insert: {
+          restaurant_id: number
+        }
+        Update: {
+          restaurant_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_delivery_information_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: true
+            referencedRelation: "service_delivery"
+            referencedColumns: ["restaurant_id"]
+          },
+        ]
+      }
+      service_delivery_information_background: {
+        Row: {
+          id: number
+          image_path: string
+          restaurant_id: number
+          screen_type: Database["public"]["Enums"]["screen_type"]
+          weight: number
+        }
+        Insert: {
+          id?: number
+          image_path: string
+          restaurant_id: number
+          screen_type: Database["public"]["Enums"]["screen_type"]
+          weight?: number
+        }
+        Update: {
+          id?: number
+          image_path?: string
+          restaurant_id?: number
+          screen_type?: Database["public"]["Enums"]["screen_type"]
+          weight?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_delivery_information_background_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "service_delivery"
+            referencedColumns: ["restaurant_id"]
+          },
+        ]
+      }
+      service_delivery_information_card: {
+        Row: {
+          enable: boolean
+          icon: string | null
+          id: number
+          information_card_type_id: number
+          restaurant_id: number
+          weight: number
+        }
+        Insert: {
+          enable?: boolean
+          icon?: string | null
+          id?: number
+          information_card_type_id: number
+          restaurant_id: number
+          weight?: number
+        }
+        Update: {
+          enable?: boolean
+          icon?: string | null
+          id?: number
+          information_card_type_id?: number
+          restaurant_id?: number
+          weight?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_delivery_information_card_information_card_type_id_fkey"
+            columns: ["information_card_type_id"]
+            isOneToOne: false
+            referencedRelation: "information_card_type"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "service_delivery_information_card_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      service_delivery_information_card_message_multilingua: {
+        Row: {
+          language_code: string
+          service_delivery_information_card_id: number
+          text: string | null
+        }
+        Insert: {
+          language_code: string
+          service_delivery_information_card_id: number
+          text?: string | null
+        }
+        Update: {
+          language_code?: string
+          service_delivery_information_card_id?: number
+          text?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_delivery_information_card_message_mu_language_code_fkey"
+            columns: ["language_code"]
+            isOneToOne: false
+            referencedRelation: "language"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "service_delivery_information_service_delivery_information_fkey1"
+            columns: ["service_delivery_information_card_id"]
+            isOneToOne: false
+            referencedRelation: "service_delivery_information_card"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      service_delivery_information_card_title_multilingua: {
+        Row: {
+          language_code: string
+          service_delivery_information_card_id: number
+          text: string | null
+        }
+        Insert: {
+          language_code: string
+          service_delivery_information_card_id: number
+          text?: string | null
+        }
+        Update: {
+          language_code?: string
+          service_delivery_information_card_id?: number
+          text?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_delivery_information__service_delivery_information_fkey"
+            columns: ["service_delivery_information_card_id"]
+            isOneToOne: false
+            referencedRelation: "service_delivery_information_card"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "service_delivery_information_card_title_mult_language_code_fkey"
+            columns: ["language_code"]
+            isOneToOne: false
+            referencedRelation: "language"
+            referencedColumns: ["code"]
+          },
         ]
       }
       service_delivery_open_hour: {
         Row: {
           discount: number
           end_time: string
+          order_type: string
           restaurant_id: number
           start_time: string
           weekday: Database["public"]["Enums"]["weekday"]
@@ -3958,6 +4169,7 @@ export type Database = {
         Insert: {
           discount?: number
           end_time: string
+          order_type: string
           restaurant_id: number
           start_time: string
           weekday: Database["public"]["Enums"]["weekday"]
@@ -3965,6 +4177,7 @@ export type Database = {
         Update: {
           discount?: number
           end_time?: string
+          order_type?: string
           restaurant_id?: number
           start_time?: string
           weekday?: Database["public"]["Enums"]["weekday"]
@@ -4022,6 +4235,7 @@ export type Database = {
           end_time: string | null
           id: number
           month: number | null
+          order_type: string
           restaurant_id: number
           start_time: string
           text: string
@@ -4034,6 +4248,7 @@ export type Database = {
           end_time?: string | null
           id?: number
           month?: number | null
+          order_type: string
           restaurant_id: number
           start_time: string
           text: string
@@ -4046,6 +4261,7 @@ export type Database = {
           end_time?: string | null
           id?: number
           month?: number | null
+          order_type?: string
           restaurant_id?: number
           start_time?: string
           text?: string
@@ -4841,384 +5057,6 @@ export type Database = {
             columns: ["restaurant_id"]
             isOneToOne: false
             referencedRelation: "service_reserver"
-            referencedColumns: ["restaurant_id"]
-          },
-        ]
-      }
-      service_takeaway: {
-        Row: {
-          created_at: string
-          paid_on: string
-          restaurant_id: number
-        }
-        Insert: {
-          created_at?: string
-          paid_on?: string
-          restaurant_id: number
-        }
-        Update: {
-          created_at?: string
-          paid_on?: string
-          restaurant_id?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "service_takeaway_restaurant_id_fkey"
-            columns: ["restaurant_id"]
-            isOneToOne: true
-            referencedRelation: "restaurant"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      service_takeaway_business_hour: {
-        Row: {
-          exclude_date: string[]
-          exclude_monthly_day: number[]
-          exclude_week_day: number[]
-          id: number
-          restaurant_id: number
-          time_interval: number
-        }
-        Insert: {
-          exclude_date?: string[]
-          exclude_monthly_day?: number[]
-          exclude_week_day?: number[]
-          id?: number
-          restaurant_id: number
-          time_interval?: number
-        }
-        Update: {
-          exclude_date?: string[]
-          exclude_monthly_day?: number[]
-          exclude_week_day?: number[]
-          id?: number
-          restaurant_id?: number
-          time_interval?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "service_takeaway_business_hour_restaurant_id_fkey"
-            columns: ["restaurant_id"]
-            isOneToOne: true
-            referencedRelation: "service_takeaway"
-            referencedColumns: ["restaurant_id"]
-          },
-        ]
-      }
-      service_takeaway_control: {
-        Row: {
-          business_hour_information_card: boolean
-          enable: boolean
-          price_information_card: boolean
-          restaurant_id: number
-          show_group_dish_image: boolean
-          view_model_id: number
-        }
-        Insert: {
-          business_hour_information_card?: boolean
-          enable?: boolean
-          price_information_card?: boolean
-          restaurant_id: number
-          show_group_dish_image?: boolean
-          view_model_id?: number
-        }
-        Update: {
-          business_hour_information_card?: boolean
-          enable?: boolean
-          price_information_card?: boolean
-          restaurant_id?: number
-          show_group_dish_image?: boolean
-          view_model_id?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "service_takeaway_control_restaurant_id_fkey"
-            columns: ["restaurant_id"]
-            isOneToOne: true
-            referencedRelation: "service_takeaway"
-            referencedColumns: ["restaurant_id"]
-          },
-          {
-            foreignKeyName: "service_takeaway_control_view_model_id_fkey"
-            columns: ["view_model_id"]
-            isOneToOne: false
-            referencedRelation: "view_model"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      service_takeaway_information: {
-        Row: {
-          restaurant_id: number
-        }
-        Insert: {
-          restaurant_id: number
-        }
-        Update: {
-          restaurant_id?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "service_takeaway_information_restaurant_id_fkey"
-            columns: ["restaurant_id"]
-            isOneToOne: true
-            referencedRelation: "service_takeaway"
-            referencedColumns: ["restaurant_id"]
-          },
-        ]
-      }
-      service_takeaway_information_background: {
-        Row: {
-          id: number
-          image_path: string
-          restaurant_id: number
-          screen_type: Database["public"]["Enums"]["screen_type"]
-          weight: number
-        }
-        Insert: {
-          id?: number
-          image_path: string
-          restaurant_id: number
-          screen_type: Database["public"]["Enums"]["screen_type"]
-          weight?: number
-        }
-        Update: {
-          id?: number
-          image_path?: string
-          restaurant_id?: number
-          screen_type?: Database["public"]["Enums"]["screen_type"]
-          weight?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "service_takeaway_information_background_restaurant_id_fkey"
-            columns: ["restaurant_id"]
-            isOneToOne: false
-            referencedRelation: "service_takeaway"
-            referencedColumns: ["restaurant_id"]
-          },
-        ]
-      }
-      service_takeaway_information_card: {
-        Row: {
-          enable: boolean
-          icon: string | null
-          id: number
-          information_card_type_id: number
-          restaurant_id: number
-          weight: number
-        }
-        Insert: {
-          enable?: boolean
-          icon?: string | null
-          id?: number
-          information_card_type_id: number
-          restaurant_id: number
-          weight?: number
-        }
-        Update: {
-          enable?: boolean
-          icon?: string | null
-          id?: number
-          information_card_type_id?: number
-          restaurant_id?: number
-          weight?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "service_takeaway_information_card_information_card_type_id_fkey"
-            columns: ["information_card_type_id"]
-            isOneToOne: false
-            referencedRelation: "information_card_type"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "service_takeaway_information_card_restaurant_id_fkey"
-            columns: ["restaurant_id"]
-            isOneToOne: false
-            referencedRelation: "restaurant"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      service_takeaway_information_card_message_multilingua: {
-        Row: {
-          language_code: string
-          service_takeaway_information_card_id: number
-          text: string | null
-        }
-        Insert: {
-          language_code: string
-          service_takeaway_information_card_id: number
-          text?: string | null
-        }
-        Update: {
-          language_code?: string
-          service_takeaway_information_card_id?: number
-          text?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "service_takeaway_information_card_message_mu_language_code_fkey"
-            columns: ["language_code"]
-            isOneToOne: false
-            referencedRelation: "language"
-            referencedColumns: ["code"]
-          },
-          {
-            foreignKeyName: "service_takeaway_information_service_takeaway_information_fkey1"
-            columns: ["service_takeaway_information_card_id"]
-            isOneToOne: false
-            referencedRelation: "service_takeaway_information_card"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      service_takeaway_information_card_title_multilingua: {
-        Row: {
-          language_code: string
-          service_takeaway_information_card_id: number
-          text: string | null
-        }
-        Insert: {
-          language_code: string
-          service_takeaway_information_card_id: number
-          text?: string | null
-        }
-        Update: {
-          language_code?: string
-          service_takeaway_information_card_id?: number
-          text?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "service_takeaway_information__service_takeaway_information_fkey"
-            columns: ["service_takeaway_information_card_id"]
-            isOneToOne: false
-            referencedRelation: "service_takeaway_information_card"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "service_takeaway_information_card_title_mult_language_code_fkey"
-            columns: ["language_code"]
-            isOneToOne: false
-            referencedRelation: "language"
-            referencedColumns: ["code"]
-          },
-        ]
-      }
-      service_takeaway_open_hour: {
-        Row: {
-          discount: number
-          end_time: string
-          restaurant_id: number
-          start_time: string
-          weekday: Database["public"]["Enums"]["weekday"]
-        }
-        Insert: {
-          discount?: number
-          end_time: string
-          restaurant_id: number
-          start_time: string
-          weekday: Database["public"]["Enums"]["weekday"]
-        }
-        Update: {
-          discount?: number
-          end_time?: string
-          restaurant_id?: number
-          start_time?: string
-          weekday?: Database["public"]["Enums"]["weekday"]
-        }
-        Relationships: [
-          {
-            foreignKeyName: "service_takeaway_open_hour_restaurant_id_fkey"
-            columns: ["restaurant_id"]
-            isOneToOne: false
-            referencedRelation: "service_takeaway"
-            referencedColumns: ["restaurant_id"]
-          },
-        ]
-      }
-      service_takeaway_payment_type_control: {
-        Row: {
-          data: Json | null
-          enable: boolean
-          payment_type_code: string
-          restaurant_id: number
-        }
-        Insert: {
-          data?: Json | null
-          enable?: boolean
-          payment_type_code: string
-          restaurant_id: number
-        }
-        Update: {
-          data?: Json | null
-          enable?: boolean
-          payment_type_code?: string
-          restaurant_id?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "service_takeaway_payment_type_control_payment_type_code_fkey"
-            columns: ["payment_type_code"]
-            isOneToOne: false
-            referencedRelation: "payment_type"
-            referencedColumns: ["code"]
-          },
-          {
-            foreignKeyName: "service_takeaway_payment_type_control_restaurant_id_fkey"
-            columns: ["restaurant_id"]
-            isOneToOne: false
-            referencedRelation: "service_takeaway"
-            referencedColumns: ["restaurant_id"]
-          },
-        ]
-      }
-      service_takeaway_spacial_day: {
-        Row: {
-          day: number | null
-          enable: boolean
-          end_time: string | null
-          id: number
-          month: number | null
-          restaurant_id: number
-          start_time: string
-          text: string
-          week_day: number | null
-          year: number | null
-        }
-        Insert: {
-          day?: number | null
-          enable?: boolean
-          end_time?: string | null
-          id?: number
-          month?: number | null
-          restaurant_id: number
-          start_time: string
-          text: string
-          week_day?: number | null
-          year?: number | null
-        }
-        Update: {
-          day?: number | null
-          enable?: boolean
-          end_time?: string | null
-          id?: number
-          month?: number | null
-          restaurant_id?: number
-          start_time?: string
-          text?: string
-          week_day?: number | null
-          year?: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "service_takeaway_spacial_day_restaurant_id_fkey"
-            columns: ["restaurant_id"]
-            isOneToOne: false
-            referencedRelation: "service_takeaway"
             referencedColumns: ["restaurant_id"]
           },
         ]
@@ -6195,210 +6033,6 @@ export type Database = {
         }
         Relationships: []
       }
-      takeaway_order: {
-        Row: {
-          contact_name: string
-          contact_phone: string | null
-          created_at: string
-          deleted_at: string | null
-          email: string | null
-          id: number
-          invoice_ref: string | null
-          invoice_status: string
-          note: string | null
-          payment_status: string
-          pickup_time: string | null
-          record_no: number
-          restaurant_id: number
-          status: string
-          total_price: number
-          updated_at: string
-          user_id: string | null
-        }
-        Insert: {
-          contact_name: string
-          contact_phone?: string | null
-          created_at?: string
-          deleted_at?: string | null
-          email?: string | null
-          id?: number
-          invoice_ref?: string | null
-          invoice_status?: string
-          note?: string | null
-          payment_status?: string
-          pickup_time?: string | null
-          record_no: number
-          restaurant_id: number
-          status?: string
-          total_price?: number
-          updated_at?: string
-          user_id?: string | null
-        }
-        Update: {
-          contact_name?: string
-          contact_phone?: string | null
-          created_at?: string
-          deleted_at?: string | null
-          email?: string | null
-          id?: number
-          invoice_ref?: string | null
-          invoice_status?: string
-          note?: string | null
-          payment_status?: string
-          pickup_time?: string | null
-          record_no?: number
-          restaurant_id?: number
-          status?: string
-          total_price?: number
-          updated_at?: string
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "takeaway_order_payment_status_fkey"
-            columns: ["payment_status"]
-            isOneToOne: false
-            referencedRelation: "takeaway_order_payment_status"
-            referencedColumns: ["code"]
-          },
-          {
-            foreignKeyName: "takeaway_order_restaurant_id_fkey"
-            columns: ["restaurant_id"]
-            isOneToOne: false
-            referencedRelation: "restaurant"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "takeaway_order_status_fkey"
-            columns: ["status"]
-            isOneToOne: false
-            referencedRelation: "takeaway_order_status"
-            referencedColumns: ["code"]
-          },
-          {
-            foreignKeyName: "takeaway_order_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      takeaway_order_item: {
-        Row: {
-          detail: Json | null
-          discount: number | null
-          dish_id: number
-          dish_sku: string
-          id: number
-          name: string | null
-          parent_item_id: number | null
-          price: number
-          quantity: number
-          restaurant_id: number
-          takeaway_order_id: number
-          updated_at: string
-        }
-        Insert: {
-          detail?: Json | null
-          discount?: number | null
-          dish_id: number
-          dish_sku: string
-          id?: number
-          name?: string | null
-          parent_item_id?: number | null
-          price: number
-          quantity?: number
-          restaurant_id: number
-          takeaway_order_id: number
-          updated_at?: string
-        }
-        Update: {
-          detail?: Json | null
-          discount?: number | null
-          dish_id?: number
-          dish_sku?: string
-          id?: number
-          name?: string | null
-          parent_item_id?: number | null
-          price?: number
-          quantity?: number
-          restaurant_id?: number
-          takeaway_order_id?: number
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "takeaway_order_item_parent_item_id_fkey"
-            columns: ["parent_item_id"]
-            isOneToOne: false
-            referencedRelation: "takeaway_order_item"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "takeaway_order_item_restaurant_id_fkey"
-            columns: ["restaurant_id"]
-            isOneToOne: false
-            referencedRelation: "restaurant"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "takeaway_order_item_takeaway_order_id_fkey"
-            columns: ["takeaway_order_id"]
-            isOneToOne: false
-            referencedRelation: "takeaway_order"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      takeaway_order_payment_status: {
-        Row: {
-          code: string
-          text: string
-        }
-        Insert: {
-          code: string
-          text: string
-        }
-        Update: {
-          code?: string
-          text?: string
-        }
-        Relationships: []
-      }
-      takeaway_order_status: {
-        Row: {
-          code: string
-          text: string
-        }
-        Insert: {
-          code: string
-          text: string
-        }
-        Update: {
-          code?: string
-          text?: string
-        }
-        Relationships: []
-      }
-      takeaway_print_model: {
-        Row: {
-          id: number
-          print_model_code: string
-          text: string
-        }
-        Insert: {
-          id?: number
-          print_model_code: string
-          text: string
-        }
-        Update: {
-          id?: number
-          print_model_code?: string
-          text?: string
-        }
-        Relationships: []
-      }
       user: {
         Row: {
           auth_type: string
@@ -7184,12 +6818,12 @@ export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends (DefaultSchemaTableNameOrOptions extends {
+  TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-    : never) = never,
+    : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -7213,11 +6847,11 @@ export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends (DefaultSchemaTableNameOrOptions extends {
+  TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never) = never,
+    : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -7238,11 +6872,11 @@ export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends (DefaultSchemaTableNameOrOptions extends {
+  TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never) = never,
+    : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -7263,11 +6897,11 @@ export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
     | { schema: keyof DatabaseWithoutInternals },
-  EnumName extends (DefaultSchemaEnumNameOrOptions extends {
+  EnumName extends DefaultSchemaEnumNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-    : never) = never,
+    : never = never,
 > = DefaultSchemaEnumNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -7280,11 +6914,11 @@ export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof DatabaseWithoutInternals },
-  CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-    : never) = never,
+    : never = never,
 > = PublicCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -7316,3 +6950,4 @@ export const Constants = {
     },
   },
 } as const
+
