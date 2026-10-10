@@ -34,6 +34,7 @@ export * from "./rider-update-delivery-status.ts";
 export * from "./rider-update-location.ts";
 export * from "./get/index.ts";
 export * from "./manage-saas-products.ts";
+export * from "./manage-platform-users.ts";
 export * from "./saas-get-my-subscriptions.ts";
 export * from "./saas-get-all-subscriptions.ts";
 export * from "./saas-create-checkout.ts";
