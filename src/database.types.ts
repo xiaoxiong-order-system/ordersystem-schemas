@@ -995,6 +995,7 @@ export type Database = {
           name: string | null
           parent_item_id: number | null
           price: number
+          printer_ids: number[]
           quantity: number
           restaurant_id: number
           updated_at: string
@@ -1009,6 +1010,7 @@ export type Database = {
           name?: string | null
           parent_item_id?: number | null
           price: number
+          printer_ids?: number[]
           quantity?: number
           restaurant_id: number
           updated_at?: string
@@ -1023,6 +1025,7 @@ export type Database = {
           name?: string | null
           parent_item_id?: number | null
           price?: number
+          printer_ids?: number[]
           quantity?: number
           restaurant_id?: number
           updated_at?: string
@@ -1077,24 +1080,6 @@ export type Database = {
         }
         Update: {
           code?: string
-          text?: string
-        }
-        Relationships: []
-      }
-      delivery_print_model: {
-        Row: {
-          id: number
-          print_model_code: string
-          text: string
-        }
-        Insert: {
-          id?: number
-          print_model_code: string
-          text: string
-        }
-        Update: {
-          id?: number
-          print_model_code?: string
           text?: string
         }
         Relationships: []
@@ -1737,6 +1722,7 @@ export type Database = {
           id: number
           name: string | null
           price: number
+          printer_ids: number[]
           properties: Json | null
           quantity: number
           sku: string | null
@@ -1746,6 +1732,7 @@ export type Database = {
           id?: number
           name?: string | null
           price?: number
+          printer_ids?: number[]
           properties?: Json | null
           quantity?: number
           sku?: string | null
@@ -1755,6 +1742,7 @@ export type Database = {
           id?: number
           name?: string | null
           price?: number
+          printer_ids?: number[]
           properties?: Json | null
           quantity?: number
           sku?: string | null
@@ -2163,6 +2151,7 @@ export type Database = {
           order_id: number
           parent_item_id: number | null
           price: number
+          printer_ids: number[]
           quantity: number
           restaurant_id: number
           settled_quantity: number
@@ -2181,6 +2170,7 @@ export type Database = {
           order_id: number
           parent_item_id?: number | null
           price: number
+          printer_ids?: number[]
           quantity?: number
           restaurant_id: number
           settled_quantity?: number
@@ -2199,6 +2189,7 @@ export type Database = {
           order_id?: number
           parent_item_id?: number | null
           price?: number
+          printer_ids?: number[]
           quantity?: number
           restaurant_id?: number
           settled_quantity?: number
@@ -2248,24 +2239,6 @@ export type Database = {
         }
         Update: {
           code?: string
-          text?: string
-        }
-        Relationships: []
-      }
-      order_print_model: {
-        Row: {
-          id: number
-          print_model_code: string
-          text: string
-        }
-        Insert: {
-          id?: number
-          print_model_code: string
-          text: string
-        }
-        Update: {
-          id?: number
-          print_model_code?: string
           text?: string
         }
         Relationships: []
@@ -2375,15 +2348,34 @@ export type Database = {
           },
         ]
       }
+      print_model: {
+        Row: {
+          id: number
+          print_model_code: string
+          text: string
+        }
+        Insert: {
+          id?: number
+          print_model_code: string
+          text: string
+        }
+        Update: {
+          id?: number
+          print_model_code?: string
+          text?: string
+        }
+        Relationships: []
+      }
       printer: {
         Row: {
           cut_after_print: boolean
           delivery_print_model_id: number
+          dinein_print_model_id: number
           divide: boolean
           dpi: number
+          external_platform_print_model_id: number
           font: number
           id: number
-          order_print_model_id: number
           paper_width: number
           physical_printer_ip: string | null
           physical_printer_name: string | null
@@ -2399,11 +2391,12 @@ export type Database = {
         Insert: {
           cut_after_print?: boolean
           delivery_print_model_id?: number
+          dinein_print_model_id?: number
           divide?: boolean
           dpi?: number
+          external_platform_print_model_id?: number
           font?: number
           id?: number
-          order_print_model_id?: number
           paper_width?: number
           physical_printer_ip?: string | null
           physical_printer_name?: string | null
@@ -2419,11 +2412,12 @@ export type Database = {
         Update: {
           cut_after_print?: boolean
           delivery_print_model_id?: number
+          dinein_print_model_id?: number
           divide?: boolean
           dpi?: number
+          external_platform_print_model_id?: number
           font?: number
           id?: number
-          order_print_model_id?: number
           paper_width?: number
           physical_printer_ip?: string | null
           physical_printer_name?: string | null
@@ -2441,14 +2435,21 @@ export type Database = {
             foreignKeyName: "printer_delivery_print_model_id_fkey"
             columns: ["delivery_print_model_id"]
             isOneToOne: false
-            referencedRelation: "delivery_print_model"
+            referencedRelation: "print_model"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "printer_order_print_model_id_fkey"
-            columns: ["order_print_model_id"]
+            foreignKeyName: "printer_dinein_print_model_id_fkey"
+            columns: ["dinein_print_model_id"]
             isOneToOne: false
-            referencedRelation: "order_print_model"
+            referencedRelation: "print_model"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "printer_external_platform_print_model_id_fkey"
+            columns: ["external_platform_print_model_id"]
+            isOneToOne: false
+            referencedRelation: "print_model"
             referencedColumns: ["id"]
           },
           {
@@ -6418,6 +6419,14 @@ export type Database = {
     }
     Functions: {
       accept_invitation: { Args: { p_invitation_id: string }; Returns: string }
+      add_order_item_printer: {
+        Args: {
+          p_item_ids: number[]
+          p_order_type: string
+          p_printer_id: number
+        }
+        Returns: undefined
+      }
       can_manage_restaurant_role: {
         Args: { p_restaurant_id: number; p_target_role_id: number }
         Returns: boolean
