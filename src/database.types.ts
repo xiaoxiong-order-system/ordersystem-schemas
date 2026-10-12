@@ -1706,7 +1706,6 @@ export type Database = {
           note: string | null
           payload: Json
           payment_status: string
-          pickup_date: string | null
           pickup_time: string | null
           platform: string
           platform_location_key: string | null
@@ -1733,7 +1732,6 @@ export type Database = {
           note?: string | null
           payload: Json
           payment_status?: string
-          pickup_date?: string | null
           pickup_time?: string | null
           platform: string
           platform_location_key?: string | null
@@ -1760,7 +1758,6 @@ export type Database = {
           note?: string | null
           payload?: Json
           payment_status?: string
-          pickup_date?: string | null
           pickup_time?: string | null
           platform?: string
           platform_location_key?: string | null

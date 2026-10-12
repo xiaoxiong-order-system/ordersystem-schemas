@@ -23,7 +23,8 @@ export const CreateSushicomePlatformOrderInputSchema = z.object({
   address: z.string().nullable().optional(),
   postal_code: z.string().nullable().optional(),
   pickup_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "pickup_date must be YYYY-MM-DD").nullable().optional(),
-  pickup_time: z.string().nullable().optional(),
+  // 餐厅当地钟点 HH:MM 或 HH:MM:SS，与 pickup_date 一起按餐厅时区换算后存为时间点；不传 pickup_date 时按餐厅当地今天
+  pickup_time: z.string().regex(/^\d{1,2}:\d{2}(:\d{2})?$/, "pickup_time must be HH:MM or HH:MM:SS").nullable().optional(),
   delivery_time: z.string().datetime({ offset: true }).nullable().optional(),
   note: z.string().nullable().optional(),
   // 不传默认 EUR
