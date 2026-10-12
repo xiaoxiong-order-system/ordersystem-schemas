@@ -320,35 +320,38 @@ export type Database = {
       }
       brand: {
         Row: {
+          created_at: string
           description: string | null
           id: number
           logo: string | null
-          main_restaurant: number | null
           name: string | null
+          owner_user_id: string
           updated_at: string
         }
         Insert: {
+          created_at?: string
           description?: string | null
           id?: number
           logo?: string | null
-          main_restaurant?: number | null
           name?: string | null
+          owner_user_id: string
           updated_at?: string
         }
         Update: {
+          created_at?: string
           description?: string | null
           id?: number
           logo?: string | null
-          main_restaurant?: number | null
           name?: string | null
+          owner_user_id?: string
           updated_at?: string
         }
         Relationships: [
           {
-            foreignKeyName: "brand_main_restaurant_fkey"
-            columns: ["main_restaurant"]
+            foreignKeyName: "brand_owner_user_id_fkey"
+            columns: ["owner_user_id"]
             isOneToOne: false
-            referencedRelation: "restaurant"
+            referencedRelation: "user"
             referencedColumns: ["id"]
           },
         ]
@@ -375,6 +378,77 @@ export type Database = {
             columns: ["brand_id"]
             isOneToOne: true
             referencedRelation: "brand"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      brand_join_request: {
+        Row: {
+          brand_id: number
+          created_at: string
+          direction: string
+          handled_at: string | null
+          handled_by: string | null
+          id: string
+          message: string | null
+          requested_by: string
+          restaurant_id: number
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          brand_id: number
+          created_at?: string
+          direction: string
+          handled_at?: string | null
+          handled_by?: string | null
+          id?: string
+          message?: string | null
+          requested_by: string
+          restaurant_id: number
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          brand_id?: number
+          created_at?: string
+          direction?: string
+          handled_at?: string | null
+          handled_by?: string | null
+          id?: string
+          message?: string | null
+          requested_by?: string
+          restaurant_id?: number
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "brand_join_request_brand_id_fkey"
+            columns: ["brand_id"]
+            isOneToOne: false
+            referencedRelation: "brand"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "brand_join_request_handled_by_fkey"
+            columns: ["handled_by"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "brand_join_request_requested_by_fkey"
+            columns: ["requested_by"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "brand_join_request_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant"
             referencedColumns: ["id"]
           },
         ]
@@ -6427,6 +6501,34 @@ export type Database = {
         }
         Returns: undefined
       }
+      brand_apply_join: {
+        Args: {
+          p_brand_id: number
+          p_message?: string
+          p_restaurant_id: number
+        }
+        Returns: string
+      }
+      brand_cancel_join_request: {
+        Args: { p_request_id: string }
+        Returns: undefined
+      }
+      brand_invite_restaurant: {
+        Args: {
+          p_brand_id: number
+          p_message?: string
+          p_restaurant_id: number
+        }
+        Returns: string
+      }
+      brand_remove_restaurant: {
+        Args: { p_restaurant_id: number }
+        Returns: undefined
+      }
+      brand_respond_join_request: {
+        Args: { p_approve: boolean; p_request_id: string }
+        Returns: undefined
+      }
       can_manage_restaurant_role: {
         Args: { p_restaurant_id: number; p_target_role_id: number }
         Returns: boolean
@@ -6619,6 +6721,7 @@ export type Database = {
         Returns: string
       }
       is_admin: { Args: never; Returns: boolean }
+      is_brand_owner: { Args: { p_brand_id: number }; Returns: boolean }
       is_merchant: { Args: never; Returns: boolean }
       is_rider_of: {
         Args: { p_restaurant_id: number; p_user_id: string }
