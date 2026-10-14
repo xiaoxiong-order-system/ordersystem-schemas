@@ -6573,6 +6573,18 @@ export type Database = {
         }
         Returns: Json
       }
+      create_dinein_order_tx: {
+        Args: {
+          p_items: Json
+          p_note_description: string
+          p_note_name: string
+          p_restaurant_id: number
+          p_table_id: number
+          p_table_start_time: number
+          p_user_id: string
+        }
+        Returns: Json
+      }
       create_dish: {
         Args: {
           p_allergens_tags?: Json
