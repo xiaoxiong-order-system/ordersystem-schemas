@@ -4072,18 +4072,21 @@ export type Database = {
       service_delivery_dish_rule: {
         Row: {
           dish_id: number
+          id: number
           order_type: string
           restaurant_id: number
           rule_type: string
         }
         Insert: {
           dish_id: number
+          id?: number
           order_type: string
           restaurant_id: number
           rule_type: string
         }
         Update: {
           dish_id?: number
+          id?: number
           order_type?: string
           restaurant_id?: number
           rule_type?: string
@@ -6925,6 +6928,22 @@ export type Database = {
           p_sale_channel?: string[]
         }
         Returns: number
+      }
+      update_service_delivery_dish_rule: {
+        Args: { p_restaurant_id: number; p_rules: Json }
+        Returns: {
+          dish_id: number
+          id: number
+          order_type: string
+          restaurant_id: number
+          rule_type: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "service_delivery_dish_rule"
+          isOneToOne: false
+          isSetofReturn: true
+        }
       }
       upsert_service_tx: {
         Args: {
