@@ -12,7 +12,8 @@ export const RestaurantInformationSchema = z.object({
   phone: z.string().nullable(),
   location_city: z.string().nullable(),
   location_country: z.string().nullable(),
-  logo: z.string().nullable(),
+  simple_logo: z.string().nullable(),
+  full_logo: z.string().nullable(),
 });
 
 export const AllRestaurantsServiceInfoSchema = z.object({

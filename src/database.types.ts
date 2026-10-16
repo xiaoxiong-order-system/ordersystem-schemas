@@ -2997,9 +2997,9 @@ export type Database = {
       }
       restaurant_information: {
         Row: {
-          brand_logo: string | null
           dining_mode: Database["public"]["Enums"]["dining_mode"]
           email: string | null
+          full_logo: string | null
           is_holiday: boolean
           location_city: string | null
           location_country: string
@@ -3008,19 +3008,19 @@ export type Database = {
           location_post_code: string | null
           location_region: string
           location_street: string | null
-          logo: string | null
           name: string | null
           people_tax_rate: string
           phone: string | null
           restaurant_id: number
+          simple_logo: string | null
           sub_name: string | null
           tag: string | null
           updated_at: string
         }
         Insert: {
-          brand_logo?: string | null
           dining_mode?: Database["public"]["Enums"]["dining_mode"]
           email?: string | null
+          full_logo?: string | null
           is_holiday?: boolean
           location_city?: string | null
           location_country: string
@@ -3029,19 +3029,19 @@ export type Database = {
           location_post_code?: string | null
           location_region: string
           location_street?: string | null
-          logo?: string | null
           name?: string | null
           people_tax_rate?: string
           phone?: string | null
           restaurant_id: number
+          simple_logo?: string | null
           sub_name?: string | null
           tag?: string | null
           updated_at?: string
         }
         Update: {
-          brand_logo?: string | null
           dining_mode?: Database["public"]["Enums"]["dining_mode"]
           email?: string | null
+          full_logo?: string | null
           is_holiday?: boolean
           location_city?: string | null
           location_country?: string
@@ -3050,11 +3050,11 @@ export type Database = {
           location_post_code?: string | null
           location_region?: string
           location_street?: string | null
-          logo?: string | null
           name?: string | null
           people_tax_rate?: string
           phone?: string | null
           restaurant_id?: number
+          simple_logo?: string | null
           sub_name?: string | null
           tag?: string | null
           updated_at?: string
