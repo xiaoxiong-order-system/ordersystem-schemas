@@ -4069,6 +4069,42 @@ export type Database = {
           },
         ]
       }
+      service_delivery_dish_rule: {
+        Row: {
+          dish_id: number
+          order_type: string
+          restaurant_id: number
+          rule_type: string
+        }
+        Insert: {
+          dish_id: number
+          order_type: string
+          restaurant_id: number
+          rule_type: string
+        }
+        Update: {
+          dish_id?: number
+          order_type?: string
+          restaurant_id?: number
+          rule_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_delivery_dish_rule_dish_id_fkey"
+            columns: ["dish_id"]
+            isOneToOne: false
+            referencedRelation: "dish"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "service_delivery_dish_rule_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "service_delivery"
+            referencedColumns: ["restaurant_id"]
+          },
+        ]
+      }
       service_delivery_information: {
         Row: {
           restaurant_id: number

@@ -32,6 +32,10 @@ export const DeliveryHoursSchema = z.object({
   open_hours: z.array(OpenHourRowSchema),
   spacial_days: z.array(SpacialDayRowSchema),
   business_hour: BusinessHourSchema.nullable(),
+  // 不参与营业时段折扣的商品 dish.id（service_delivery_dish_rule.rule_type = 'discount_exclude'）
+  discount_exclude_dish_ids: z.array(z.number().int()),
+  // 下单必点商品 dish.id，每个都必须点；由前端自动加进订单，后端不校验（rule_type = 'required'）
+  required_dish_ids: z.array(z.number().int()),
 });
 
 export const DeliveryInfoCardSchema = z.object({
