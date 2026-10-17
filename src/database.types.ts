@@ -935,6 +935,101 @@ export type Database = {
           },
         ]
       }
+      daily_checkout_summary: {
+        Row: {
+          created_at: string
+          deleted_count: number
+          discount_amount: number
+          email_status: string | null
+          hourly: Json
+          id: number
+          normal_amount: number
+          normal_count: number
+          order_count: number
+          payment_method_amounts: Json
+          pending_amount: number
+          pending_count: number
+          period_end: string
+          period_start: string
+          restaurant_id: number
+          revenue: number
+          summary_date: string
+          takeaway_normal_amount: number
+          takeaway_normal_count: number
+          takeaway_pending_amount: number
+          takeaway_pending_count: number
+          takeaway_void_amount: number
+          takeaway_void_count: number
+          tip_amount: number
+          void_amount: number
+          void_count: number
+        }
+        Insert: {
+          created_at?: string
+          deleted_count?: number
+          discount_amount?: number
+          email_status?: string | null
+          hourly?: Json
+          id?: never
+          normal_amount?: number
+          normal_count?: number
+          order_count?: number
+          payment_method_amounts?: Json
+          pending_amount?: number
+          pending_count?: number
+          period_end: string
+          period_start: string
+          restaurant_id: number
+          revenue?: number
+          summary_date: string
+          takeaway_normal_amount?: number
+          takeaway_normal_count?: number
+          takeaway_pending_amount?: number
+          takeaway_pending_count?: number
+          takeaway_void_amount?: number
+          takeaway_void_count?: number
+          tip_amount?: number
+          void_amount?: number
+          void_count?: number
+        }
+        Update: {
+          created_at?: string
+          deleted_count?: number
+          discount_amount?: number
+          email_status?: string | null
+          hourly?: Json
+          id?: never
+          normal_amount?: number
+          normal_count?: number
+          order_count?: number
+          payment_method_amounts?: Json
+          pending_amount?: number
+          pending_count?: number
+          period_end?: string
+          period_start?: string
+          restaurant_id?: number
+          revenue?: number
+          summary_date?: string
+          takeaway_normal_amount?: number
+          takeaway_normal_count?: number
+          takeaway_pending_amount?: number
+          takeaway_pending_count?: number
+          takeaway_void_amount?: number
+          takeaway_void_count?: number
+          tip_amount?: number
+          void_amount?: number
+          void_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "daily_checkout_summary_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       delivery_order: {
         Row: {
           address: string | null
@@ -1695,6 +1790,8 @@ export type Database = {
         Row: {
           action: string
           address: string | null
+          completed_at: string | null
+          completed_by: string | null
           contact_name: string | null
           contact_phone: string | null
           created_at: string
@@ -1706,6 +1803,7 @@ export type Database = {
           note: string | null
           payload: Json
           payment_status: string
+          payment_type: string | null
           pickup_time: string | null
           platform: string
           platform_location_key: string | null
@@ -1721,6 +1819,8 @@ export type Database = {
         Insert: {
           action: string
           address?: string | null
+          completed_at?: string | null
+          completed_by?: string | null
           contact_name?: string | null
           contact_phone?: string | null
           created_at?: string
@@ -1732,6 +1832,7 @@ export type Database = {
           note?: string | null
           payload: Json
           payment_status?: string
+          payment_type?: string | null
           pickup_time?: string | null
           platform: string
           platform_location_key?: string | null
@@ -1747,6 +1848,8 @@ export type Database = {
         Update: {
           action?: string
           address?: string | null
+          completed_at?: string | null
+          completed_by?: string | null
           contact_name?: string | null
           contact_phone?: string | null
           created_at?: string
@@ -1758,6 +1861,7 @@ export type Database = {
           note?: string | null
           payload?: Json
           payment_status?: string
+          payment_type?: string | null
           pickup_time?: string | null
           platform?: string
           platform_location_key?: string | null
@@ -1771,6 +1875,20 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "external_platform_order_completed_by_fkey"
+            columns: ["completed_by"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "external_platform_order_payment_type_fkey"
+            columns: ["payment_type"]
+            isOneToOne: false
+            referencedRelation: "payment_type"
+            referencedColumns: ["code"]
+          },
           {
             foreignKeyName: "external_platform_order_platform_fkey"
             columns: ["platform"]
@@ -5799,20 +5917,35 @@ export type Database = {
       table_payment_cleanup_control: {
         Row: {
           enable: boolean
+          last_run_at: string | null
+          report_email: string | null
+          report_language: string
+          report_template: string
           restaurant_id: number
           retain_days: number
+          run_hour: number
           updated_at: string
         }
         Insert: {
           enable?: boolean
+          last_run_at?: string | null
+          report_email?: string | null
+          report_language?: string
+          report_template?: string
           restaurant_id: number
           retain_days?: number
+          run_hour?: number
           updated_at?: string
         }
         Update: {
           enable?: boolean
+          last_run_at?: string | null
+          report_email?: string | null
+          report_language?: string
+          report_template?: string
           restaurant_id?: number
           retain_days?: number
+          run_hour?: number
           updated_at?: string
         }
         Relationships: [
@@ -6585,6 +6718,10 @@ export type Database = {
         Args: { p_restaurant_id: number; p_table_id: number; p_user_id: string }
         Returns: undefined
       }
+      complete_external_platform_order: {
+        Args: { p_order_id: number; p_payment_type: string }
+        Returns: Json
+      }
       create_category: {
         Args: {
           p_enable?: boolean
@@ -6705,6 +6842,10 @@ export type Database = {
       delete_dish_group: { Args: { p_dish_group_id: number }; Returns: Json }
       fn_auto_complete_takeaway_order: { Args: never; Returns: Json }
       fn_auto_finalize_reserver_order: { Args: never; Returns: Json }
+      fn_build_daily_checkout_summary: {
+        Args: { p_end: string; p_restaurant_id: number; p_tz: string }
+        Returns: number
+      }
       fn_delete_no_invoice_payments: {
         Args: { p_cutoff: string; p_restaurant_id: number }
         Returns: number
