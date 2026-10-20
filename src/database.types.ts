@@ -1806,7 +1806,7 @@ export type Database = {
           payment_type: string | null
           pickup_time: string | null
           platform: string
-          platform_location_key: string | null
+          platform_key: string | null
           platform_order_id: string
           platform_order_name: string | null
           postal_code: string | null
@@ -1835,7 +1835,7 @@ export type Database = {
           payment_type?: string | null
           pickup_time?: string | null
           platform: string
-          platform_location_key?: string | null
+          platform_key?: string | null
           platform_order_id: string
           platform_order_name?: string | null
           postal_code?: string | null
@@ -1864,7 +1864,7 @@ export type Database = {
           payment_type?: string | null
           pickup_time?: string | null
           platform?: string
-          platform_location_key?: string | null
+          platform_key?: string | null
           platform_order_id?: string
           platform_order_name?: string | null
           postal_code?: string | null
@@ -3391,22 +3391,25 @@ export type Database = {
       restaurant_platform_config: {
         Row: {
           enable: boolean
+          email: string | null
           platform: string
-          platform_location_key: string
+          platform_key: string
           restaurant_id: number
           updated_at: string
         }
         Insert: {
           enable?: boolean
+          email?: string | null
           platform: string
-          platform_location_key: string
+          platform_key: string
           restaurant_id: number
           updated_at?: string
         }
         Update: {
           enable?: boolean
+          email?: string | null
           platform?: string
-          platform_location_key?: string
+          platform_key?: string
           restaurant_id?: number
           updated_at?: string
         }
