@@ -1774,14 +1774,17 @@ export type Database = {
       external_platform: {
         Row: {
           code: string
+          image: string | null
           text: string
         }
         Insert: {
           code: string
+          image?: string | null
           text: string
         }
         Update: {
           code?: string
+          image?: string | null
           text?: string
         }
         Relationships: []
