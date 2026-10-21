@@ -1800,6 +1800,8 @@ export type Database = {
           email: string | null
           fulfillment_type: string | null
           id: number
+          invoice_ref: string | null
+          invoice_status: string
           note: string | null
           payload: Json
           payment_status: string
@@ -1829,6 +1831,8 @@ export type Database = {
           email?: string | null
           fulfillment_type?: string | null
           id?: number
+          invoice_ref?: string | null
+          invoice_status?: string
           note?: string | null
           payload: Json
           payment_status?: string
@@ -1858,6 +1862,8 @@ export type Database = {
           email?: string | null
           fulfillment_type?: string | null
           id?: number
+          invoice_ref?: string | null
+          invoice_status?: string
           note?: string | null
           payload?: Json
           payment_status?: string
