@@ -1916,9 +1916,11 @@ export type Database = {
       }
       external_platform_order_item: {
         Row: {
+          discount: number | null
           external_platform_order_id: number
           id: number
           name: string | null
+          original_price: number
           price: number
           printer_ids: number[]
           properties: Json | null
@@ -1926,9 +1928,11 @@ export type Database = {
           sku: string | null
         }
         Insert: {
+          discount?: number | null
           external_platform_order_id: number
           id?: number
           name?: string | null
+          original_price: number
           price?: number
           printer_ids?: number[]
           properties?: Json | null
@@ -1936,9 +1940,11 @@ export type Database = {
           sku?: string | null
         }
         Update: {
+          discount?: number | null
           external_platform_order_id?: number
           id?: number
           name?: string | null
+          original_price?: number
           price?: number
           printer_ids?: number[]
           properties?: Json | null

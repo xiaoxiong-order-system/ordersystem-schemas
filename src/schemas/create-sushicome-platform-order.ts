@@ -7,8 +7,12 @@ const SushicomePlatformOrderItemSchema = z.object({
   sku: z.string().nullable().optional(),
   name: z.string().min(1),
   quantity: z.number().int().positive(),
-  // 单价
+  // 原价（单价，打折前）
+  original_price: z.number().nonnegative(),
+  // 现价（单价，打折后实付）；total_price 不传时按 Σ price × quantity 计算
   price: z.number().nonnegative(),
+  // 折扣百分比 0–100，如 20 表示减去原价 20%；不传 / null 表示无折扣
+  discount: z.number().min(0).max(100).nullable().optional(),
   // 规格 / 加料等原始属性，原样存 properties
   properties: z.unknown().optional(),
 });
