@@ -1793,6 +1793,9 @@ export type Database = {
         Row: {
           action: string
           address: string | null
+          cancel_reason: string | null
+          cancelled_at: string | null
+          cancelled_by: string | null
           completed_at: string | null
           completed_by: string | null
           contact_name: string | null
@@ -1824,6 +1827,9 @@ export type Database = {
         Insert: {
           action: string
           address?: string | null
+          cancel_reason?: string | null
+          cancelled_at?: string | null
+          cancelled_by?: string | null
           completed_at?: string | null
           completed_by?: string | null
           contact_name?: string | null
@@ -1855,6 +1861,9 @@ export type Database = {
         Update: {
           action?: string
           address?: string | null
+          cancel_reason?: string | null
+          cancelled_at?: string | null
+          cancelled_by?: string | null
           completed_at?: string | null
           completed_by?: string | null
           contact_name?: string | null
@@ -1884,6 +1893,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "external_platform_order_cancelled_by_fkey"
+            columns: ["cancelled_by"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "external_platform_order_completed_by_fkey"
             columns: ["completed_by"]
@@ -6735,10 +6751,6 @@ export type Database = {
       clean_table_and_record: {
         Args: { p_restaurant_id: number; p_table_id: number; p_user_id: string }
         Returns: undefined
-      }
-      complete_external_platform_order: {
-        Args: { p_order_id: number; p_payment_type: string }
-        Returns: Json
       }
       create_category: {
         Args: {
