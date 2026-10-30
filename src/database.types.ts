@@ -586,6 +586,7 @@ export type Database = {
           status: string
           stripe_checkout_session_id: string | null
           stripe_customer_id: string | null
+          stripe_subscription_id: string | null
           user_id: string
         }
         Insert: {
@@ -599,6 +600,7 @@ export type Database = {
           status?: string
           stripe_checkout_session_id?: string | null
           stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
           user_id: string
         }
         Update: {
@@ -612,6 +614,7 @@ export type Database = {
           status?: string
           stripe_checkout_session_id?: string | null
           stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
           user_id?: string
         }
         Relationships: [
@@ -1042,11 +1045,13 @@ export type Database = {
           delivery_time: string | null
           email: string | null
           id: number
+          invoice_number: string | null
           invoice_ref: string | null
           invoice_status: string
           note: string | null
           order_type: string
           payment_status: string
+          payment_type: string | null
           picked_up_at: string | null
           pickup_time: string | null
           postal_code: string | null
@@ -1070,11 +1075,13 @@ export type Database = {
           delivery_time?: string | null
           email?: string | null
           id?: number
+          invoice_number?: string | null
           invoice_ref?: string | null
           invoice_status?: string
           note?: string | null
           order_type: string
           payment_status?: string
+          payment_type?: string | null
           picked_up_at?: string | null
           pickup_time?: string | null
           postal_code?: string | null
@@ -1098,11 +1105,13 @@ export type Database = {
           delivery_time?: string | null
           email?: string | null
           id?: number
+          invoice_number?: string | null
           invoice_ref?: string | null
           invoice_status?: string
           note?: string | null
           order_type?: string
           payment_status?: string
+          payment_type?: string | null
           picked_up_at?: string | null
           pickup_time?: string | null
           postal_code?: string | null
@@ -1121,6 +1130,13 @@ export type Database = {
             columns: ["payment_status"]
             isOneToOne: false
             referencedRelation: "delivery_order_payment_status"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "delivery_order_payment_type_fkey"
+            columns: ["payment_type"]
+            isOneToOne: false
+            referencedRelation: "payment_type"
             referencedColumns: ["code"]
           },
           {
@@ -1806,6 +1822,7 @@ export type Database = {
           email: string | null
           fulfillment_type: string | null
           id: number
+          invoice_number: string | null
           invoice_ref: string | null
           invoice_status: string
           note: string | null
@@ -1840,6 +1857,7 @@ export type Database = {
           email?: string | null
           fulfillment_type?: string | null
           id?: number
+          invoice_number?: string | null
           invoice_ref?: string | null
           invoice_status?: string
           note?: string | null
@@ -1874,6 +1892,7 @@ export type Database = {
           email?: string | null
           fulfillment_type?: string | null
           id?: number
+          invoice_number?: string | null
           invoice_ref?: string | null
           invoice_status?: string
           note?: string | null
@@ -2953,18 +2972,21 @@ export type Database = {
           created_at: string
           description: string | null
           id: number
+          source_channel: string | null
         }
         Insert: {
           code: string
           created_at?: string
           description?: string | null
           id?: number
+          source_channel?: string | null
         }
         Update: {
           code?: string
           created_at?: string
           description?: string | null
           id?: number
+          source_channel?: string | null
         }
         Relationships: []
       }
@@ -3421,24 +3443,24 @@ export type Database = {
       }
       restaurant_platform_config: {
         Row: {
-          enable: boolean
           email: string | null
+          enable: boolean
           platform: string
           platform_key: string
           restaurant_id: number
           updated_at: string
         }
         Insert: {
-          enable?: boolean
           email?: string | null
+          enable?: boolean
           platform: string
           platform_key: string
           restaurant_id: number
           updated_at?: string
         }
         Update: {
-          enable?: boolean
           email?: string | null
+          enable?: boolean
           platform?: string
           platform_key?: string
           restaurant_id?: number
@@ -3631,6 +3653,7 @@ export type Database = {
           enable: boolean
           id: number
           merchant_create_order_sale_channel: string
+          pending_online_hang_id: number | null
           restaurant_id: number
           start_time: number | null
           status: string
@@ -3643,6 +3666,7 @@ export type Database = {
           enable?: boolean
           id?: number
           merchant_create_order_sale_channel?: string
+          pending_online_hang_id?: number | null
           restaurant_id: number
           start_time?: number | null
           status?: string
@@ -3655,6 +3679,7 @@ export type Database = {
           enable?: boolean
           id?: number
           merchant_create_order_sale_channel?: string
+          pending_online_hang_id?: number | null
           restaurant_id?: number
           start_time?: number | null
           status?: string
@@ -3669,6 +3694,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "sale_channel"
             referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "restaurant_table_pending_online_hang_id_fkey"
+            columns: ["pending_online_hang_id"]
+            isOneToOne: false
+            referencedRelation: "table_online_hang"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "restaurant_table_restaurant_id_fkey"
@@ -4011,6 +4043,7 @@ export type Database = {
           name_pt: string
           sort_order: number
           stripe_monthly_price_id: string | null
+          stripe_product_id: string | null
           stripe_yearly_price_id: string | null
           trial_config: Json
           trial_days: number
@@ -4043,6 +4076,7 @@ export type Database = {
           name_pt?: string
           sort_order?: number
           stripe_monthly_price_id?: string | null
+          stripe_product_id?: string | null
           stripe_yearly_price_id?: string | null
           trial_config?: Json
           trial_days?: number
@@ -4075,6 +4109,7 @@ export type Database = {
           name_pt?: string
           sort_order?: number
           stripe_monthly_price_id?: string | null
+          stripe_product_id?: string | null
           stripe_yearly_price_id?: string | null
           trial_config?: Json
           trial_days?: number
@@ -4951,6 +4986,7 @@ export type Database = {
           id: number
           invoice_email: string | null
           invoice_error: string | null
+          invoice_number: string | null
           invoice_ref: string | null
           invoice_status: string
           method: string
@@ -4977,6 +5013,7 @@ export type Database = {
           id?: number
           invoice_email?: string | null
           invoice_error?: string | null
+          invoice_number?: string | null
           invoice_ref?: string | null
           invoice_status?: string
           method: string
@@ -5003,6 +5040,7 @@ export type Database = {
           id?: number
           invoice_email?: string | null
           invoice_error?: string | null
+          invoice_number?: string | null
           invoice_ref?: string | null
           invoice_status?: string
           method?: string
@@ -5068,6 +5106,7 @@ export type Database = {
           checkout_printer_id: number | null
           default_print_order: boolean
           enable: boolean
+          enable_online_hang_payment: boolean
           invoice_api_enabled: boolean
           restaurant_id: number
           submit_zero_price_items: boolean
@@ -5077,6 +5116,7 @@ export type Database = {
           checkout_printer_id?: number | null
           default_print_order?: boolean
           enable?: boolean
+          enable_online_hang_payment?: boolean
           invoice_api_enabled?: boolean
           restaurant_id: number
           submit_zero_price_items?: boolean
@@ -5086,6 +5126,7 @@ export type Database = {
           checkout_printer_id?: number | null
           default_print_order?: boolean
           enable?: boolean
+          enable_online_hang_payment?: boolean
           invoice_api_enabled?: boolean
           restaurant_id?: number
           submit_zero_price_items?: boolean
@@ -5682,6 +5723,7 @@ export type Database = {
           status: string
           stripe_customer_id: string | null
           stripe_subscription_id: string | null
+          stripe_subscription_item_id: string | null
           updated_at: string
           user_id: string
         }
@@ -5697,6 +5739,7 @@ export type Database = {
           status?: string
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
+          stripe_subscription_item_id?: string | null
           updated_at?: string
           user_id: string
         }
@@ -5712,6 +5755,7 @@ export type Database = {
           status?: string
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
+          stripe_subscription_item_id?: string | null
           updated_at?: string
           user_id?: string
         }
@@ -5832,6 +5876,96 @@ export type Database = {
           },
         ]
       }
+      table_online_hang: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          customer_address: string | null
+          customer_name: string | null
+          discount_amount: number
+          discount_type: string | null
+          discount_value: number | null
+          final_amount: number
+          id: number
+          items_snapshot: Json | null
+          nif: string | null
+          note: string | null
+          people_amount: number
+          people_breakdown: Json
+          restaurant_id: number
+          status: string
+          table_id: number
+          table_payment_id: number | null
+          table_start_time: number
+          tip_amount: number
+          total_amount: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          customer_address?: string | null
+          customer_name?: string | null
+          discount_amount?: number
+          discount_type?: string | null
+          discount_value?: number | null
+          final_amount?: number
+          id?: number
+          items_snapshot?: Json | null
+          nif?: string | null
+          note?: string | null
+          people_amount?: number
+          people_breakdown?: Json
+          restaurant_id: number
+          status?: string
+          table_id: number
+          table_payment_id?: number | null
+          table_start_time: number
+          tip_amount?: number
+          total_amount?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          customer_address?: string | null
+          customer_name?: string | null
+          discount_amount?: number
+          discount_type?: string | null
+          discount_value?: number | null
+          final_amount?: number
+          id?: number
+          items_snapshot?: Json | null
+          nif?: string | null
+          note?: string | null
+          people_amount?: number
+          people_breakdown?: Json
+          restaurant_id?: number
+          status?: string
+          table_id?: number
+          table_payment_id?: number | null
+          table_start_time?: number
+          tip_amount?: number
+          total_amount?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "table_online_hang_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "table_online_hang_table_id_fkey"
+            columns: ["table_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant_table"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       table_payment: {
         Row: {
           created_at: string
@@ -5845,6 +5979,7 @@ export type Database = {
           id: number
           invoice_email: string | null
           invoice_error: string | null
+          invoice_number: string | null
           invoice_ref: string | null
           invoice_status: string
           items_snapshot: Json | null
@@ -5873,6 +6008,7 @@ export type Database = {
           id?: number
           invoice_email?: string | null
           invoice_error?: string | null
+          invoice_number?: string | null
           invoice_ref?: string | null
           invoice_status?: string
           items_snapshot?: Json | null
@@ -5901,6 +6037,7 @@ export type Database = {
           id?: number
           invoice_email?: string | null
           invoice_error?: string | null
+          invoice_number?: string | null
           invoice_ref?: string | null
           invoice_status?: string
           items_snapshot?: Json | null
@@ -6998,22 +7135,6 @@ export type Database = {
           p_window_seconds: number
         }
         Returns: boolean
-      }
-      sushicome_create_reserver: {
-        Args: {
-          p_contact_name: string
-          p_contact_phone: string
-          p_email: string
-          p_guest_count: number
-          p_note?: string
-          p_reserved_at: string
-          p_restaurant_id: number
-        }
-        Returns: {
-          confirmation_token: string
-          id: number
-          record_no: number
-        }[]
       }
       sushicome_get_top_selling_dishes: {
         Args: { p_restaurant_id: number }
