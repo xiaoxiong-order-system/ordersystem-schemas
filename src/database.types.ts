@@ -4645,6 +4645,8 @@ export type Database = {
           check_ip: boolean
           client_cooling_time: number
           enable: boolean
+          enable_call_notification: boolean
+          enable_payment_notification: boolean
           price_information_card: boolean
           restaurant_id: number
           show_group_dish_image: boolean
@@ -4659,6 +4661,8 @@ export type Database = {
           check_ip?: boolean
           client_cooling_time?: number
           enable?: boolean
+          enable_call_notification?: boolean
+          enable_payment_notification?: boolean
           price_information_card?: boolean
           restaurant_id: number
           show_group_dish_image?: boolean
@@ -4673,6 +4677,8 @@ export type Database = {
           check_ip?: boolean
           client_cooling_time?: number
           enable?: boolean
+          enable_call_notification?: boolean
+          enable_payment_notification?: boolean
           price_information_card?: boolean
           restaurant_id?: number
           show_group_dish_image?: boolean

@@ -24,6 +24,9 @@ export const DineinControlSchema = z.object({
   check_ip: z.boolean(),
   // 展示分组内菜品图片：true 时点击分组内菜品行切换显示该菜品的图片
   show_group_dish_image: z.boolean(),
+  // 顾客能否发送「呼叫服务员」/「请求结账」（send-notification 的 call / payment），关闭时隐藏对应按钮
+  enable_call_notification: z.boolean(),
+  enable_payment_notification: z.boolean(),
 });
 
 export const DineinInfoCardSchema = z.object({
