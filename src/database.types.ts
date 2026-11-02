@@ -7217,6 +7217,16 @@ export type Database = {
         }
         Returns: number
       }
+      update_dish_from_table: {
+        Args: {
+          p_delta: number
+          p_dish_id: number
+          p_restaurant_id: number
+          p_table_id: number
+          p_table_start_time: number
+        }
+        Returns: Json
+      }
       update_dish_group: {
         Args: {
           p_descriptions?: Json
