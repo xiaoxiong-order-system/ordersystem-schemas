@@ -1053,7 +1053,7 @@ export type Database = {
           payment_status: string
           payment_type: string | null
           picked_up_at: string | null
-          pickup_time: string | null
+          pickup_time: string
           postal_code: string | null
           record_no: number
           restaurant_id: number
@@ -1083,7 +1083,7 @@ export type Database = {
           payment_status?: string
           payment_type?: string | null
           picked_up_at?: string | null
-          pickup_time?: string | null
+          pickup_time: string
           postal_code?: string | null
           record_no: number
           restaurant_id: number
@@ -1113,7 +1113,7 @@ export type Database = {
           payment_status?: string
           payment_type?: string | null
           picked_up_at?: string | null
-          pickup_time?: string | null
+          pickup_time?: string
           postal_code?: string | null
           record_no?: number
           restaurant_id?: number
@@ -3647,6 +3647,38 @@ export type Database = {
           },
         ]
       }
+      restaurant_stripe_config: {
+        Row: {
+          restaurant_id: number
+          secret_key: string | null
+          updated_at: string
+          updated_by: string | null
+          use_platform: boolean
+        }
+        Insert: {
+          restaurant_id: number
+          secret_key?: string | null
+          updated_at?: string
+          updated_by?: string | null
+          use_platform?: boolean
+        }
+        Update: {
+          restaurant_id?: number
+          secret_key?: string | null
+          updated_at?: string
+          updated_by?: string | null
+          use_platform?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "restaurant_stripe_config_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: true
+            referencedRelation: "restaurant"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       restaurant_table: {
         Row: {
           created_at: string
@@ -5006,6 +5038,8 @@ export type Database = {
           request_id: string | null
           restaurant_id: number
           status: string
+          stripe_payment_intent_id: string | null
+          stripe_session_id: string | null
           superseded_by: number | null
           updated_at: string
         }
@@ -5033,6 +5067,8 @@ export type Database = {
           request_id?: string | null
           restaurant_id: number
           status?: string
+          stripe_payment_intent_id?: string | null
+          stripe_session_id?: string | null
           superseded_by?: number | null
           updated_at?: string
         }
@@ -5060,6 +5096,8 @@ export type Database = {
           request_id?: string | null
           restaurant_id?: number
           status?: string
+          stripe_payment_intent_id?: string | null
+          stripe_session_id?: string | null
           superseded_by?: number | null
           updated_at?: string
         }

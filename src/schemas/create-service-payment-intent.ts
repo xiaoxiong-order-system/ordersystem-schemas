@@ -2,7 +2,7 @@ import { z } from "zod";
 
 const baseIntentSchema = z.object({
   restaurant_id: z.number().int().positive(),
-  order_type: z.enum(["takeaway", "delivery"]),
+  order_type: z.enum(["takeaway", "takeaway_now", "delivery"]), // takeaway_now 按 takeaway 处理
   order_id: z.number().int().positive(),
   // 通用可选
   description: z.string().optional(),

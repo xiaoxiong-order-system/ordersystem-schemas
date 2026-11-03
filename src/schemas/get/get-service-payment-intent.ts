@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const GetServicePaymentIntentQuerySchema = z.object({
   restaurant_id: z.coerce.number().int().positive(),
-  order_type: z.enum(["takeaway", "delivery"]),
+  order_type: z.enum(["takeaway", "takeaway_now", "delivery"]), // takeaway_now 按 takeaway 处理
   order_id: z.coerce.number().int().positive(),
 });
 

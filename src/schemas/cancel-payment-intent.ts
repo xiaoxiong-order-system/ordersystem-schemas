@@ -5,7 +5,7 @@ export const CancelPaymentIntentInputSchema = z.object({
   restaurant_id: z.number().int().positive(),
   cancelled_by: z.string().optional(),
   // 缺省 = 堂食（table_payment_intent），takeaway（自取）/ delivery（配送）操作 service_payment_intent，订单都在 delivery_order
-  order_type: z.enum(["takeaway", "delivery"]).optional(),
+  order_type: z.enum(["takeaway", "takeaway_now", "delivery"]).optional(), // takeaway_now 按 takeaway 处理
 });
 
 export type CancelPaymentIntentInput = z.infer<typeof CancelPaymentIntentInputSchema>;
