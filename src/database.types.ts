@@ -7066,6 +7066,10 @@ export type Database = {
         Returns: undefined
       }
       fn_reset_restaurant_is_holiday_cron: { Args: never; Returns: undefined }
+      fn_run_no_invoice_payments_cleanup: {
+        Args: { p_restaurant_id: number; p_tz: string }
+        Returns: Json
+      }
       fn_run_no_invoice_payments_cleanup_cron: {
         Args: never
         Returns: undefined
