@@ -16,9 +16,10 @@ export const RestaurantServiceEntrySchema = z.object({
 });
 
 // 外卖配送服务（2026-10-09 起外卖自取并入 delivery，不再有独立的 takeaway 项）：
-// can_order = 自取或配送任一可下单；can_takeaway / can_delivery 分别对应两个开关
+// can_order = 预约自取 / 立即取餐 / 配送任一可下单；can_takeaway / can_takeaway_now / can_delivery 分别对应三个开关
 export const RestaurantDeliveryServiceEntrySchema = RestaurantServiceEntrySchema.extend({
-  can_takeaway: z.boolean(), // 能否下自取单
+  can_takeaway: z.boolean(), // 能否下预约自取单
+  can_takeaway_now: z.boolean(), // 能否下立即取餐单
   can_delivery: z.boolean(), // 能否下配送单
 });
 

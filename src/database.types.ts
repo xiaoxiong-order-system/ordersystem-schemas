@@ -4251,6 +4251,7 @@ export type Database = {
           restaurant_id: number
           show_group_dish_image: boolean
           takeaway_enable: boolean
+          takeaway_now_enable: boolean
           view_model_id: number
         }
         Insert: {
@@ -4260,6 +4261,7 @@ export type Database = {
           restaurant_id: number
           show_group_dish_image?: boolean
           takeaway_enable?: boolean
+          takeaway_now_enable?: boolean
           view_model_id?: number
         }
         Update: {
@@ -4269,6 +4271,7 @@ export type Database = {
           restaurant_id?: number
           show_group_dish_image?: boolean
           takeaway_enable?: boolean
+          takeaway_now_enable?: boolean
           view_model_id?: number
         }
         Relationships: [

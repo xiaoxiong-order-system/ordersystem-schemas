@@ -18,7 +18,8 @@ export const DeliveryOrderTypeSchema = z.enum(["takeaway", "delivery"]);
 export type DeliveryOrderType = z.infer<typeof DeliveryOrderTypeSchema>;
 
 export const DeliveryControlSchema = z.object({
-  takeaway_enable: z.boolean(), // 是否开放到店自取
+  takeaway_enable: z.boolean(), // 是否开放预约自取
+  takeaway_now_enable: z.boolean(), // 是否开放立即取餐
   delivery_enable: z.boolean(), // 是否开放配送
   view_model_id: z.number().int(),
   business_hour_information_card: z.boolean(),

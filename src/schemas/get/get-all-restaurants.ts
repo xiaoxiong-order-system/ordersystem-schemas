@@ -29,9 +29,10 @@ export const AllRestaurantsPosServiceInfoSchema = z.object({
 });
 
 // 外卖配送（2026-10-09 起外卖自取并入 delivery，不再有独立的 takeaway 项）：
-// enabled = 自取或配送任一开启；takeaway_enabled / delivery_enabled 对应 service_delivery_control 的两个开关
+// enabled = 预约自取 / 立即取餐 / 配送任一开启；takeaway_enabled / takeaway_now_enabled / delivery_enabled 对应 service_delivery_control 的三个开关
 export const AllRestaurantsDeliveryServiceInfoSchema = AllRestaurantsServiceInfoSchema.extend({
   takeaway_enabled: z.boolean(),
+  takeaway_now_enabled: z.boolean(),
   delivery_enabled: z.boolean(),
 });
 
