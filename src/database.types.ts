@@ -3681,6 +3681,7 @@ export type Database = {
       }
       restaurant_table: {
         Row: {
+          auto_open_create_order: boolean
           created_at: string
           enable: boolean
           id: number
@@ -3694,6 +3695,7 @@ export type Database = {
           weight: number
         }
         Insert: {
+          auto_open_create_order?: boolean
           created_at?: string
           enable?: boolean
           id?: number
@@ -3707,6 +3709,7 @@ export type Database = {
           weight?: number
         }
         Update: {
+          auto_open_create_order?: boolean
           created_at?: string
           enable?: boolean
           id?: number
@@ -5021,6 +5024,7 @@ export type Database = {
           amount: number
           created_at: string
           created_by: string | null
+          customer_address: string | null
           customer_name: string | null
           entity: string | null
           expiry_date: string | null
@@ -5050,6 +5054,7 @@ export type Database = {
           amount: number
           created_at?: string
           created_by?: string | null
+          customer_address?: string | null
           customer_name?: string | null
           entity?: string | null
           expiry_date?: string | null
@@ -5079,6 +5084,7 @@ export type Database = {
           amount?: number
           created_at?: string
           created_by?: string | null
+          customer_address?: string | null
           customer_name?: string | null
           entity?: string | null
           expiry_date?: string | null
