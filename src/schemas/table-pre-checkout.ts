@@ -11,10 +11,10 @@ export const PreCheckoutInputSchema = z.object({
   // 基数是扣完单行折扣后的剩余全部金额（people_percentage 的基数是扣完单行折扣后的人头费）
   discount_type: z.enum(["percentage", "fixed", "free", "people_percentage"]).optional(),
   discount_value: z.number().nonnegative().optional(),
-  // 过渡期兼容：旧版管理端直接传算好的整单折扣金额。仅在没传 discount_type 时使用，
-  // 管理端改成传 discount_type/discount_value 后删除
-  discount_amount: z.number().nonnegative().optional(),
   tip_amount: z.number().nonnegative().optional(),
+  // 打印语言，language 表的 code（如 pt / zh / en）：菜名和人头费行按该语言打印，
+  // 某道菜没有该语言的名称时退回餐厅主语言、再退回下单快照名。不传、或不在 language 表里时用餐厅主语言（不报错）
+  language: z.string().trim().toLowerCase().min(1).optional(),
   // 单行折扣（与 table-checkout 同结构），体现在小票行上；整单折扣在此基础上再算
   line_discounts: z.array(LineDiscountSchema).optional(),
   people_discounts: z.array(PeopleDiscountSchema).optional(),
