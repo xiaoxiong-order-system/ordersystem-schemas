@@ -4,6 +4,7 @@ export * from "./create-order.ts";
 export * from "./merchant-create-order.ts";
 export * from "./create-delivery-order.ts";
 export * from "./table-checkout.ts";
+export * from "./table-pre-checkout.ts";
 export * from "./void-payment.ts";
 export * from "./send-notification.ts";
 export * from "./create-reserver.ts";
