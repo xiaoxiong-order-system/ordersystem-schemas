@@ -6501,6 +6501,125 @@ export type Database = {
         }
         Relationships: []
       }
+      tool_release: {
+        Row: {
+          code: string
+          created_at: string
+          description: string | null
+          enable: boolean
+          file_path: string
+          file_size: number | null
+          name: string
+          release_notes: string | null
+          sort_order: number
+          updated_at: string
+          updated_by: string | null
+          version: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          description?: string | null
+          enable?: boolean
+          file_path: string
+          file_size?: number | null
+          name: string
+          release_notes?: string | null
+          sort_order?: number
+          updated_at?: string
+          updated_by?: string | null
+          version: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          description?: string | null
+          enable?: boolean
+          file_path?: string
+          file_size?: number | null
+          name?: string
+          release_notes?: string | null
+          sort_order?: number
+          updated_at?: string
+          updated_by?: string | null
+          version?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tool_release_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tool_release_description_multilingua: {
+        Row: {
+          language_code: string
+          text: string
+          tool_code: string
+        }
+        Insert: {
+          language_code: string
+          text: string
+          tool_code: string
+        }
+        Update: {
+          language_code?: string
+          text?: string
+          tool_code?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tool_release_description_multilingua_language_code_fkey"
+            columns: ["language_code"]
+            isOneToOne: false
+            referencedRelation: "language"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "tool_release_description_multilingua_tool_code_fkey"
+            columns: ["tool_code"]
+            isOneToOne: false
+            referencedRelation: "tool_release"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
+      tool_release_name_multilingua: {
+        Row: {
+          language_code: string
+          text: string
+          tool_code: string
+        }
+        Insert: {
+          language_code: string
+          text: string
+          tool_code: string
+        }
+        Update: {
+          language_code?: string
+          text?: string
+          tool_code?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tool_release_name_multilingua_language_code_fkey"
+            columns: ["language_code"]
+            isOneToOne: false
+            referencedRelation: "language"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "tool_release_name_multilingua_tool_code_fkey"
+            columns: ["tool_code"]
+            isOneToOne: false
+            referencedRelation: "tool_release"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
       user: {
         Row: {
           auth_type: string
@@ -7060,6 +7179,7 @@ export type Database = {
         Returns: Json
       }
       delete_dish_group: { Args: { p_dish_group_id: number }; Returns: Json }
+      delete_tool_release: { Args: { p_code: string }; Returns: string }
       fn_auto_complete_takeaway_order: { Args: never; Returns: Json }
       fn_auto_finalize_reserver_order: { Args: never; Returns: Json }
       fn_build_daily_checkout_summary: {
@@ -7069,6 +7189,10 @@ export type Database = {
       fn_delete_no_invoice_payments: {
         Args: { p_cutoff: string; p_restaurant_id: number }
         Returns: number
+      }
+      fn_expire_unpaid_service_payments_cron: {
+        Args: never
+        Returns: undefined
       }
       fn_invoke_edge_function: {
         Args: { p_function: string }
@@ -7173,6 +7297,40 @@ export type Database = {
         Returns: undefined
       }
       restaurant_root_id: { Args: { p_restaurant_id: number }; Returns: number }
+      save_tool_release: {
+        Args: {
+          p_code: string
+          p_description?: string
+          p_descriptions?: Json
+          p_enable?: boolean
+          p_file_path: string
+          p_name: string
+          p_names?: Json
+          p_release_notes?: string
+          p_sort_order?: number
+          p_version: string
+        }
+        Returns: {
+          code: string
+          created_at: string
+          description: string | null
+          enable: boolean
+          file_path: string
+          file_size: number | null
+          name: string
+          release_notes: string | null
+          sort_order: number
+          updated_at: string
+          updated_by: string | null
+          version: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "tool_release"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       set_view_sort_weight: {
         Args: {
           p_dish_group_id?: number
