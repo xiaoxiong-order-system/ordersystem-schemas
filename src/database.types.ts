@@ -2936,6 +2936,45 @@ export type Database = {
           },
         ]
       }
+      reserver_order_attendance: {
+        Row: {
+          actual_guest_count: number
+          id: number
+          reserver_order_id: number
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          actual_guest_count: number
+          id?: number
+          reserver_order_id: number
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          actual_guest_count?: number
+          id?: number
+          reserver_order_id?: number
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reserver_order_attendance_reserver_order_id_fkey"
+            columns: ["reserver_order_id"]
+            isOneToOne: false
+            referencedRelation: "reserver_order"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reserver_order_attendance_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reserver_order_payment_status: {
         Row: {
           code: string
@@ -7445,6 +7484,10 @@ export type Database = {
           p_sale_channel?: string[]
         }
         Returns: number
+      }
+      update_reserver_guest_count: {
+        Args: { p_actual_guest_count: number; p_reserver_order_id: number }
+        Returns: Json
       }
       update_service_delivery_dish_rule: {
         Args: { p_restaurant_id: number; p_rules: Json }
