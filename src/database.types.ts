@@ -3841,18 +3841,21 @@ export type Database = {
       restaurant_table_state: {
         Row: {
           password: string | null
+          password_returned: boolean
           password_update: string | null
           restaurant_id: number
           table_id: number
         }
         Insert: {
           password?: string | null
+          password_returned?: boolean
           password_update?: string | null
           restaurant_id: number
           table_id: number
         }
         Update: {
           password?: string | null
+          password_returned?: boolean
           password_update?: string | null
           restaurant_id?: number
           table_id?: number
@@ -7233,6 +7236,7 @@ export type Database = {
         Args: never
         Returns: undefined
       }
+      fn_generate_table_password: { Args: never; Returns: string }
       fn_invoke_edge_function: {
         Args: { p_function: string }
         Returns: undefined
@@ -7523,6 +7527,10 @@ export type Database = {
           restaurant_ids: number[]
           restaurant_scope: string
         }[]
+      }
+      verify_table_password: {
+        Args: { p_password: string; p_table_id: number }
+        Returns: boolean
       }
     }
     Enums: {
