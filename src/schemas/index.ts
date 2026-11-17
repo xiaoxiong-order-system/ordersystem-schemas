@@ -47,3 +47,4 @@ export * from "./shopify-sushicome-order-webhook.ts";
 export * from "./ai-translate.ts";
 export * from "./manager-help-chat.ts";
 export * from "./manage-api-keys.ts";
+export * from "./update-stripe-config.ts";
