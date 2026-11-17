@@ -7307,10 +7307,6 @@ export type Database = {
         Args: { p_restaurant_id: number; p_user_id: string }
         Returns: boolean
       }
-      migrate_service_config: {
-        Args: { p_config: Json; p_restaurant_id: number }
-        Returns: Json
-      }
       my_restaurant_permission: {
         Args: { p_permission_code: string; p_restaurant_id: number }
         Returns: boolean
