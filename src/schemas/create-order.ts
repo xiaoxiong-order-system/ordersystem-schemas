@@ -15,6 +15,9 @@ export const CreateOrderInputSchema = z.object({
   note_name: z.string().nullable().optional(),
   note_description: z.string().nullable().optional(),
   dishes: z.array(DishInputSchema).min(1),
+  // 桌台点餐密码：餐厅开了 service_order_control.table_order_use_password 且桌台当前有密码时必填，
+  // 缺少返回 403 TABLE_PASSWORD_REQUIRED，错误返回 403 TABLE_PASSWORD_INVALID；没开开关时不用传
+  password: z.string().max(32).nullable().optional(),
 });
 
 export type DishInput = z.infer<typeof DishInputSchema>;
