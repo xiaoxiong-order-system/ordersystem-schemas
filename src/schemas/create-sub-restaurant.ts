@@ -48,7 +48,7 @@ export const CreateSubRestaurantInputSchema = z.object({
   // 则走 code_suffix 的默认拼接规则
   code:        z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/).optional(),
   // 不传则用 slugify(name)；最终 code = ${父餐厅code}-${code_suffix}，
-  // 格式跟 create-restaurant-from-data 里子餐厅命名规则一致
+  // 子餐厅 code 命名规则
   code_suffix: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/).optional(),
   sub_name:    z.string().optional(),
   phone:       z.string().optional(),
