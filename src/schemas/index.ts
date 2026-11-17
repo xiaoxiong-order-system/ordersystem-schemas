@@ -12,7 +12,6 @@ export * from "./confirm-reserver.ts";
 export * from "./create-table-payment-intent.ts";
 export * from "./cancel-payment-intent.ts";
 export * from "./export-restaurant.ts";
-export * from "./import-restaurant.ts";
 export * from "./create-service.ts";
 export * from "./create-sushicome-platform-order.ts";
 export * from "./cancel-service.ts";
