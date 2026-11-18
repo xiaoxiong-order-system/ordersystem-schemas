@@ -7,7 +7,7 @@
 // 非显而易见的行为：
 // 1. 用户 UUID 一律由本函数调小熊账号中心 auth-api `check_email` 取得，`create_user` 不接受前端传入的 UUID，
 //    保证本地用户 id 与小熊账号 id 一致（之后用小熊账号登录才能对上同一个本地用户）。
-// 2. `create_user` 复用 create-user 函数建 auth.users（触发器同步 public.user / user_information），
+// 2. `create_user` 用 `_shared/localUser.ts` 的 `ensureLocalUser` 建 auth.users（触发器同步 public.user / user_information），
 //    密码是随机占位值；用户第一次用小熊账号真实登录时会自动同步为真实密码。
 // 3. `create_user` / `set_roles` 的 role_ids 是整体替换（PUT 语义），但所有用户都必须有 user 身份：
 //    不论是否传入都会自动加上 user，响应里的 role_ids 是实际写入的列表（含 user）。
