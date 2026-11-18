@@ -2829,6 +2829,125 @@ export type Database = {
           },
         ]
       }
+      prospect_contact: {
+        Row: {
+          api_client_id: number | null
+          created_at: string
+          email: string | null
+          email_error: string | null
+          email_sent_at: string | null
+          email_status: string
+          handled_at: string | null
+          handled_by: string | null
+          id: number
+          locale: string | null
+          message: string | null
+          name: string | null
+          phone: string | null
+          restaurant_name: string | null
+          service_summary: string | null
+          source: string
+          status: string
+          topic: string | null
+          wechat: string | null
+        }
+        Insert: {
+          api_client_id?: number | null
+          created_at?: string
+          email?: string | null
+          email_error?: string | null
+          email_sent_at?: string | null
+          email_status?: string
+          handled_at?: string | null
+          handled_by?: string | null
+          id?: never
+          locale?: string | null
+          message?: string | null
+          name?: string | null
+          phone?: string | null
+          restaurant_name?: string | null
+          service_summary?: string | null
+          source?: string
+          status?: string
+          topic?: string | null
+          wechat?: string | null
+        }
+        Update: {
+          api_client_id?: number | null
+          created_at?: string
+          email?: string | null
+          email_error?: string | null
+          email_sent_at?: string | null
+          email_status?: string
+          handled_at?: string | null
+          handled_by?: string | null
+          id?: never
+          locale?: string | null
+          message?: string | null
+          name?: string | null
+          phone?: string | null
+          restaurant_name?: string | null
+          service_summary?: string | null
+          source?: string
+          status?: string
+          topic?: string | null
+          wechat?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prospect_contact_api_client_id_fkey"
+            columns: ["api_client_id"]
+            isOneToOne: false
+            referencedRelation: "api_client"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prospect_contact_handled_by_fkey"
+            columns: ["handled_by"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      prospect_contact_notify_recipient: {
+        Row: {
+          created_at: string
+          email: string
+          enable: boolean
+          id: number
+          note: string | null
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          enable?: boolean
+          id?: never
+          note?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          enable?: boolean
+          id?: never
+          note?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prospect_contact_notify_recipient_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       pt_tax_rate: {
         Row: {
           code: string
