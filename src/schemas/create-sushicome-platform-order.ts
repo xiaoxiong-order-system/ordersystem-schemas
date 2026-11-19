@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-// SushiCome 直接下单（不经 Shopify）落地到 external_platform_order（platform = 'sushicome'）。
-// 订单号由函数自行生成，调用方不传；商品是 SushiCome 自己的 SKU，不对应 dish 目录。
+// SushiCome 直接下单落地到 external_platform_order（platform = 'sushicome'）。
+// 订单号由调用方（SushiCome）传 platform_order_id，必填；商品是 SushiCome 自己的 SKU，不对应 dish 目录。
 
 const SushicomePlatformOrderItemSchema = z.object({
   sku: z.string().nullable().optional(),
@@ -18,6 +18,8 @@ const SushicomePlatformOrderItemSchema = z.object({
 });
 
 export const CreateSushicomePlatformOrderInputSchema = z.object({
+  // SushiCome 自己的订单号，去掉首尾空格后 1–64 位；platform = 'sushicome' 下所有餐厅唯一
+  platform_order_id: z.string().trim().min(1).max(64),
   restaurant_id: z.number().int().positive(),
   fulfillment_type: z.enum(["pickup", "delivery"]),
   payment_status: z.enum(["unpaid", "paid"]).optional(),
@@ -46,7 +48,7 @@ export type CreateSushicomePlatformOrderInput = z.infer<typeof CreateSushicomePl
 export const CreateSushicomePlatformOrderResponseSchema = z.object({
   ok: z.literal(true),
   order_id: z.number().int(),
-  // 函数生成的订单号，全局递增，如 "SC0001"（platform_order_name 同值）
+  // 调用方传入的订单号（去掉首尾空格后），platform_order_name 同值
   platform_order_id: z.string(),
   platform_order_name: z.string(),
   restaurant_id: z.number().int(),
