@@ -34,7 +34,6 @@ export * from "./rider-cancel-delivery-order.ts";
 export * from "./rider-update-delivery-status.ts";
 export * from "./rider-update-location.ts";
 export * from "./get/index.ts";
-export * from "./manage-saas-products.ts";
 export * from "./manage-platform-users.ts";
 export * from "./update-user-information.ts";
 export * from "./saas-stripe-webhook.ts";
