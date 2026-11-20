@@ -25,6 +25,8 @@ export const CreateSushicomePlatformOrderInputSchema = z.object({
   payment_status: z.enum(["unpaid", "paid"]).optional(),
   // 支付渠道：in_store 店内支付 / online 线上支付（MB WAY / 卡，取消时由 SushiCome 原路退款）；选填，不传存 NULL
   payment_channel: z.enum(["in_store", "online"]).nullable().optional(),
+  // 支付方式：payment_type 表的 code（cash / card / mbway ...，由 admin 维护）；选填，不传存 NULL；不存在的 code 返回 400 INVALID_PAYMENT_TYPE
+  payment_type: z.string().trim().min(1).max(32).nullable().optional(),
   contact_name: z.string().nullable().optional(),
   contact_phone: z.string().nullable().optional(),
   email: z.string().nullable().optional(),
