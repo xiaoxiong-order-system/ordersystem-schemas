@@ -15,6 +15,9 @@ const baseDeliveryOrderSchema = z.object({
   contact_name: z.string().min(1),
   dishes: z.array(DeliveryOrderDishInputSchema).min(1),
   note: z.string().nullable().optional(),
+  // 支付渠道：顾客在结账页选「在线支付」传 online；到店付 / 货到现金 / 货到刷卡传 in_store；选填，不传存 NULL。
+  // 顾客之后在线付款成功时后端会兜底改为 online
+  payment_channel: z.enum(["in_store", "online"]).nullable().optional(),
 });
 
 // order_type=takeaway（预约自取）：不需要地址，pickup_time 必填，contact_phone / email 至少填一个

@@ -1050,6 +1050,7 @@ export type Database = {
           invoice_status: string
           note: string | null
           order_type: string
+          payment_channel: string | null
           payment_status: string
           payment_type: string | null
           picked_up_at: string | null
@@ -1080,6 +1081,7 @@ export type Database = {
           invoice_status?: string
           note?: string | null
           order_type: string
+          payment_channel?: string | null
           payment_status?: string
           payment_type?: string | null
           picked_up_at?: string | null
@@ -1110,6 +1112,7 @@ export type Database = {
           invoice_status?: string
           note?: string | null
           order_type?: string
+          payment_channel?: string | null
           payment_status?: string
           payment_type?: string | null
           picked_up_at?: string | null
