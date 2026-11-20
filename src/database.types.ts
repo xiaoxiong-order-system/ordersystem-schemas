@@ -2938,6 +2938,45 @@ export type Database = {
           },
         ]
       }
+      prospect_contact_follow_up: {
+        Row: {
+          content: string
+          created_at: string
+          created_by: string | null
+          id: number
+          prospect_contact_id: number
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          created_by?: string | null
+          id?: never
+          prospect_contact_id: number
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          created_by?: string | null
+          id?: never
+          prospect_contact_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prospect_contact_follow_up_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prospect_contact_follow_up_prospect_contact_id_fkey"
+            columns: ["prospect_contact_id"]
+            isOneToOne: false
+            referencedRelation: "prospect_contact"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       prospect_contact_notify_recipient: {
         Row: {
           created_at: string
