@@ -1809,6 +1809,7 @@ export type Database = {
         Row: {
           action: string
           address: string | null
+          cancel_attempt: number | null
           cancel_reason: string | null
           cancelled_at: string | null
           cancelled_by: string | null
@@ -1827,6 +1828,7 @@ export type Database = {
           invoice_status: string
           note: string | null
           payload: Json
+          payment_channel: string | null
           payment_status: string
           payment_type: string | null
           pickup_time: string | null
@@ -1836,6 +1838,11 @@ export type Database = {
           platform_order_name: string | null
           postal_code: string | null
           raw_status: string | null
+          refund_account: string | null
+          refund_amount: number | null
+          refund_method: string | null
+          refunded_at: string | null
+          refunded_by: string | null
           restaurant_id: number | null
           status: string
           total_price: number | null
@@ -1844,6 +1851,7 @@ export type Database = {
         Insert: {
           action: string
           address?: string | null
+          cancel_attempt?: number | null
           cancel_reason?: string | null
           cancelled_at?: string | null
           cancelled_by?: string | null
@@ -1862,6 +1870,7 @@ export type Database = {
           invoice_status?: string
           note?: string | null
           payload: Json
+          payment_channel?: string | null
           payment_status?: string
           payment_type?: string | null
           pickup_time?: string | null
@@ -1871,6 +1880,11 @@ export type Database = {
           platform_order_name?: string | null
           postal_code?: string | null
           raw_status?: string | null
+          refund_account?: string | null
+          refund_amount?: number | null
+          refund_method?: string | null
+          refunded_at?: string | null
+          refunded_by?: string | null
           restaurant_id?: number | null
           status?: string
           total_price?: number | null
@@ -1879,6 +1893,7 @@ export type Database = {
         Update: {
           action?: string
           address?: string | null
+          cancel_attempt?: number | null
           cancel_reason?: string | null
           cancelled_at?: string | null
           cancelled_by?: string | null
@@ -1897,6 +1912,7 @@ export type Database = {
           invoice_status?: string
           note?: string | null
           payload?: Json
+          payment_channel?: string | null
           payment_status?: string
           payment_type?: string | null
           pickup_time?: string | null
@@ -1906,6 +1922,11 @@ export type Database = {
           platform_order_name?: string | null
           postal_code?: string | null
           raw_status?: string | null
+          refund_account?: string | null
+          refund_amount?: number | null
+          refund_method?: string | null
+          refunded_at?: string | null
+          refunded_by?: string | null
           restaurant_id?: number | null
           status?: string
           total_price?: number | null
@@ -1939,6 +1960,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "external_platform"
             referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "external_platform_order_refunded_by_fkey"
+            columns: ["refunded_by"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "external_platform_order_restaurant_id_fkey"
@@ -7218,6 +7246,7 @@ export type Database = {
         }
         Returns: undefined
       }
+      claim_table_password: { Args: { p_table_id: number }; Returns: string }
       clean_table_and_record: {
         Args: { p_restaurant_id: number; p_table_id: number; p_user_id: string }
         Returns: undefined

@@ -23,6 +23,8 @@ export const CreateSushicomePlatformOrderInputSchema = z.object({
   restaurant_id: z.number().int().positive(),
   fulfillment_type: z.enum(["pickup", "delivery"]),
   payment_status: z.enum(["unpaid", "paid"]).optional(),
+  // 支付渠道：in_store 店内支付 / online 线上支付（MB WAY / 卡，取消时由 SushiCome 原路退款）；选填，不传存 NULL
+  payment_channel: z.enum(["in_store", "online"]).nullable().optional(),
   contact_name: z.string().nullable().optional(),
   contact_phone: z.string().nullable().optional(),
   email: z.string().nullable().optional(),
