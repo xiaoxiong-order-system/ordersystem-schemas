@@ -18,6 +18,7 @@ export const MerchantUpdateSushicomeOrderStatusResponseSchema = z.object({
   ok: z.literal(true),
   id:             z.number().int(),
   status:         z.enum(["completed", "cancelled"]),
+  // unpaid / paid / refunded（取消时 SushiCome 原路退款成功 → refunded）
   payment_status: z.string(),
   payment_type:   z.string().nullable(),
   // 支付渠道：in_store 店内支付 / online 线上支付；NULL = 下单时未传
